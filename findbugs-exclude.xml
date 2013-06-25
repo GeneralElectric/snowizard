@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <!-- Ignore generated protocol buffers files -->
+    <Match>
+        <Package name="com.ge.snowizard.api.protos"/>
+    </Match>
+
+    <!-- ignore Windows -->
+    <Match>
+        <Bug pattern="VA_FORMAT_STRING_USES_NEWLINE"/>
+    </Match>
+
+    <!-- ignore serialization -->
+    <Match>
+        <Bug code="Se"/>
+    </Match>
+</FindBugsFilter>

@@ -1,0 +1,8 @@
+.idea
+*.iml
+target
+.classpath
+.project
+release.properties
+*.releaseBackup
+dependency-reduced-pom.xml
