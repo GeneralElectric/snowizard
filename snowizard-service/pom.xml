@@ -11,10 +11,6 @@
     <artifactId>snowizard-service</artifactId>
     <name>Snowizard Service</name>
 
-    <properties>
-        <app.home>/appl/snowizard</app.home>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.sun.jersey</groupId>
@@ -73,44 +69,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>rpm-maven-plugin</artifactId>
-                <version>2.1-alpha-2</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>attached-rpm</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <defineStatements>
-                        <defineStatement>_tmppath /tmp</defineStatement>
-                        <defineStatement>__jar_repack 0</defineStatement>
-                    </defineStatements>
-                    <group>Applications/System</group>
-                    <vendor>GE</vendor>
-                    <targetVendor>redhat</targetVendor>
-                    <targetOS>linux</targetOS>
-                    <description>${package.name}</description>
-                    <requires>
-                        <require>jdk</require>
-                    </requires>
-                    <mappings>
-                        <mapping>
-                            <directory>${app.home}</directory>
-                            <sources>
-                                <source>
-                                    <location>target/${project.artifactId}-${project.version}.jar</location>
-                                    <destination>${project.artifactId}.jar</destination>
-                                </source>
-                            </sources>
-                        </mapping>
-                    </mappings>
-                </configuration>
             </plugin>
         </plugins>
     </build>
