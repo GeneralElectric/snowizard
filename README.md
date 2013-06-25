@@ -57,7 +57,7 @@ To contribute:
 2. make a branch for each thing you want to do (don't put everything in your master branch: we don't want to cherry-pick and we may not want everything)
 3. send a pull request to jplock
 
-## building
+## Building
 
 To build and test, run `mvn test`.
 
