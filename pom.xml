@@ -12,6 +12,7 @@
 
     <name>Snowizard Project</name>
     <description>Distributed ID generator based on Twitter's Snowflake</description>
+    <url>https://github.com/GeneralElectric/snowizard</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
