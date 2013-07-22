@@ -29,7 +29,7 @@ public class SnowizardClient {
     private static final int MAX_RETRIES = 3;
     private static final int RETRY_INTERVAL = 10;
     private final Iterable<String> hosts;
-    private final AutoRetryHttpClient client;
+    private final HttpClient client;
 
     /**
      * Constructor
@@ -56,9 +56,7 @@ public class SnowizardClient {
             throw new NullPointerException("hosts cannot be null");
         }
 
-        this.client = new AutoRetryHttpClient(client,
-                new DefaultServiceUnavailableRetryStrategy(MAX_RETRIES,
-                        RETRY_INTERVAL));
+        this.client = client;
         this.hosts = hosts;
     }
 
