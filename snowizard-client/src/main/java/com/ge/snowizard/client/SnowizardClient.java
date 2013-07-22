@@ -12,6 +12,7 @@ import org.apache.http.client.params.AllClientPNames;
 import org.apache.http.client.params.CookiePolicy;
 import org.apache.http.impl.DefaultConnectionReuseStrategy;
 import org.apache.http.impl.client.AutoRetryHttpClient;
+import org.apache.http.impl.client.DecompressingHttpClient;
 import org.apache.http.impl.client.DefaultConnectionKeepAliveStrategy;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
@@ -36,17 +37,18 @@ public class SnowizardClient {
      * @param hosts
      */
     public SnowizardClient(final Iterable<String> hosts) {
-        this(getHttpClient(), hosts);
+        this(newHttpClient(), hosts);
     }
 
     /**
      * Constructor
      *
      * @param client
+     *            {@link HttpClient} to use
      * @param hosts
+     *            List of hosts to connect to
      */
-    public SnowizardClient(final HttpClient client,
-            final Iterable<String> hosts) {
+    public SnowizardClient(final HttpClient client, final Iterable<String> hosts) {
         if (client == null) {
             throw new NullPointerException("client cannot be null");
         }
@@ -65,7 +67,7 @@ public class SnowizardClient {
      *
      * @return AutoRetryHttpClient
      */
-    public static HttpClient getHttpClient() {
+    public static HttpClient newHttpClient() {
         final PoolingClientConnectionManager manager = new PoolingClientConnectionManager();
         manager.setDefaultMaxPerRoute(1024);
         manager.setMaxTotal(1024);
@@ -85,6 +87,17 @@ public class SnowizardClient {
         client.setKeepAliveStrategy(new DefaultConnectionKeepAliveStrategy());
         client.setHttpRequestRetryHandler(new DefaultHttpRequestRetryHandler(
                 MAX_RETRIES, false));
+        return new AutoRetryHttpClient(new DecompressingHttpClient(client),
+                new DefaultServiceUnavailableRetryStrategy(MAX_RETRIES,
+                        RETRY_INTERVAL));
+    }
+
+    /**
+     * Return the internal {@link HttpClient}
+     *
+     * @return HttpClient
+     */
+    public HttpClient getHttpClient() {
         return client;
     }
 
@@ -111,8 +124,8 @@ public class SnowizardClient {
             if (code == HttpStatus.SC_OK) {
                 final HttpEntity entity = response.getEntity();
                 if (entity != null) {
-                    snowizard = SnowizardResponse.parseFrom(entity
-                            .getContent());
+                    snowizard = SnowizardResponse
+                            .parseFrom(entity.getContent());
                 }
                 EntityUtils.consumeQuietly(entity);
             }
@@ -151,5 +164,15 @@ public class SnowizardClient {
     public String getUserAgent() {
         return String.format("SnowizardClient/%s", getClass().getPackage()
                 .getImplementationVersion());
+    }
+
+    /**
+     * Closes the underlying connection pool used by the internal
+     * {@link HttpClient}.
+     */
+    public void close() {
+        if (client != null) {
+            client.getConnectionManager().shutdown();
+        }
     }
 }
