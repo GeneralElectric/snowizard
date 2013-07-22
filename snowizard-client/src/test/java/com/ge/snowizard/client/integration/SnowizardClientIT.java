@@ -1,38 +1,35 @@
-package com.ge.snowizard.client;
+package com.ge.snowizard.client.integration;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ge.snowizard.client.SnowizardClient;
 
-public class SnowizardClientTest {
+public class SnowizardClientIT {
 
-    private final List<String> urls = new ArrayList<String>();
+    private SnowizardClient client;
 
     @Before
     public void setUp() {
+        final List<String> urls = new ArrayList<String>();
         urls.add("http://127.0.0.1:8069");
+        client = new SnowizardClient(urls);
     }
-    
+
     @After
     public void tearDown() {
-        urls.clear();
+        client.close();
     }
 
     @Test
-    @Ignore
     public void testClientGetId() throws Exception {
-        final SnowizardClient client = new SnowizardClient(urls);
-
         final int count = 1000;
 
         final long startTime = System.currentTimeMillis();
         for (int i = 0; i < count; i++) {
-            //System.out.println(client.getId());
             client.getId();
         }
 
