@@ -159,9 +159,8 @@ public class SnowizardClient {
      *
      * @return
      */
-    public String getUserAgent() {
-        return String.format("SnowizardClient/%s", getClass().getPackage()
-                .getImplementationVersion());
+    public static String getUserAgent() {
+        return "snowizard-client";
     }
 
     /**
