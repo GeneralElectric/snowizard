@@ -18,7 +18,9 @@ public final class SnowizardError {
      * Constructor
      *
      * @param code
+     *            machine-readable error code
      * @param message
+     *            human-readable error message
      */
     public SnowizardError(@JsonProperty("code") final int code,
             @JsonProperty("message") final String message) {
