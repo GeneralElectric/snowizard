@@ -16,9 +16,9 @@
 package com.ge.snowizard.core;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import java.util.List;
 import java.util.Set;
 import org.junit.Test;
@@ -87,19 +87,19 @@ public class IdWorkerTest {
         try {
             final Integer workerId = null;
             new IdWorker(workerId, 1);
-            fail("should have thrown NullPointerException");
+            failBecauseExceptionWasNotThrown(NullPointerException.class);
         } catch (NullPointerException e) {
         }
 
         try {
             new IdWorker(-1, 1);
-            fail("should have thrown IllegalArgumentException");
+            failBecauseExceptionWasNotThrown(IllegalArgumentException.class);
         } catch (IllegalArgumentException e) {
         }
 
         try {
             new IdWorker(32, 1);
-            fail("should have thrown IllegalArgumentException");
+            failBecauseExceptionWasNotThrown(IllegalArgumentException.class);
         } catch (IllegalArgumentException e) {
         }
     }
@@ -110,19 +110,19 @@ public class IdWorkerTest {
         try {
             final Integer datacenterId = null;
             new IdWorker(1, datacenterId);
-            fail("should have thrown NullPointerException");
+            failBecauseExceptionWasNotThrown(NullPointerException.class);
         } catch (NullPointerException e) {
         }
 
         try {
             new IdWorker(1, -1);
-            fail("should have thrown IllegalArgumentException");
+            failBecauseExceptionWasNotThrown(IllegalArgumentException.class);
         } catch (IllegalArgumentException e) {
         }
 
         try {
             new IdWorker(1, 32);
-            fail("should have thrown IllegalArgumentException");
+            failBecauseExceptionWasNotThrown(IllegalArgumentException.class);
         } catch (IllegalArgumentException e) {
         }
     }
@@ -287,7 +287,7 @@ public class IdWorkerTest {
 
         try {
             worker.nextId();
-            fail("worker.nextId() did not throw InvalidSystemClock");
+            failBecauseExceptionWasNotThrown(InvalidSystemClock.class);
         }
         catch (InvalidSystemClock ex) {
             assertThat(worker.getSequence()).isEqualTo(1L);
