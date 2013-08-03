@@ -253,7 +253,7 @@ http:
       # The file to which statements will be logged.
       #
       # If enabled is true, this must be specified.
-      currentLogFilename: /logs/snowizard/requests.log
+      currentLogFilename: /var/log/snowizard/requests.log
 
       # If true, log files are rotated and archived.
       archive: true
@@ -263,7 +263,7 @@ http:
       # and new requests written to it.
       #
       # If archive is true, this must be specified.
-      archivedLogFilenamePattern: /logs/snowizard/requests-%d.log.gz
+      archivedLogFilenamePattern: /var/log/snowizard/requests-%d.log.gz
 
       # The maximum number of log files to archive.
       archivedFileCount: 5
@@ -341,7 +341,7 @@ logging:
     # The file to which statements will be logged.
     #
     # If enabled is true, this must be specified.
-    currentLogFilename: /logs/snowizard/app.log
+    currentLogFilename: /var/log/snowizard/app.log
 
     # If true, log files are rotated and archived.
     archive: true
@@ -351,7 +351,7 @@ logging:
     # and new statements written to it.
     #
     # If archive is true, this must be specified.
-    archivedLogFilenamePattern: /logs/snowizard/app-%d.log.gz
+    archivedLogFilenamePattern: /var/log/snowizard/app-%d.log.gz
 
     # The maximum number of log files to archive.
     archivedFileCount: 5
