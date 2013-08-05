@@ -10,6 +10,7 @@ RUN apt-get install -y -q wget openjdk-7-jre-headless
 RUN mkdir -p /opt/snowizard /var/log/snowizard
 RUN wget -q -O /opt/snowizard/snowizard.jar http://repo.maven.apache.org/maven2/com/ge/snowizard/snowizard-service/1.0.1/snowizard-service-1.0.1.jar
 
+ADD ./snowizard-service/snowizard.upstart /etc/init/snowizard.conf
 ADD ./snowizard-service/snowizard.yml /etc/snowizard.yml
 ADD ./snowizard-service/snowizard.jvm.conf /etc/snowizard.jvm.conf
 
