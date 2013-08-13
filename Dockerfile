@@ -3,10 +3,10 @@ FROM ubuntu
 MAINTAINER Justin Plock <justin.plock@ge.com>
 
 RUN sed 's/main$/main universe/' -i /etc/apt/sources.list
-RUN apt-get update
-RUN apt-get upgrade -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y -q
 
-RUN apt-get install -y -q wget openjdk-7-jre-headless
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q wget openjdk-7-jre-headless
 RUN mkdir -p /opt/snowizard /var/log/snowizard
 RUN wget -q -O /opt/snowizard/snowizard.jar http://repo.maven.apache.org/maven2/com/ge/snowizard/snowizard-service/1.0.1/snowizard-service-1.0.1.jar
 
