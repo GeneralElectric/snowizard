@@ -21,4 +21,4 @@ EXPOSE 8080
 # Administration port
 EXPOSE 8180
 
-CMD ["/usr/bin/java", "-d64", "-server", "-jar", "/opt/snowizard/snowizard.jar", "server", "/etc/snowizard.yml"]
+CMD /usr/bin/java -d64 -server -jar /opt/snowizard/snowizard.jar server /etc/snowizard.yml
