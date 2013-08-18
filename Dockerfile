@@ -14,7 +14,7 @@ ADD ./snowizard-service/snowizard.upstart /etc/init/snowizard.conf
 ADD ./snowizard-service/snowizard.yml /etc/snowizard.yml
 ADD ./snowizard-service/snowizard.jvm.conf /etc/snowizard.jvm.conf
 
-ENV JAVA_HOME /usr/lib/jvm/default-java
+ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
 
 # Snowizard port
 EXPOSE 8080
