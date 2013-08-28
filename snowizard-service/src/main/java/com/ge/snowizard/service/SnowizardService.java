@@ -4,6 +4,7 @@ import com.ge.snowizard.core.IdWorker;
 import com.ge.snowizard.service.core.JacksonProtobufProvider;
 import com.ge.snowizard.service.resources.IdResource;
 import com.yammer.dropwizard.Service;
+import com.yammer.dropwizard.assets.AssetsBundle;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.metrics.Metrics;
@@ -17,6 +18,8 @@ public class SnowizardService extends Service<SnowizardConfiguration> {
     @Override
     public void initialize(final Bootstrap<SnowizardConfiguration> bootstrap) {
         bootstrap.setName("snowizard");
+        bootstrap.addBundle(new AssetsBundle("/apidocs", "/apidocs",
+                "index.html"));
     }
 
     @Override

@@ -42,6 +42,7 @@ public class IdResource {
      * Get a new ID and handle any thrown exceptions
      *
      * @param agent
+     *            User Agent
      * @return generated ID
      * @throws WebApplicationException
      */
@@ -59,6 +60,15 @@ public class IdResource {
         }
     }
 
+    /**
+     * Get a new ID as plain text
+     *
+     * @param agent
+     *            User Agent
+     * @responseMessage 400 Invalid User-Agent header
+     * @responseMessage 500 Invalid system clock
+     * @return generated ID
+     */
     @GET
     @Timed
     @Produces(MediaType.TEXT_PLAIN)
@@ -66,6 +76,15 @@ public class IdResource {
         return String.valueOf(getId(agent));
     }
 
+    /**
+     * Get a new ID as JSON
+     *
+     * @param agent
+     *            User Agent
+     * @responseMessage 400 Invalid User-Agent header
+     * @responseMessage 500 Invalid system clock
+     * @return generated ID
+     */
     @GET
     @Timed
     @Produces(MediaType.APPLICATION_JSON)
@@ -73,6 +92,15 @@ public class IdResource {
         return new Id(getId(agent));
     }
 
+    /**
+     * Get a new ID as JSONP
+     *
+     * @param agent
+     *            User Agent
+     * @responseMessage 400 Invalid User-Agent header
+     * @responseMessage 500 Invalid system clock
+     * @return generated ID
+     */
     @GET
     @Timed
     @Produces(MediaTypeAdditional.APPLICATION_JAVASCRIPT)
@@ -82,6 +110,15 @@ public class IdResource {
         return new JSONWithPadding(getIdAsJSON(agent), callback);
     }
 
+    /**
+     * Get a new ID as a Google Protocol Buffer response
+     *
+     * @param agent
+     *            User Agent
+     * @responseMessage 400 Invalid User-Agent header
+     * @responseMessage 500 Invalid system clock
+     * @return generated ID
+     */
     @GET
     @Timed
     @Produces(MediaTypeAdditional.APPLICATION_PROTOBUF)
