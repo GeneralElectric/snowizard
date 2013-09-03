@@ -18,4 +18,21 @@ public class IdTest {
         assertThat(fromJson(jsonFixture("fixtures/id.json"), Id.class))
                 .isEqualTo(id);
     }
+
+    @Test
+    public void testEquals() {
+        final Id id2 = new Id(1234L);
+        assertThat(id2).isEqualTo(id);
+    }
+
+    @Test
+    public void testToString() {
+        final String expected = "Id{id=1234, idStr=1234}";
+        assertThat(id.toString()).isEqualTo(expected);
+    }
+
+    @Test
+    public void testHashCode() {
+        assertThat(id.hashCode()).isEqualTo(1548657);
+    }
 }
