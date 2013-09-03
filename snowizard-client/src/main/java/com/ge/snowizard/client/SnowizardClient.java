@@ -147,7 +147,8 @@ public class SnowizardClient {
                 if (snowizard != null) {
                     return snowizard.getId();
                 }
-            } catch (Exception ex) {
+            } catch (Exception ignore) {
+                // ignore the exception and try the next host
             }
         }
         throw new SnowizardClientException(
