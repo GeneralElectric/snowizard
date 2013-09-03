@@ -77,7 +77,7 @@ public class IdWorkerTest {
 
         @Override
         protected long timeGen() {
-            return time + twepoch;
+            return time + TWEPOCH;
         }
     }
 
@@ -180,7 +180,7 @@ public class IdWorkerTest {
             Long timestamp = System.currentTimeMillis();
             worker.addTimestamp(timestamp);
             Long id = worker.nextId();
-            assertThat((id & timestampMask) >> 22).isEqualTo(timestamp - IdWorker.twepoch);
+            assertThat((id & timestampMask) >> 22).isEqualTo(timestamp - IdWorker.TWEPOCH);
         }
     }
 

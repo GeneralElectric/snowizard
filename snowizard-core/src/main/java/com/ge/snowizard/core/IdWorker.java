@@ -37,19 +37,21 @@ public class IdWorker {
     private static final Pattern AGENT_PATTERN = Pattern
             .compile("([a-zA-Z][a-zA-Z0-9\\-]*)");
 
-    public static final long twepoch = 1288834974657L;
+    public static final long TWEPOCH = 1288834974657L;
 
-    private static final long workerIdBits = 5L;
-    private static final long datacenterIdBits = 5L;
-    private static final long maxWorkerId = -1L ^ (-1L << workerIdBits);
-    private static final long maxDatacenterId = -1L ^ (-1L << datacenterIdBits);
-    private static final long sequenceBits = 12L;
+    private static final long WORKER_ID_BITS = 5L;
+    private static final long DATACENTER_ID_BITS = 5L;
+    private static final long MAX_WORKER_ID = -1L ^ (-1L << WORKER_ID_BITS);
+    private static final long MAX_DATACENTER_ID = -1L
+            ^ (-1L << DATACENTER_ID_BITS);
+    private static final long SEQUENCE_BITS = 12L;
 
-    private static final long workerIdShift = sequenceBits;
-    private static final long datacenterIdShift = sequenceBits + workerIdBits;
-    private static final long timestampLeftShift = sequenceBits + workerIdBits
-            + datacenterIdBits;
-    private static final long sequenceMask = -1L ^ (-1L << sequenceBits);
+    private static final long WORKER_ID_SHIFT = SEQUENCE_BITS;
+    private static final long DATACENTER_ID_SHIFT = SEQUENCE_BITS
+            + WORKER_ID_BITS;
+    private static final long TIMESTAMP_LEFT_SHIFT = SEQUENCE_BITS
+            + WORKER_ID_BITS + DATACENTER_ID_BITS;
+    private static final long SEQUENCE_MASK = -1L ^ (-1L << SEQUENCE_BITS);
 
     private final Counter idsCounter = Metrics.newCounter(IdWorker.class,
             "ids_generated");
@@ -85,18 +87,18 @@ public class IdWorker {
         checkNotNull(workerId);
         checkArgument(workerId >= 0, String.format(
                 "worker Id can't be greater than %d or less than 0",
-                maxWorkerId));
-        checkArgument(workerId <= maxWorkerId, String.format(
+                MAX_WORKER_ID));
+        checkArgument(workerId <= MAX_WORKER_ID, String.format(
                 "worker Id can't be greater than %d or less than 0",
-                maxWorkerId));
+                MAX_WORKER_ID));
 
         checkNotNull(datacenterId);
         checkArgument(datacenterId >= 0, String.format(
                 "datacenter Id can't be greater than %d or less than 0",
-                maxDatacenterId));
-        checkArgument(datacenterId <= maxDatacenterId, String.format(
+                MAX_DATACENTER_ID));
+        checkArgument(datacenterId <= MAX_DATACENTER_ID, String.format(
                 "datacenter Id can't be greater than %d or less than 0",
-                maxDatacenterId));
+                MAX_DATACENTER_ID));
 
         checkNotNull(startSequence);
 
@@ -105,8 +107,8 @@ public class IdWorker {
 
         LOGGER.info(
                 "worker starting. timestamp left shift {}, datacenter id bits {}, worker id bits {}, sequence bits {}, workerid {}",
-                timestampLeftShift, datacenterIdBits, workerIdBits,
-                sequenceBits, workerId);
+                TIMESTAMP_LEFT_SHIFT, DATACENTER_ID_BITS, WORKER_ID_BITS,
+                SEQUENCE_BITS, workerId);
 
         sequence = new AtomicLong(startSequence);
     }
@@ -201,7 +203,7 @@ public class IdWorker {
         }
 
         if (prevTimestamp == timestamp) {
-            curSequence = sequence.incrementAndGet() & sequenceMask;
+            curSequence = sequence.incrementAndGet() & SEQUENCE_MASK;
             if (curSequence == 0) {
                 timestamp = tilNextMillis(prevTimestamp);
             }
@@ -211,9 +213,9 @@ public class IdWorker {
         }
 
         lastTimestamp.set(timestamp);
-        final long id = ((timestamp - twepoch) << timestampLeftShift)
-                | (datacenterId << datacenterIdShift)
-                | (workerId << workerIdShift) | curSequence;
+        final long id = ((timestamp - TWEPOCH) << TIMESTAMP_LEFT_SHIFT)
+                | (datacenterId << DATACENTER_ID_SHIFT)
+                | (workerId << WORKER_ID_SHIFT) | curSequence;
 
         LOGGER.trace(
                 "prevTimestamp = {}, timestamp = {}, sequence = {}, id = {}",
@@ -239,7 +241,7 @@ public class IdWorker {
     /**
      * Generate a new timestamp (currently in milliseconds)
      *
-     * @return long
+     * @return current timestamp in milliseconds
      */
     protected long timeGen() {
         return System.currentTimeMillis();
@@ -249,6 +251,7 @@ public class IdWorker {
      * Check whether the user agent is valid
      *
      * @param agent
+     *            User-Agent
      * @return boolean
      */
     public boolean isValidUserAgent(final String agent) {
@@ -260,6 +263,7 @@ public class IdWorker {
      * Update the counters for a given user agent
      *
      * @param agent
+     *            User-Agent
      */
     protected void genCounter(final String agent) {
         idsCounter.inc();
