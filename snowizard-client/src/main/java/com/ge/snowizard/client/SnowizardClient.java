@@ -1,11 +1,11 @@
 package com.ge.snowizard.client;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import java.io.IOException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.params.AllClientPNames;
@@ -26,6 +26,9 @@ import com.ge.snowizard.client.exceptions.SnowizardClientException;
 
 public class SnowizardClient {
 
+    private static final int MAX_HOSTS = 1024;
+    private static final int SOCKET_TIMEOUT_MS = 500;
+    private static final int CONNECTION_TIMEOUT_MS = 500;
     private static final int MAX_RETRIES = 3;
     private static final int RETRY_INTERVAL = 10;
     private final Iterable<String> hosts;
@@ -35,6 +38,7 @@ public class SnowizardClient {
      * Constructor
      *
      * @param hosts
+     *            List of host:port pairs to connect to
      */
     public SnowizardClient(final Iterable<String> hosts) {
         this(newHttpClient(), hosts);
@@ -46,15 +50,11 @@ public class SnowizardClient {
      * @param client
      *            {@link HttpClient} to use
      * @param hosts
-     *            List of hosts to connect to
+     *            List of host:port pairs to connect to
      */
     public SnowizardClient(final HttpClient client, final Iterable<String> hosts) {
-        if (client == null) {
-            throw new NullPointerException("client cannot be null");
-        }
-        if (hosts == null) {
-            throw new NullPointerException("hosts cannot be null");
-        }
+        checkNotNull(client);
+        checkNotNull(hosts);
 
         this.client = client;
         this.hosts = hosts;
@@ -67,14 +67,15 @@ public class SnowizardClient {
      */
     public static HttpClient newHttpClient() {
         final PoolingClientConnectionManager manager = new PoolingClientConnectionManager();
-        manager.setDefaultMaxPerRoute(1024);
-        manager.setMaxTotal(1024);
+        manager.setDefaultMaxPerRoute(MAX_HOSTS);
+        manager.setMaxTotal(MAX_HOSTS);
 
         final BasicHttpParams params = new BasicHttpParams();
         params.setParameter(AllClientPNames.COOKIE_POLICY,
                 CookiePolicy.IGNORE_COOKIES);
-        params.setParameter(AllClientPNames.SO_TIMEOUT, 500);
-        params.setParameter(AllClientPNames.CONNECTION_TIMEOUT, 500);
+        params.setParameter(AllClientPNames.SO_TIMEOUT, SOCKET_TIMEOUT_MS);
+        params.setParameter(AllClientPNames.CONNECTION_TIMEOUT,
+                CONNECTION_TIMEOUT_MS);
 
         params.setParameter(AllClientPNames.TCP_NODELAY, Boolean.TRUE);
         params.setParameter(AllClientPNames.STALE_CONNECTION_CHECK,
@@ -103,12 +104,13 @@ public class SnowizardClient {
      * Execute a request to the Snowizard service URL
      *
      * @param host
-     * @return SnowizardProtos.SnowizardResponse
+     *            Host:Port pair to connect to
+     * @return SnowizardResponse
      * @throws IOException
-     * @throws ClientProtocolException
+     *             Error in communicating with Snowizard
      */
     public SnowizardResponse executeRequest(final String host)
-            throws IOException, ClientProtocolException {
+            throws IOException {
         final String uri = String.format("http://%s/", host);
         final HttpGet request = new HttpGet(uri);
         request.addHeader(HttpHeaders.ACCEPT, "application/x-protobuf");
@@ -136,14 +138,13 @@ public class SnowizardClient {
     /**
      * Get a new ID from Snowizard
      *
-     * @return long
+     * @return generated ID
      * @throws SnowizardClientException
      */
     public long getId() throws SnowizardClientException {
-        SnowizardResponse snowizard = null;
         for (String host : hosts) {
             try {
-                snowizard = executeRequest(host);
+                final SnowizardResponse snowizard = executeRequest(host);
                 if (snowizard != null) {
                     return snowizard.getId();
                 }
@@ -158,7 +159,7 @@ public class SnowizardClient {
     /**
      * Get the user-agent for the client
      *
-     * @return
+     * @return user-agent for the client
      */
     public static String getUserAgent() {
         return "snowizard-client";
