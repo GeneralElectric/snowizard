@@ -4,13 +4,6 @@ option java_package = "com.ge.snowizard.api.protos";
 option java_outer_classname = "SnowizardProtos";
 option optimize_for = SPEED;
 
-message SnowizardRequest {
-};
-
 message SnowizardResponse {
   required int64 id = 1;
-};
-
-service SnowizardService {
-  rpc GetId(SnowizardRequest) returns (SnowizardResponse);
 };
