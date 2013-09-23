@@ -144,6 +144,7 @@ public class SnowizardClient {
      *
      * @return generated ID
      * @throws SnowizardClientException
+     *             when unable to get an ID from any host
      */
     public long getId() throws SnowizardClientException {
         for (String host : hosts) {
