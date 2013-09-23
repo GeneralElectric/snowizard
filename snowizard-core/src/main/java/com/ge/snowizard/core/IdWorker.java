@@ -68,7 +68,9 @@ public class IdWorker {
      * Constructor
      *
      * @param workerId
+     *            Worker ID
      * @param datacenterId
+     *            Datacenter ID
      */
     public IdWorker(final int workerId, final int datacenterId) {
         this(workerId, datacenterId, 0L);
@@ -78,8 +80,11 @@ public class IdWorker {
      * Constructor
      *
      * @param workerId
+     *            Worker ID
      * @param datacenterId
+     *            Datacenter ID
      * @param startSequence
+     *            Starting sequence number
      */
     public IdWorker(final int workerId, final int datacenterId,
             final long startSequence) {
@@ -117,9 +122,12 @@ public class IdWorker {
      * Get the next ID for a given user-agent
      *
      * @param agent
-     * @return
+     *            User Agent
+     * @return Generated ID
      * @throws InvalidUserAgentError
+     *             When the user agent is invalid
      * @throws InvalidSystemClock
+     *             When the system clock is moving backward
      */
     public long getId(final String agent) throws InvalidUserAgentError,
             InvalidSystemClock {
@@ -135,36 +143,36 @@ public class IdWorker {
     }
 
     /**
-     * Get the worker ID
+     * Return the worker ID
      *
-     * @return int
+     * @return Worker ID
      */
     public int getWorkerId() {
         return this.workerId;
     }
 
     /**
-     * Get the data center ID
+     * Return the data center ID
      *
-     * @return int
+     * @return Datacenter ID
      */
     public int getDatacenterId() {
         return this.datacenterId;
     }
 
     /**
-     * Get the current system time in milliseconds.
+     * Return the current system time in milliseconds.
      *
-     * @return long
+     * @return Current system time in milliseconds
      */
     public long getTimestamp() {
         return System.currentTimeMillis();
     }
 
     /**
-     * Get the current sequence position
+     * Return the current sequence position
      *
-     * @return long
+     * @return Current sequence position
      */
     public long getSequence() {
         return sequence.get();
@@ -174,6 +182,7 @@ public class IdWorker {
      * Set the sequence to a given value
      *
      * @param value
+     *            New sequence value
      */
     public void setSequence(final long value) {
         this.sequence.set(value);
@@ -182,8 +191,9 @@ public class IdWorker {
     /**
      * Get the next ID
      *
-     * @return
+     * @return Next ID
      * @throws InvalidSystemClock
+     *             When the clock is moving backward
      */
     public synchronized long nextId() throws InvalidSystemClock {
         long timestamp = timeGen();
@@ -228,7 +238,8 @@ public class IdWorker {
      * Return the next time in milliseconds
      *
      * @param lastTimestamp
-     * @return long
+     *            Last timestamp
+     * @return Next timestamp in milliseconds
      */
     protected long tilNextMillis(final long lastTimestamp) {
         long timestamp = timeGen();
@@ -252,7 +263,7 @@ public class IdWorker {
      *
      * @param agent
      *            User-Agent
-     * @return boolean
+     * @return True if the user agent is valid
      */
     public boolean isValidUserAgent(final String agent) {
         final Matcher matcher = AGENT_PATTERN.matcher(agent);

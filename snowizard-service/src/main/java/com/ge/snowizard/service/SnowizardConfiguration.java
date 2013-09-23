@@ -6,21 +6,23 @@ import com.yammer.dropwizard.config.Configuration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SnowizardConfiguration extends Configuration {
-    @Min(1)
-    @Max(1024)
-    @JsonProperty
-    private Integer worker_id = 1;
+    private static final int MAX_ID = 1024;
 
     @Min(1)
-    @Max(1024)
-    @JsonProperty
-    private Integer datacenter_id = 1;
+    @Max(MAX_ID)
+    private int worker_id = 1;
 
-    public final Integer getWorkerId() {
+    @Min(1)
+    @Max(MAX_ID)
+    private int datacenter_id = 1;
+
+    @JsonProperty
+    public int getWorkerId() {
         return worker_id;
     }
 
-    public final Integer getDatacenterId() {
+    @JsonProperty
+    public int getDatacenterId() {
         return datacenter_id;
     }
 }

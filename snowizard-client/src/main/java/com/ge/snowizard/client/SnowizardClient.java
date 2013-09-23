@@ -21,11 +21,15 @@ import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.ge.snowizard.api.protos.SnowizardProtos.SnowizardResponse;
 import com.ge.snowizard.client.exceptions.SnowizardClientException;
 
 public class SnowizardClient {
 
+    private static final Logger LOGGER = LoggerFactory
+            .getLogger(SnowizardClient.class);
     private static final int MAX_HOSTS = 1024;
     private static final int SOCKET_TIMEOUT_MS = 500;
     private static final int CONNECTION_TIMEOUT_MS = 500;
@@ -140,6 +144,7 @@ public class SnowizardClient {
      *
      * @return generated ID
      * @throws SnowizardClientException
+     *             when unable to get an ID from any host
      */
     public long getId() throws SnowizardClientException {
         for (String host : hosts) {
@@ -148,8 +153,8 @@ public class SnowizardClient {
                 if (snowizard != null) {
                     return snowizard.getId();
                 }
-            } catch (Exception ignore) {
-                // ignore the exception and try the next host
+            } catch (Exception ex) {
+                LOGGER.warn("Unable to get ID from host ({})", host);
             }
         }
         throw new SnowizardClientException(
