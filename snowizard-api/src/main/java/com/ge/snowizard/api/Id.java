@@ -19,7 +19,9 @@ public final class Id {
      * Constructor
      *
      * @param id
+     *            Generated ID
      * @param idStr
+     *            Generated ID as a string
      */
     public Id(@JsonProperty("id") final long id,
             @JsonProperty("id_str") final String idStr) {
@@ -31,6 +33,7 @@ public final class Id {
      * Constructor
      *
      * @param id
+     *            Generated ID
      */
     public Id(final long id) {
         this.id = id;
@@ -38,9 +41,9 @@ public final class Id {
     }
 
     /**
-     * Return the ID as a Long value
+     * Return the ID as a long value
      *
-     * @return the ID as a Long value
+     * @return the ID as a long value
      */
     @JsonProperty
     public long getId() {
@@ -48,9 +51,9 @@ public final class Id {
     }
 
     /**
-     * Return the ID as a String value
+     * Return the ID as a string value
      *
-     * @return the ID as a String value
+     * @return the ID as a string value
      */
     @JsonProperty("id_str")
     public String getIdAsString() {
