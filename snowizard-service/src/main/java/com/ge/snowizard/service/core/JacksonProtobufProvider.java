@@ -33,8 +33,7 @@ public class JacksonProtobufProvider implements MessageBodyReader<Message>,
     public Message readFrom(final Class<Message> type, final Type genericType,
             final Annotation[] annotations, final MediaType mediaType,
             final MultivaluedMap<String, String> httpHeaders,
-            final InputStream entityStream) throws IOException,
-            WebApplicationException {
+            final InputStream entityStream) throws IOException {
 
         try {
             final Method newBuilder = type.getMethod("newBuilder");
@@ -64,8 +63,7 @@ public class JacksonProtobufProvider implements MessageBodyReader<Message>,
             final Type genericType, final Annotation[] annotations,
             final MediaType mediaType,
             final MultivaluedMap<String, Object> httpHeaders,
-            final OutputStream entityStream) throws IOException,
-            WebApplicationException {
+            final OutputStream entityStream) throws IOException {
         entityStream.write(m.toByteArray());
     }
 }
