@@ -4,7 +4,7 @@ Snowizard is an HTTP-based service for generating unique ID numbers at high scal
 
 ## Motivation
 
-Snowizard is a Java port of Twitter's [Snowflake](https://github.com/twitter/snowflake) thrift service presented as an HTTP-based [Dropwizard](http://dropwizard.codahale.com/) service. Snowizard supports returning ID numbers as:
+Snowizard is a Java port of Twitter's [Snowflake](https://github.com/twitter/snowflake) thrift service presented as an HTTP-based [Dropwizard](http://dropwizard.io/) service. Snowizard supports returning ID numbers as:
 
 * JSON and JSONP
 * Google's [Protocol Buffers](https://code.google.com/p/protobuf/)
@@ -39,7 +39,7 @@ There are many otherwise reasonable solutions to this problem that require 128bi
 The id generation scheme should be at least as available as our related services.
 
 ## Solution
-* [Dropwizard](http://dropwizard.codahale.com/) service written in Java
+* [Dropwizard](http://dropwizard.io/) service written in Java
 * id is composed of:
   * time - 41 bits (millisecond precision w/ a custom epoch gives us 69 years)
   * configured machine id - 10 bits - gives us up to 1024 machines
