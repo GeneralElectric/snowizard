@@ -10,18 +10,18 @@ public class SnowizardConfiguration extends Configuration {
 
     @Min(1)
     @Max(MAX_ID)
+    @JsonProperty
     private int worker_id = 1;
 
     @Min(1)
     @Max(MAX_ID)
+    @JsonProperty
     private int datacenter_id = 1;
 
-    @JsonProperty
     public int getWorkerId() {
         return worker_id;
     }
 
-    @JsonProperty
     public int getDatacenterId() {
         return datacenter_id;
     }
