@@ -3,6 +3,7 @@ package com.ge.snowizard.service;
 import com.ge.snowizard.core.IdWorker;
 import com.ge.snowizard.service.core.CorsHeadersFilter;
 import com.ge.snowizard.service.core.JacksonProtobufProvider;
+import com.ge.snowizard.service.core.TimedResourceMethodDispatchAdapter;
 import com.ge.snowizard.service.resources.IdResource;
 import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.assets.AssetsBundle;
@@ -28,6 +29,7 @@ public class SnowizardService extends Service<SnowizardConfiguration> {
             final Environment environment) throws Exception {
 
         environment.addProvider(new JacksonProtobufProvider());
+        environment.addProvider(new TimedResourceMethodDispatchAdapter());
         environment.addFilter(new CorsHeadersFilter(), "/*");
 
         final IdWorker worker = new IdWorker(config.getWorkerId(),
