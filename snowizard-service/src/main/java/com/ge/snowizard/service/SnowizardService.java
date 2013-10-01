@@ -27,7 +27,7 @@ public class SnowizardService extends Service<SnowizardConfiguration> {
     public void run(final SnowizardConfiguration config,
             final Environment environment) throws Exception {
 
-        environment.addProvider(JacksonProtobufProvider.class);
+        environment.addProvider(new JacksonProtobufProvider());
         environment.addFilter(new CorsHeadersFilter(), "/*");
 
         final IdWorker worker = new IdWorker(config.getWorkerId(),
