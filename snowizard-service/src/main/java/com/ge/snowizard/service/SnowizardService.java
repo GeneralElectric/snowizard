@@ -1,6 +1,7 @@
 package com.ge.snowizard.service;
 
 import com.ge.snowizard.core.IdWorker;
+import com.ge.snowizard.service.core.CorsHeadersFilter;
 import com.ge.snowizard.service.core.JacksonProtobufProvider;
 import com.ge.snowizard.service.resources.IdResource;
 import com.yammer.dropwizard.Service;
@@ -27,6 +28,7 @@ public class SnowizardService extends Service<SnowizardConfiguration> {
             final Environment environment) throws Exception {
 
         environment.addProvider(JacksonProtobufProvider.class);
+        environment.addFilter(new CorsHeadersFilter(), "/*");
 
         final IdWorker worker = new IdWorker(config.getWorkerId(),
                 config.getDatacenterId());
