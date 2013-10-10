@@ -16,8 +16,8 @@ import com.google.common.collect.ImmutableSet;
 public class CorsHeadersFilter implements Filter {
 
     private static final ImmutableSet<String> ALLOWED_HEADERS = ImmutableSet
-            .of(HttpHeaders.CONTENT_TYPE, HttpHeaders.AUTHORIZATION,
-                    HttpHeaders.ACCEPT, "Origin", "X-Requested-With");
+            .of(HttpHeaders.ACCEPT, "Origin", "X-Requested-With",
+                    HttpHeaders.USER_AGENT);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
@@ -29,6 +29,8 @@ public class CorsHeadersFilter implements Filter {
             httpServletResponse.addHeader("X-XSS-Protection", "1; mode=block");
             httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
             if ("OPTIONS".equals(httpServletRequest.getMethod())) {
+                httpServletResponse.addHeader("Access-Control-Allow-Methods",
+                        "GET");
                 httpServletResponse.addHeader("Access-Control-Allow-Headers",
                         Joiner.on(", ").join(ALLOWED_HEADERS));
             }
