@@ -27,6 +27,7 @@ public class CorsHeadersFilter implements Filter {
             final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
             httpServletResponse.addHeader("X-Frame-Options", "deny");
             httpServletResponse.addHeader("X-XSS-Protection", "1; mode=block");
+            httpServletResponse.addHeader("X-Content-Type-Options", "nosniff");
             httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
             if ("OPTIONS".equals(httpServletRequest.getMethod())) {
                 httpServletResponse.addHeader("Access-Control-Allow-Methods",
