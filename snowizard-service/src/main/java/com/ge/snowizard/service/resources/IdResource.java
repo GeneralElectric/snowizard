@@ -20,6 +20,7 @@ import com.ge.snowizard.exceptions.InvalidUserAgentError;
 import com.ge.snowizard.service.api.SnowizardError;
 import com.ge.snowizard.service.core.MediaTypeAdditional;
 import com.sun.jersey.api.json.JSONWithPadding;
+import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
 
 @Path("/")
@@ -72,6 +73,7 @@ public class IdResource {
     @GET
     @Timed
     @Produces(MediaType.TEXT_PLAIN)
+    @CacheControl(mustRevalidate = true, noCache = true, noStore = true)
     public String getIdAsString(@HeaderParam("User-Agent") final String agent) {
         return String.valueOf(getId(agent));
     }
@@ -88,6 +90,7 @@ public class IdResource {
     @GET
     @Timed
     @Produces(MediaType.APPLICATION_JSON)
+    @CacheControl(mustRevalidate = true, noCache = true, noStore = true)
     public Id getIdAsJSON(@HeaderParam("User-Agent") final String agent) {
         return new Id(getId(agent));
     }
@@ -104,6 +107,7 @@ public class IdResource {
     @GET
     @Timed
     @Produces(MediaTypeAdditional.APPLICATION_JAVASCRIPT)
+    @CacheControl(mustRevalidate = true, noCache = true, noStore = true)
     public JSONWithPadding getIdAsJSONP(
             @HeaderParam("User-Agent") final String agent,
             @QueryParam("callback") @DefaultValue("callback") final String callback) {
@@ -122,6 +126,7 @@ public class IdResource {
     @GET
     @Timed
     @Produces(MediaTypeAdditional.APPLICATION_PROTOBUF)
+    @CacheControl(mustRevalidate = true, noCache = true, noStore = true)
     public SnowizardResponse getIdAsProtobuf(
             @HeaderParam("User-Agent") final String agent) {
         return SnowizardResponse.newBuilder().setId(getId(agent)).build();
