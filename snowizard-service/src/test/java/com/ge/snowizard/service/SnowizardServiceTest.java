@@ -9,6 +9,8 @@ import org.junit.Test;
 import com.ge.snowizard.service.SnowizardConfiguration;
 import com.ge.snowizard.service.SnowizardService;
 import com.ge.snowizard.service.resources.IdResource;
+import com.ge.snowizard.service.resources.PingResource;
+import com.ge.snowizard.service.resources.SnowizardResource;
 import com.google.common.io.Resources;
 import com.sun.jersey.api.client.Client;
 import com.yammer.dropwizard.config.Environment;
@@ -27,7 +29,9 @@ public class SnowizardServiceTest {
     @Test
     public void buildsAIdResource() throws Exception {
         service.run(config, environment);
-        verify(environment).addResource(any(IdResource.class));
+        verify(environment, times(3)).addResource(any(IdResource.class));
+        verify(environment, times(3)).addResource(any(PingResource.class));
+        verify(environment, times(3)).addResource(any(SnowizardResource.class));
     }
 
     @Test
