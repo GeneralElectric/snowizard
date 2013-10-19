@@ -18,11 +18,19 @@ public class SnowizardConfiguration extends Configuration {
     @JsonProperty
     private int datacenter_id = 1;
 
+    @JsonProperty
+    private boolean validate_user_agent = false;
+
     public int getWorkerId() {
         return worker_id;
     }
 
     public int getDatacenterId() {
         return datacenter_id;
+    }
+
+    @JsonProperty("validate_user_agent")
+    public boolean validateUserAgent() {
+        return validate_user_agent;
     }
 }

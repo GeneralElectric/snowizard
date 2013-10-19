@@ -35,7 +35,7 @@ public class SnowizardService extends Service<SnowizardConfiguration> {
         environment.addFilter(new CorsHeadersFilter(), "/*");
 
         final IdWorker worker = new IdWorker(config.getWorkerId(),
-                config.getDatacenterId());
+                config.getDatacenterId(), config.validateUserAgent());
 
         Metrics.newGauge(SnowizardService.class, "worker_id",
                 new Gauge<Integer>() {

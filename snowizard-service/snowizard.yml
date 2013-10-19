@@ -4,6 +4,9 @@ datacenter_id: 1
 # Unique Worker ID
 worker_id: 1
 
+# Validate the User-Agent header?
+validate_user_agent: true
+
 # HTTP-specific options.
 http:
 

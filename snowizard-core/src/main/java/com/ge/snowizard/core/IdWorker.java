@@ -60,6 +60,7 @@ public class IdWorker {
             IdWorker.class, "exceptions");
     private final int workerId;
     private final int datacenterId;
+    private final boolean validateUserAgent;
 
     private final AtomicLong lastTimestamp = new AtomicLong(-1L);
     private final AtomicLong sequence;
@@ -73,7 +74,7 @@ public class IdWorker {
      *            Datacenter ID
      */
     public IdWorker(final int workerId, final int datacenterId) {
-        this(workerId, datacenterId, 0L);
+        this(workerId, datacenterId, 0L, true);
     }
 
     /**
@@ -88,6 +89,38 @@ public class IdWorker {
      */
     public IdWorker(final int workerId, final int datacenterId,
             final long startSequence) {
+        this(workerId, datacenterId, startSequence, true);
+    }
+
+    /**
+     * Constructor
+     *
+     * @param workerId
+     *            Worker ID
+     * @param datacenterId
+     *            Datacenter ID
+     * @param validateUserAgent
+     *            Whether to validate the User-Agent headers or not
+     */
+    public IdWorker(final int workerId, final int datacenterId,
+            final boolean validateUserAgent) {
+        this(workerId, datacenterId, 0L, validateUserAgent);
+    }
+
+    /**
+     * Constructor
+     *
+     * @param workerId
+     *            Worker ID
+     * @param datacenterId
+     *            Datacenter ID
+     * @param startSequence
+     *            Starting sequence number
+     * @param validateUserAgent
+     *            Whether to validate the User-Agent headers or not
+     */
+    public IdWorker(final int workerId, final int datacenterId,
+            final long startSequence, final boolean validateUserAgent) {
 
         checkNotNull(workerId);
         checkArgument(workerId >= 0, String.format(
@@ -109,6 +142,7 @@ public class IdWorker {
 
         this.workerId = workerId;
         this.datacenterId = datacenterId;
+        this.validateUserAgent = validateUserAgent;
 
         LOGGER.info(
                 "worker starting. timestamp left shift {}, datacenter id bits {}, worker id bits {}, sequence bits {}, workerid {}",
@@ -266,6 +300,9 @@ public class IdWorker {
      * @return True if the user agent is valid
      */
     public boolean isValidUserAgent(final String agent) {
+        if (!validateUserAgent) {
+            return true;
+        }
         final Matcher matcher = AGENT_PATTERN.matcher(agent);
         return matcher.matches();
     }
