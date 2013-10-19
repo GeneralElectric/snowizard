@@ -21,6 +21,9 @@ public class SnowizardConfiguration extends Configuration {
     @JsonProperty
     private boolean validate_user_agent = false;
 
+    @JsonProperty
+    private boolean enable_cors = false;
+
     public int getWorkerId() {
         return worker_id;
     }
@@ -32,5 +35,10 @@ public class SnowizardConfiguration extends Configuration {
     @JsonProperty("validate_user_agent")
     public boolean validateUserAgent() {
         return validate_user_agent;
+    }
+
+    @JsonProperty("enable_cors")
+    public boolean isCORSEnabled() {
+        return enable_cors;
     }
 }

@@ -7,6 +7,9 @@ worker_id: 1
 # Validate the User-Agent header?
 validate_user_agent: true
 
+# Enable CORS support?
+enable_cors: false
+
 # HTTP-specific options.
 http:
 

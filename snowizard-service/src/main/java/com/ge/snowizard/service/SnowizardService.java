@@ -32,7 +32,9 @@ public class SnowizardService extends Service<SnowizardConfiguration> {
 
         environment.addProvider(new JacksonProtobufProvider());
         environment.addProvider(new TimedResourceMethodDispatchAdapter());
-        environment.addFilter(new CorsHeadersFilter(), "/*");
+        if (config.isCORSEnabled()) {
+            environment.addFilter(new CorsHeadersFilter(), "/*");
+        }
 
         final IdWorker worker = new IdWorker(config.getWorkerId(),
                 config.getDatacenterId(), config.validateUserAgent());
