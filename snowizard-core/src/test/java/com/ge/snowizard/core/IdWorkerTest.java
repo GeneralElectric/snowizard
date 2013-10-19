@@ -161,7 +161,8 @@ public class IdWorkerTest {
         final IdWorker worker = new IdWorker(workerId, datacenterId);
         for (int i = 0; i < 1000; i++) {
             Long id = worker.nextId();
-            assertThat((id & WORKER_MASK) >> 12).isEqualTo(Long.valueOf(workerId));
+            assertThat((id & WORKER_MASK) >> 12).isEqualTo(
+                    Long.valueOf(workerId));
         }
     }
 
@@ -171,7 +172,8 @@ public class IdWorkerTest {
         final Integer datacenterId = 0x1F;
         final IdWorker worker = new IdWorker(workerId, datacenterId);
         final Long id = worker.nextId();
-        assertThat((id & DATACENTER_MASK) >> 17).isEqualTo(Long.valueOf(datacenterId));
+        assertThat((id & DATACENTER_MASK) >> 17).isEqualTo(
+                Long.valueOf(datacenterId));
     }
 
     @Test
@@ -181,7 +183,8 @@ public class IdWorkerTest {
             Long timestamp = System.currentTimeMillis();
             worker.addTimestamp(timestamp);
             Long id = worker.nextId();
-            assertThat((id & TIMESTAMP_MASK) >> 22).isEqualTo(timestamp - IdWorker.TWEPOCH);
+            assertThat((id & TIMESTAMP_MASK) >> 22).isEqualTo(
+                    timestamp - IdWorker.TWEPOCH);
         }
     }
 
@@ -196,7 +199,8 @@ public class IdWorkerTest {
 
         for (Long i = startSequence; i < endSequence; i++) {
             Long id = worker.nextId();
-            assertThat((id & WORKER_MASK) >> 12).isEqualTo(Long.valueOf(workerId));
+            assertThat((id & WORKER_MASK) >> 12).isEqualTo(
+                    Long.valueOf(workerId));
         }
     }
 
@@ -248,8 +252,7 @@ public class IdWorkerTest {
             Long id = worker.nextId();
             if (ids.contains(id)) {
                 System.out.println(Long.toBinaryString(id));
-            }
-            else {
+            } else {
                 ids.add(id);
             }
         }
@@ -267,7 +270,8 @@ public class IdWorkerTest {
         final long sequenceMask = -1L ^ (-1L << 12);
         final StaticTimeWorker worker = new StaticTimeWorker(0, 0);
 
-        // first we generate 2 ids with the same time, so that we get the sequqence to 1
+        // first we generate 2 ids with the same time, so that we get the
+        // sequqence to 1
         assertThat(worker.getSequence()).isEqualTo(0L);
         assertThat(worker.time).isEqualTo(1L);
 
@@ -289,8 +293,7 @@ public class IdWorkerTest {
         try {
             worker.nextId();
             failBecauseExceptionWasNotThrown(InvalidSystemClock.class);
-        }
-        catch (InvalidSystemClock ex) {
+        } catch (InvalidSystemClock ex) {
             assertThat(worker.getSequence()).isEqualTo(1L);
         }
 
