@@ -19,7 +19,7 @@ public class SnowizardConfiguration extends Configuration {
     private int datacenter_id = 1;
 
     @JsonProperty
-    private boolean validate_user_agent = false;
+    private boolean validate_user_agent = true;
 
     @JsonProperty
     private boolean enable_cors = false;
