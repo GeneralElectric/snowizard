@@ -1,6 +1,7 @@
 package com.ge.snowizard.client;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import java.io.Closeable;
 import java.io.IOException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
@@ -26,7 +27,7 @@ import org.slf4j.LoggerFactory;
 import com.ge.snowizard.api.protos.SnowizardProtos.SnowizardResponse;
 import com.ge.snowizard.client.exceptions.SnowizardClientException;
 
-public class SnowizardClient {
+public class SnowizardClient implements Closeable {
 
     private static final Logger LOGGER = LoggerFactory
             .getLogger(SnowizardClient.class);
@@ -174,6 +175,7 @@ public class SnowizardClient {
      * Closes the underlying connection pool used by the internal
      * {@link HttpClient}.
      */
+    @Override
     public void close() {
         if (client != null) {
             client.getConnectionManager().shutdown();
