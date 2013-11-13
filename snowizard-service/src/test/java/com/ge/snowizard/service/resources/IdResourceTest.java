@@ -2,6 +2,8 @@ package com.ge.snowizard.service.resources;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
+
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.MediaType;
@@ -9,6 +11,8 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ge.snowizard.api.Id;
 import com.ge.snowizard.api.protos.SnowizardProtos.SnowizardResponse;
+import com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse;
+import com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest;
 import com.ge.snowizard.core.IdWorker;
 import com.ge.snowizard.exceptions.InvalidSystemClock;
 import com.ge.snowizard.exceptions.InvalidUserAgentError;
@@ -188,6 +192,33 @@ public class IdResourceTest extends ResourceTest {
         assertThat(response.getStatus()).isEqualTo(200);
         assertThat(actual).isEqualTo(expected);
         verify(worker).getId(AGENT);
+    }
+
+    @Test
+    public void testGetIdsAsProtobuf() throws Exception {
+        final long id = 100L;
+        final int batchSize = 3;
+        when(worker.getId(AGENT)).thenReturn(id);
+
+        ArrayList<Long> ids = new ArrayList<Long>();
+        for(int i = 0; i < batchSize; i++) {
+            ids.add(id);
+        }
+
+        final SnowizardRequest request = SnowizardRequest.newBuilder().setBatchSize(batchSize).build();
+
+        final ClientResponse response = client().resource("/")
+                .accept(MediaTypeAdditional.APPLICATION_PROTOBUF)
+                .header("User-Agent", AGENT).post(ClientResponse.class, request.toByteArray());
+
+        final SnowizardBatchResponse actual = response
+                .getEntity(SnowizardBatchResponse.class);
+
+        final SnowizardBatchResponse expected = SnowizardBatchResponse.newBuilder().addAllIds(ids).build();
+
+        assertThat(response.getStatus()).isEqualTo(200);
+        assertThat(actual).isEqualTo(expected);
+        verify(worker, times(batchSize)).getId(AGENT);
     }
 
     @Test

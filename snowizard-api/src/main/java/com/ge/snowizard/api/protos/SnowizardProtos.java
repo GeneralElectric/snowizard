@@ -8,6 +8,410 @@ public final class SnowizardProtos {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
+  public interface SnowizardRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required int32 batch_size = 1;
+    /**
+     * <code>required int32 batch_size = 1;</code>
+     */
+    boolean hasBatchSize();
+    /**
+     * <code>required int32 batch_size = 1;</code>
+     */
+    int getBatchSize();
+  }
+  /**
+   * Protobuf type {@code snowizard.SnowizardRequest}
+   */
+  public static final class SnowizardRequest extends
+      com.google.protobuf.GeneratedMessage
+      implements SnowizardRequestOrBuilder {
+    // Use SnowizardRequest.newBuilder() to construct.
+    private SnowizardRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private SnowizardRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final SnowizardRequest defaultInstance;
+    public static SnowizardRequest getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public SnowizardRequest getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private SnowizardRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              batchSize_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.ge.snowizard.api.protos.SnowizardProtos.internal_static_snowizard_SnowizardRequest_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.ge.snowizard.api.protos.SnowizardProtos.internal_static_snowizard_SnowizardRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest.class, com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<SnowizardRequest> PARSER =
+        new com.google.protobuf.AbstractParser<SnowizardRequest>() {
+      public SnowizardRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new SnowizardRequest(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<SnowizardRequest> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required int32 batch_size = 1;
+    public static final int BATCH_SIZE_FIELD_NUMBER = 1;
+    private int batchSize_;
+    /**
+     * <code>required int32 batch_size = 1;</code>
+     */
+    public boolean hasBatchSize() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required int32 batch_size = 1;</code>
+     */
+    public int getBatchSize() {
+      return batchSize_;
+    }
+
+    private void initFields() {
+      batchSize_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasBatchSize()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, batchSize_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, batchSize_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code snowizard.SnowizardRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.ge.snowizard.api.protos.SnowizardProtos.internal_static_snowizard_SnowizardRequest_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.ge.snowizard.api.protos.SnowizardProtos.internal_static_snowizard_SnowizardRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest.class, com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest.Builder.class);
+      }
+
+      // Construct using com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        batchSize_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.ge.snowizard.api.protos.SnowizardProtos.internal_static_snowizard_SnowizardRequest_descriptor;
+      }
+
+      public com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest getDefaultInstanceForType() {
+        return com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest.getDefaultInstance();
+      }
+
+      public com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest build() {
+        com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest buildPartial() {
+        com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest result = new com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.batchSize_ = batchSize_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest) {
+          return mergeFrom((com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest other) {
+        if (other == com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest.getDefaultInstance()) return this;
+        if (other.hasBatchSize()) {
+          setBatchSize(other.getBatchSize());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasBatchSize()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required int32 batch_size = 1;
+      private int batchSize_ ;
+      /**
+       * <code>required int32 batch_size = 1;</code>
+       */
+      public boolean hasBatchSize() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required int32 batch_size = 1;</code>
+       */
+      public int getBatchSize() {
+        return batchSize_;
+      }
+      /**
+       * <code>required int32 batch_size = 1;</code>
+       */
+      public Builder setBatchSize(int value) {
+        bitField0_ |= 0x00000001;
+        batchSize_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 batch_size = 1;</code>
+       */
+      public Builder clearBatchSize() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        batchSize_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:snowizard.SnowizardRequest)
+    }
+
+    static {
+      defaultInstance = new SnowizardRequest(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:snowizard.SnowizardRequest)
+  }
+
   public interface SnowizardResponseOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
@@ -412,11 +816,490 @@ public final class SnowizardProtos {
     // @@protoc_insertion_point(class_scope:snowizard.SnowizardResponse)
   }
 
+  public interface SnowizardBatchResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // repeated int64 ids = 1;
+    /**
+     * <code>repeated int64 ids = 1;</code>
+     */
+    java.util.List<java.lang.Long> getIdsList();
+    /**
+     * <code>repeated int64 ids = 1;</code>
+     */
+    int getIdsCount();
+    /**
+     * <code>repeated int64 ids = 1;</code>
+     */
+    long getIds(int index);
+  }
+  /**
+   * Protobuf type {@code snowizard.SnowizardBatchResponse}
+   */
+  public static final class SnowizardBatchResponse extends
+      com.google.protobuf.GeneratedMessage
+      implements SnowizardBatchResponseOrBuilder {
+    // Use SnowizardBatchResponse.newBuilder() to construct.
+    private SnowizardBatchResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private SnowizardBatchResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final SnowizardBatchResponse defaultInstance;
+    public static SnowizardBatchResponse getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public SnowizardBatchResponse getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private SnowizardBatchResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                ids_ = new java.util.ArrayList<java.lang.Long>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              ids_.add(input.readInt64());
+              break;
+            }
+            case 10: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001) && input.getBytesUntilLimit() > 0) {
+                ids_ = new java.util.ArrayList<java.lang.Long>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                ids_.add(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          ids_ = java.util.Collections.unmodifiableList(ids_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.ge.snowizard.api.protos.SnowizardProtos.internal_static_snowizard_SnowizardBatchResponse_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.ge.snowizard.api.protos.SnowizardProtos.internal_static_snowizard_SnowizardBatchResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse.class, com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<SnowizardBatchResponse> PARSER =
+        new com.google.protobuf.AbstractParser<SnowizardBatchResponse>() {
+      public SnowizardBatchResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new SnowizardBatchResponse(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<SnowizardBatchResponse> getParserForType() {
+      return PARSER;
+    }
+
+    // repeated int64 ids = 1;
+    public static final int IDS_FIELD_NUMBER = 1;
+    private java.util.List<java.lang.Long> ids_;
+    /**
+     * <code>repeated int64 ids = 1;</code>
+     */
+    public java.util.List<java.lang.Long>
+        getIdsList() {
+      return ids_;
+    }
+    /**
+     * <code>repeated int64 ids = 1;</code>
+     */
+    public int getIdsCount() {
+      return ids_.size();
+    }
+    /**
+     * <code>repeated int64 ids = 1;</code>
+     */
+    public long getIds(int index) {
+      return ids_.get(index);
+    }
+
+    private void initFields() {
+      ids_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (int i = 0; i < ids_.size(); i++) {
+        output.writeInt64(1, ids_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      {
+        int dataSize = 0;
+        for (int i = 0; i < ids_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(ids_.get(i));
+        }
+        size += dataSize;
+        size += 1 * getIdsList().size();
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code snowizard.SnowizardBatchResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.ge.snowizard.api.protos.SnowizardProtos.internal_static_snowizard_SnowizardBatchResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.ge.snowizard.api.protos.SnowizardProtos.internal_static_snowizard_SnowizardBatchResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse.class, com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse.Builder.class);
+      }
+
+      // Construct using com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        ids_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.ge.snowizard.api.protos.SnowizardProtos.internal_static_snowizard_SnowizardBatchResponse_descriptor;
+      }
+
+      public com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse getDefaultInstanceForType() {
+        return com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse.getDefaultInstance();
+      }
+
+      public com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse build() {
+        com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse buildPartial() {
+        com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse result = new com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse(this);
+        int from_bitField0_ = bitField0_;
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          ids_ = java.util.Collections.unmodifiableList(ids_);
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.ids_ = ids_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse) {
+          return mergeFrom((com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse other) {
+        if (other == com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse.getDefaultInstance()) return this;
+        if (!other.ids_.isEmpty()) {
+          if (ids_.isEmpty()) {
+            ids_ = other.ids_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureIdsIsMutable();
+            ids_.addAll(other.ids_);
+          }
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // repeated int64 ids = 1;
+      private java.util.List<java.lang.Long> ids_ = java.util.Collections.emptyList();
+      private void ensureIdsIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          ids_ = new java.util.ArrayList<java.lang.Long>(ids_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+      /**
+       * <code>repeated int64 ids = 1;</code>
+       */
+      public java.util.List<java.lang.Long>
+          getIdsList() {
+        return java.util.Collections.unmodifiableList(ids_);
+      }
+      /**
+       * <code>repeated int64 ids = 1;</code>
+       */
+      public int getIdsCount() {
+        return ids_.size();
+      }
+      /**
+       * <code>repeated int64 ids = 1;</code>
+       */
+      public long getIds(int index) {
+        return ids_.get(index);
+      }
+      /**
+       * <code>repeated int64 ids = 1;</code>
+       */
+      public Builder setIds(
+          int index, long value) {
+        ensureIdsIsMutable();
+        ids_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int64 ids = 1;</code>
+       */
+      public Builder addIds(long value) {
+        ensureIdsIsMutable();
+        ids_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int64 ids = 1;</code>
+       */
+      public Builder addAllIds(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureIdsIsMutable();
+        super.addAll(values, ids_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int64 ids = 1;</code>
+       */
+      public Builder clearIds() {
+        ids_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:snowizard.SnowizardBatchResponse)
+    }
+
+    static {
+      defaultInstance = new SnowizardBatchResponse(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:snowizard.SnowizardBatchResponse)
+  }
+
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_snowizard_SnowizardRequest_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_snowizard_SnowizardRequest_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_snowizard_SnowizardResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_snowizard_SnowizardResponse_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_snowizard_SnowizardBatchResponse_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_snowizard_SnowizardBatchResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -426,21 +1309,35 @@ public final class SnowizardProtos {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\017Snowizard.proto\022\tsnowizard\"\037\n\021Snowizar" +
-      "dResponse\022\n\n\002id\030\001 \002(\003B0\n\033com.ge.snowizar" +
-      "d.api.protosB\017SnowizardProtosH\001"
+      "\n\017Snowizard.proto\022\tsnowizard\"&\n\020Snowizar" +
+      "dRequest\022\022\n\nbatch_size\030\001 \002(\005\"\037\n\021Snowizar" +
+      "dResponse\022\n\n\002id\030\001 \002(\003\"%\n\026SnowizardBatchR" +
+      "esponse\022\013\n\003ids\030\001 \003(\003B0\n\033com.ge.snowizard" +
+      ".api.protosB\017SnowizardProtosH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
         public com.google.protobuf.ExtensionRegistry assignDescriptors(
             com.google.protobuf.Descriptors.FileDescriptor root) {
           descriptor = root;
-          internal_static_snowizard_SnowizardResponse_descriptor =
+          internal_static_snowizard_SnowizardRequest_descriptor =
             getDescriptor().getMessageTypes().get(0);
+          internal_static_snowizard_SnowizardRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_snowizard_SnowizardRequest_descriptor,
+              new java.lang.String[] { "BatchSize", });
+          internal_static_snowizard_SnowizardResponse_descriptor =
+            getDescriptor().getMessageTypes().get(1);
           internal_static_snowizard_SnowizardResponse_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_snowizard_SnowizardResponse_descriptor,
               new java.lang.String[] { "Id", });
+          internal_static_snowizard_SnowizardBatchResponse_descriptor =
+            getDescriptor().getMessageTypes().get(2);
+          internal_static_snowizard_SnowizardBatchResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_snowizard_SnowizardBatchResponse_descriptor,
+              new java.lang.String[] { "Ids", });
           return null;
         }
       };

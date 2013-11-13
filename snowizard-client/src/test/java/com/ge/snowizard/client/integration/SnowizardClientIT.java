@@ -29,4 +29,17 @@ public class SnowizardClientIT {
             client.getId();
         }
     }
+
+    @Test
+    public void testClientGetIds() throws Exception {
+        final int count = 1000;
+
+        final long startTime = System.currentTimeMillis();
+        client.getIds(count);
+
+        final long endTime = System.currentTimeMillis();
+        System.out.println(String.format(
+                "generated %d (batch) ids in %d ms", count,
+                (endTime - startTime)));
+    }
 }

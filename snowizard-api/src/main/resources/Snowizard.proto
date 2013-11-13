@@ -4,6 +4,14 @@ option java_package = "com.ge.snowizard.api.protos";
 option java_outer_classname = "SnowizardProtos";
 option optimize_for = SPEED;
 
+message SnowizardRequest {
+    required int32 batch_size = 1;
+};
+
 message SnowizardResponse {
   required int64 id = 1;
 };
+
+message SnowizardBatchResponse {
+    repeated int64 ids = 1;
+}

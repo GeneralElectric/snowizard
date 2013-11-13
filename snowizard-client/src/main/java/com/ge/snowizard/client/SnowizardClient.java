@@ -3,14 +3,18 @@ package com.ge.snowizard.client;
 import static com.google.common.base.Preconditions.checkNotNull;
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.List;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.params.AllClientPNames;
 import org.apache.http.client.params.CookiePolicy;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.DefaultConnectionReuseStrategy;
 import org.apache.http.impl.client.AutoRetryHttpClient;
 import org.apache.http.impl.client.DecompressingHttpClient;
@@ -25,6 +29,8 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ge.snowizard.api.protos.SnowizardProtos.SnowizardResponse;
+import com.ge.snowizard.api.protos.SnowizardProtos.SnowizardRequest;
+import com.ge.snowizard.api.protos.SnowizardProtos.SnowizardBatchResponse;
 import com.ge.snowizard.client.exceptions.SnowizardClientException;
 
 public class SnowizardClient implements Closeable {
@@ -140,6 +146,35 @@ public class SnowizardClient implements Closeable {
         return snowizard;
     }
 
+    public SnowizardBatchResponse executePostRequest(final String host, byte[] payload)
+            throws IOException {
+        final String uri = String.format("http://%s/", host);
+        final HttpPost request = new HttpPost(uri);
+
+        request.setEntity(new ByteArrayEntity(payload));
+        request.setHeader("Content-Type", "application/x-protobuf");
+        request.addHeader(HttpHeaders.ACCEPT, "application/x-protobuf");
+        request.addHeader(HttpHeaders.USER_AGENT, getUserAgent());
+
+        SnowizardBatchResponse snowizard = null;
+        try {
+            final BasicHttpContext context = new BasicHttpContext();
+            final HttpResponse response = client.execute(request, context);
+            final int code = response.getStatusLine().getStatusCode();
+            if (code == HttpStatus.SC_OK) {
+                final HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    snowizard = SnowizardBatchResponse
+                            .parseFrom(entity.getContent());
+                }
+                EntityUtils.consumeQuietly(entity);
+            }
+        } finally {
+            request.releaseConnection();
+        }
+        return snowizard;
+    }
+
     /**
      * Get a new ID from Snowizard
      *
@@ -160,6 +195,31 @@ public class SnowizardClient implements Closeable {
         }
         throw new SnowizardClientException(
                 "Unable to generate ID from Snowizard");
+    }
+
+    /**
+     * Get a new ID from Snowizard
+     *
+     * @param n number of IDs to generate
+     * @return generated IDs
+     * @throws SnowizardClientException
+     */
+    public List<Long> getIds(int n) throws SnowizardClientException {
+
+        SnowizardRequest req = SnowizardRequest.newBuilder().setBatchSize(n).build();
+
+        for (String host : hosts) {
+            try {
+                final SnowizardBatchResponse response = executePostRequest(host, req.toByteArray());
+                if (response != null) {
+                    return response.getIdsList();
+                }
+            } catch (Exception ignore) {
+                // ignore the exception and try the next host
+            }
+        }
+        throw new SnowizardClientException(
+                "Unable to generate batch of IDs from Snowizard");
     }
 
     /**
