@@ -4,6 +4,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,7 +42,8 @@ public class IdResourceTest extends ResourceTest {
         when(worker.getId(AGENT)).thenReturn(expected);
 
         final ClientResponse response = client().resource("/")
-                .accept(MediaType.TEXT_PLAIN).header("User-Agent", AGENT)
+                .accept(MediaType.TEXT_PLAIN)
+                .header(HttpHeaders.USER_AGENT, AGENT)
                 .get(ClientResponse.class);
         final String entity = response.getEntity(String.class);
         final long actual = Long.valueOf(entity);
@@ -56,7 +58,8 @@ public class IdResourceTest extends ResourceTest {
         when(worker.getId(AGENT)).thenThrow(new InvalidUserAgentError());
 
         final ClientResponse response = client().resource("/")
-                .accept(MediaType.TEXT_PLAIN).header("User-Agent", AGENT)
+                .accept(MediaType.TEXT_PLAIN)
+                .header(HttpHeaders.USER_AGENT, AGENT)
                 .get(ClientResponse.class);
 
         final ObjectMapper mapper = getObjectMapperFactory().build();
@@ -72,7 +75,8 @@ public class IdResourceTest extends ResourceTest {
         when(worker.getId(AGENT)).thenThrow(new InvalidSystemClock());
 
         final ClientResponse response = client().resource("/")
-                .accept(MediaType.TEXT_PLAIN).header("User-Agent", AGENT)
+                .accept(MediaType.TEXT_PLAIN)
+                .header(HttpHeaders.USER_AGENT, AGENT)
                 .get(ClientResponse.class);
 
         assertThat(response.getStatus()).isEqualTo(500);
@@ -85,8 +89,8 @@ public class IdResourceTest extends ResourceTest {
         when(worker.getId(AGENT)).thenReturn(id);
 
         final Id actual = client().resource("/")
-                .accept(MediaType.APPLICATION_JSON).header("User-Agent", AGENT)
-                .get(Id.class);
+                .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.USER_AGENT, AGENT).get(Id.class);
 
         final Id expected = new Id(id);
 
@@ -99,7 +103,8 @@ public class IdResourceTest extends ResourceTest {
         when(worker.getId(AGENT)).thenThrow(new InvalidUserAgentError());
 
         final ClientResponse response = client().resource("/")
-                .accept(MediaType.APPLICATION_JSON).header("User-Agent", AGENT)
+                .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.USER_AGENT, AGENT)
                 .get(ClientResponse.class);
 
         final ObjectMapper mapper = getObjectMapperFactory().build();
@@ -115,7 +120,8 @@ public class IdResourceTest extends ResourceTest {
         when(worker.getId(AGENT)).thenThrow(new InvalidSystemClock());
 
         final ClientResponse response = client().resource("/")
-                .accept(MediaType.APPLICATION_JSON).header("User-Agent", AGENT)
+                .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.USER_AGENT, AGENT)
                 .get(ClientResponse.class);
 
         assertThat(response.getStatus()).isEqualTo(500);
@@ -129,7 +135,7 @@ public class IdResourceTest extends ResourceTest {
 
         final String actual = client().resource("/?callback=testing")
                 .accept(MediaTypeAdditional.APPLICATION_JAVASCRIPT)
-                .header("User-Agent", AGENT).get(String.class);
+                .header(HttpHeaders.USER_AGENT, AGENT).get(String.class);
 
         final Id expectedId = new Id(id);
 
@@ -148,7 +154,8 @@ public class IdResourceTest extends ResourceTest {
 
         final ClientResponse response = client().resource("/?callback=testing")
                 .accept(MediaTypeAdditional.APPLICATION_JAVASCRIPT)
-                .header("User-Agent", AGENT).get(ClientResponse.class);
+                .header(HttpHeaders.USER_AGENT, AGENT)
+                .get(ClientResponse.class);
 
         final ObjectMapper mapper = getObjectMapperFactory().build();
         final String expected = mapper.writeValueAsString(AGENT_ERROR);
@@ -164,7 +171,8 @@ public class IdResourceTest extends ResourceTest {
 
         final ClientResponse response = client().resource("/?callback=testing")
                 .accept(MediaTypeAdditional.APPLICATION_JAVASCRIPT)
-                .header("User-Agent", AGENT).get(ClientResponse.class);
+                .header(HttpHeaders.USER_AGENT, AGENT)
+                .get(ClientResponse.class);
 
         assertThat(response.getStatus()).isEqualTo(500);
         verify(worker).getId(AGENT);
@@ -177,7 +185,8 @@ public class IdResourceTest extends ResourceTest {
 
         final ClientResponse response = client().resource("/")
                 .accept(MediaTypeAdditional.APPLICATION_PROTOBUF)
-                .header("User-Agent", AGENT).get(ClientResponse.class);
+                .header(HttpHeaders.USER_AGENT, AGENT)
+                .get(ClientResponse.class);
 
         final SnowizardResponse actual = response
                 .getEntity(SnowizardResponse.class);
@@ -196,7 +205,8 @@ public class IdResourceTest extends ResourceTest {
 
         final ClientResponse response = client().resource("/")
                 .accept(MediaTypeAdditional.APPLICATION_PROTOBUF)
-                .header("User-Agent", AGENT).get(ClientResponse.class);
+                .header(HttpHeaders.USER_AGENT, AGENT)
+                .get(ClientResponse.class);
 
         final ObjectMapper mapper = getObjectMapperFactory().build();
         final String expected = mapper.writeValueAsString(AGENT_ERROR);
@@ -212,7 +222,8 @@ public class IdResourceTest extends ResourceTest {
 
         final ClientResponse response = client().resource("/")
                 .accept(MediaTypeAdditional.APPLICATION_PROTOBUF)
-                .header("User-Agent", AGENT).get(ClientResponse.class);
+                .header(HttpHeaders.USER_AGENT, AGENT)
+                .get(ClientResponse.class);
 
         assertThat(response.getStatus()).isEqualTo(500);
         verify(worker).getId(AGENT);
