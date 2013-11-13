@@ -6,7 +6,7 @@ import com.ge.snowizard.service.core.JacksonProtobufProvider;
 import com.ge.snowizard.service.core.TimedResourceMethodDispatchAdapter;
 import com.ge.snowizard.service.resources.IdResource;
 import com.ge.snowizard.service.resources.PingResource;
-import com.ge.snowizard.service.resources.SnowizardResource;
+import com.ge.snowizard.service.resources.VersionResource;
 import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.assets.AssetsBundle;
 import com.yammer.dropwizard.config.Bootstrap;
@@ -57,6 +57,6 @@ public class SnowizardService extends Service<SnowizardConfiguration> {
 
         environment.addResource(new IdResource(worker));
         environment.addResource(new PingResource());
-        environment.addResource(new SnowizardResource());
+        environment.addResource(new VersionResource());
     }
 }
