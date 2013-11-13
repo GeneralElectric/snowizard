@@ -8,7 +8,7 @@ import javax.ws.rs.core.Response;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 
 @Path("/version")
-public class SnowizardResource {
+public class VersionResource {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)

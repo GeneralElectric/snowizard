@@ -11,15 +11,19 @@ public final class SnowizardProtos {
   public interface SnowizardResponseOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // required int64 id = 1;
+    // repeated int64 id = 1;
     /**
-     * <code>required int64 id = 1;</code>
+     * <code>repeated int64 id = 1;</code>
      */
-    boolean hasId();
+    java.util.List<java.lang.Long> getIdList();
     /**
-     * <code>required int64 id = 1;</code>
+     * <code>repeated int64 id = 1;</code>
      */
-    long getId();
+    int getIdCount();
+    /**
+     * <code>repeated int64 id = 1;</code>
+     */
+    long getId(int index);
   }
   /**
    * Protobuf type {@code snowizard.SnowizardResponse}
@@ -73,8 +77,24 @@ public final class SnowizardProtos {
               break;
             }
             case 8: {
-              bitField0_ |= 0x00000001;
-              id_ = input.readInt64();
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                id_ = new java.util.ArrayList<java.lang.Long>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              id_.add(input.readInt64());
+              break;
+            }
+            case 10: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001) && input.getBytesUntilLimit() > 0) {
+                id_ = new java.util.ArrayList<java.lang.Long>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                id_.add(input.readInt64());
+              }
+              input.popLimit(limit);
               break;
             }
           }
@@ -85,6 +105,9 @@ public final class SnowizardProtos {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          id_ = java.util.Collections.unmodifiableList(id_);
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -116,35 +139,37 @@ public final class SnowizardProtos {
       return PARSER;
     }
 
-    private int bitField0_;
-    // required int64 id = 1;
+    // repeated int64 id = 1;
     public static final int ID_FIELD_NUMBER = 1;
-    private long id_;
+    private java.util.List<java.lang.Long> id_;
     /**
-     * <code>required int64 id = 1;</code>
+     * <code>repeated int64 id = 1;</code>
      */
-    public boolean hasId() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
+    public java.util.List<java.lang.Long>
+        getIdList() {
+      return id_;
     }
     /**
-     * <code>required int64 id = 1;</code>
+     * <code>repeated int64 id = 1;</code>
      */
-    public long getId() {
-      return id_;
+    public int getIdCount() {
+      return id_.size();
+    }
+    /**
+     * <code>repeated int64 id = 1;</code>
+     */
+    public long getId(int index) {
+      return id_.get(index);
     }
 
     private void initFields() {
-      id_ = 0L;
+      id_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
 
-      if (!hasId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -152,8 +177,8 @@ public final class SnowizardProtos {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt64(1, id_);
+      for (int i = 0; i < id_.size(); i++) {
+        output.writeInt64(1, id_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -164,9 +189,14 @@ public final class SnowizardProtos {
       if (size != -1) return size;
 
       size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(1, id_);
+      {
+        int dataSize = 0;
+        for (int i = 0; i < id_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(id_.get(i));
+        }
+        size += dataSize;
+        size += 1 * getIdList().size();
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -284,7 +314,7 @@ public final class SnowizardProtos {
 
       public Builder clear() {
         super.clear();
-        id_ = 0L;
+        id_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
@@ -313,12 +343,11 @@ public final class SnowizardProtos {
       public com.ge.snowizard.api.protos.SnowizardProtos.SnowizardResponse buildPartial() {
         com.ge.snowizard.api.protos.SnowizardProtos.SnowizardResponse result = new com.ge.snowizard.api.protos.SnowizardProtos.SnowizardResponse(this);
         int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          id_ = java.util.Collections.unmodifiableList(id_);
+          bitField0_ = (bitField0_ & ~0x00000001);
         }
         result.id_ = id_;
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -334,18 +363,21 @@ public final class SnowizardProtos {
 
       public Builder mergeFrom(com.ge.snowizard.api.protos.SnowizardProtos.SnowizardResponse other) {
         if (other == com.ge.snowizard.api.protos.SnowizardProtos.SnowizardResponse.getDefaultInstance()) return this;
-        if (other.hasId()) {
-          setId(other.getId());
+        if (!other.id_.isEmpty()) {
+          if (id_.isEmpty()) {
+            id_ = other.id_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureIdIsMutable();
+            id_.addAll(other.id_);
+          }
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
 
       public final boolean isInitialized() {
-        if (!hasId()) {
-          
-          return false;
-        }
         return true;
       }
 
@@ -368,35 +400,68 @@ public final class SnowizardProtos {
       }
       private int bitField0_;
 
-      // required int64 id = 1;
-      private long id_ ;
-      /**
-       * <code>required int64 id = 1;</code>
-       */
-      public boolean hasId() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
+      // repeated int64 id = 1;
+      private java.util.List<java.lang.Long> id_ = java.util.Collections.emptyList();
+      private void ensureIdIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          id_ = new java.util.ArrayList<java.lang.Long>(id_);
+          bitField0_ |= 0x00000001;
+         }
       }
       /**
-       * <code>required int64 id = 1;</code>
+       * <code>repeated int64 id = 1;</code>
        */
-      public long getId() {
-        return id_;
+      public java.util.List<java.lang.Long>
+          getIdList() {
+        return java.util.Collections.unmodifiableList(id_);
       }
       /**
-       * <code>required int64 id = 1;</code>
+       * <code>repeated int64 id = 1;</code>
        */
-      public Builder setId(long value) {
-        bitField0_ |= 0x00000001;
-        id_ = value;
+      public int getIdCount() {
+        return id_.size();
+      }
+      /**
+       * <code>repeated int64 id = 1;</code>
+       */
+      public long getId(int index) {
+        return id_.get(index);
+      }
+      /**
+       * <code>repeated int64 id = 1;</code>
+       */
+      public Builder setId(
+          int index, long value) {
+        ensureIdIsMutable();
+        id_.set(index, value);
         onChanged();
         return this;
       }
       /**
-       * <code>required int64 id = 1;</code>
+       * <code>repeated int64 id = 1;</code>
+       */
+      public Builder addId(long value) {
+        ensureIdIsMutable();
+        id_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int64 id = 1;</code>
+       */
+      public Builder addAllId(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureIdIsMutable();
+        super.addAll(values, id_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int64 id = 1;</code>
        */
       public Builder clearId() {
+        id_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000001);
-        id_ = 0L;
         onChanged();
         return this;
       }
@@ -427,7 +492,7 @@ public final class SnowizardProtos {
   static {
     java.lang.String[] descriptorData = {
       "\n\017Snowizard.proto\022\tsnowizard\"\037\n\021Snowizar" +
-      "dResponse\022\n\n\002id\030\001 \002(\003B0\n\033com.ge.snowizar" +
+      "dResponse\022\n\n\002id\030\001 \003(\003B0\n\033com.ge.snowizar" +
       "d.api.protosB\017SnowizardProtosH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =

@@ -5,5 +5,5 @@ option java_outer_classname = "SnowizardProtos";
 option optimize_for = SPEED;
 
 message SnowizardResponse {
-  required int64 id = 1;
+  repeated int64 id = 1;
 };
