@@ -183,7 +183,7 @@ public class IdResourceTest extends ResourceTest {
                 .getEntity(SnowizardResponse.class);
 
         final SnowizardResponse expected = SnowizardResponse.newBuilder()
-                .setId(id).build();
+                .addId(id).build();
 
         assertThat(response.getStatus()).isEqualTo(200);
         assertThat(actual).isEqualTo(expected);

@@ -1,6 +1,7 @@
 package com.ge.snowizard.service.resources;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.List;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -19,8 +20,11 @@ import com.ge.snowizard.exceptions.InvalidSystemClock;
 import com.ge.snowizard.exceptions.InvalidUserAgentError;
 import com.ge.snowizard.service.api.SnowizardError;
 import com.ge.snowizard.service.core.MediaTypeAdditional;
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 import com.sun.jersey.api.json.JSONWithPadding;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
+import com.yammer.dropwizard.jersey.params.IntParam;
 import com.yammer.metrics.annotation.Timed;
 
 @Path("/")
@@ -115,20 +119,32 @@ public class IdResource {
     }
 
     /**
-     * Get a new ID as a Google Protocol Buffer response
+     * Get one or more IDs as a Google Protocol Buffer response
      *
      * @param agent
      *            User Agent
+     * @param count
+     *            Number of IDs to return
      * @responseMessage 400 Invalid User-Agent header
      * @responseMessage 500 Invalid system clock
-     * @return generated ID
+     * @return generated IDs
      */
     @GET
     @Timed
     @Produces(MediaTypeAdditional.APPLICATION_PROTOBUF)
     @CacheControl(mustRevalidate = true, noCache = true, noStore = true)
     public SnowizardResponse getIdAsProtobuf(
-            @HeaderParam("User-Agent") final String agent) {
-        return SnowizardResponse.newBuilder().setId(getId(agent)).build();
+            @HeaderParam("User-Agent") final String agent,
+            @QueryParam("count") final Optional<IntParam> count) {
+
+        final List<Long> ids = Lists.newArrayList();
+        if (count.isPresent()) {
+            for (int i = 0; i < count.get().get(); i++) {
+                ids.add(getId(agent));
+            }
+        } else {
+            ids.add(getId(agent));
+        }
+        return SnowizardResponse.newBuilder().addAllId(ids).build();
     }
 }

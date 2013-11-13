@@ -3,6 +3,8 @@ package com.ge.snowizard.client;
 import static com.google.common.base.Preconditions.checkNotNull;
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.List;
+import javax.annotation.Nullable;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
@@ -106,7 +108,7 @@ public class SnowizardClient implements Closeable {
     }
 
     /**
-     * Execute a request to the Snowizard service URL
+     * Execute a request to the Snowizard service URL and return a single ID.
      *
      * @param host
      *            Host:Port pair to connect to
@@ -114,9 +116,27 @@ public class SnowizardClient implements Closeable {
      * @throws IOException
      *             Error in communicating with Snowizard
      */
+    @Nullable
     public SnowizardResponse executeRequest(final String host)
             throws IOException {
-        final String uri = String.format("http://%s/", host);
+        return executeRequest(host, 1);
+    }
+
+    /**
+     * Execute a request to the Snowizard service URL
+     *
+     * @param host
+     *            Host:Port pair to connect to
+     * @param count
+     *            Number of IDs to generate
+     * @return SnowizardResponse
+     * @throws IOException
+     *             Error in communicating with Snowizard
+     */
+    @Nullable
+    public SnowizardResponse executeRequest(final String host, final int count)
+            throws IOException {
+        final String uri = String.format("http://%s/?count=%d", host, count);
         final HttpGet request = new HttpGet(uri);
         request.addHeader(HttpHeaders.ACCEPT, "application/x-protobuf");
         request.addHeader(HttpHeaders.USER_AGENT, getUserAgent());
@@ -152,7 +172,7 @@ public class SnowizardClient implements Closeable {
             try {
                 final SnowizardResponse snowizard = executeRequest(host);
                 if (snowizard != null) {
-                    return snowizard.getId();
+                    return snowizard.getId(0);
                 }
             } catch (Exception ex) {
                 LOGGER.warn("Unable to get ID from host ({})", host);
@@ -160,6 +180,30 @@ public class SnowizardClient implements Closeable {
         }
         throw new SnowizardClientException(
                 "Unable to generate ID from Snowizard");
+    }
+
+    /**
+     * Get multiple IDs from Snowizard
+     *
+     * @param count
+     *            Number of IDs to return
+     * @return generated IDs
+     * @throws SnowizardClientException
+     *             when unable to get an ID from any host
+     */
+    public List<Long> getIds(final int count) throws SnowizardClientException {
+        for (String host : hosts) {
+            try {
+                final SnowizardResponse snowizard = executeRequest(host, count);
+                if (snowizard != null) {
+                    return snowizard.getIdList();
+                }
+            } catch (Exception ex) {
+                LOGGER.warn("Unable to get ID from host ({})", host);
+            }
+        }
+        throw new SnowizardClientException(
+                "Unable to generate batch of IDs from Snowizard");
     }
 
     /**

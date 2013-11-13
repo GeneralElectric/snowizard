@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableList;
 
 public class SnowizardClientIT {
 
+    private static final int COUNT = 1000;
     private SnowizardClient client;
 
     @Before
@@ -24,9 +25,25 @@ public class SnowizardClientIT {
 
     @Test
     public void testClientGetId() throws Exception {
-        final int count = 1000;
-        for (int i = 0; i < count; i++) {
+        final long startTime = System.currentTimeMillis();
+        for (int i = 0; i < COUNT; i++) {
             client.getId();
         }
+
+        final long endTime = System.currentTimeMillis();
+        System.out.println(String.format(
+                "generated %d (serially) ids in %d ms", COUNT,
+                (endTime - startTime)));
+    }
+
+    @Test
+    public void testClientGetIds() throws Exception {
+        final long startTime = System.currentTimeMillis();
+        client.getIds(COUNT);
+
+        final long endTime = System.currentTimeMillis();
+        System.out.println(String.format(
+                "generated %d (parallel) ids in %d ms", COUNT,
+                (endTime - startTime)));
     }
 }
