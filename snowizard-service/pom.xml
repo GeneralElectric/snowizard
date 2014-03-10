@@ -35,7 +35,7 @@
         <dependency>
             <groupId>com.newrelic.agent.java</groupId>
             <artifactId>newrelic-api</artifactId>
-            <version>3.1.1</version>
+            <version>3.5.0</version>
         </dependency>
         <dependency>
             <groupId>com.yammer.dropwizard</groupId>
