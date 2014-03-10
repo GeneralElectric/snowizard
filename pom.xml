@@ -31,7 +31,7 @@
     <developers>
         <developer>
             <name>Justin Plock</name>
-            <email>justin.plock@ge.com</email>
+            <email>justin@plock.net</email>
             <timezone>-5</timezone>
         </developer>
     </developers>
@@ -109,7 +109,7 @@
                         </executions>
                         <configuration>
                             <passphrase>${gpg.passphrase}</passphrase>
-                            <keyname>908336DC</keyname>
+                            <keyname>634EF5AC</keyname>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -145,8 +145,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -262,7 +262,7 @@
                 <version>3.0.1</version>
                 <configuration>
                     <linkXref>true</linkXref>
-                    <targetJdk>1.6</targetJdk>
+                    <targetJdk>1.7</targetJdk>
                     <minimumTokens>30</minimumTokens>
                     <rulesets>
                         <ruleset>${basedir}/../pmd-exclude.xml</ruleset>
