@@ -31,7 +31,7 @@
     <developers>
         <developer>
             <name>Justin Plock</name>
-            <email>justin.plock@ge.com</email>
+            <email>justin@plock.net</email>
             <timezone>-5</timezone>
         </developer>
     </developers>
@@ -109,7 +109,7 @@
                         </executions>
                         <configuration>
                             <passphrase>${gpg.passphrase}</passphrase>
-                            <keyname>908336DC</keyname>
+                            <keyname>634EF5AC</keyname>
                         </configuration>
                     </plugin>
                 </plugins>
