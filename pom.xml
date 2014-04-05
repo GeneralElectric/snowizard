@@ -24,7 +24,7 @@
     <modules>
         <module>snowizard-client</module>
         <module>snowizard-api</module>
-        <module>snowizard-service</module>
+        <module>snowizard-application</module>
         <module>snowizard-core</module>
     </modules>
 

@@ -221,7 +221,7 @@ public class SnowizardClient implements Closeable {
 
     /**
      * Closes the underlying connection pool used by the internal
-     * {@link HttpClient}.
+     * {@link CloseableHttpClient}.
      */
     @Override
     public void close() {
@@ -229,7 +229,7 @@ public class SnowizardClient implements Closeable {
             try {
                 client.close();
             } catch (final IOException e) {
-                LOGGER.error("Unable to close client", e);
+                LOGGER.error("Unable to close HTTP client", e);
             }
         }
     }
