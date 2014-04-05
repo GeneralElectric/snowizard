@@ -37,12 +37,6 @@
             <artifactId>newrelic-api</artifactId>
             <version>3.5.0</version>
         </dependency>
-        <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-testing</artifactId>
-            <version>${dropwizard.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
