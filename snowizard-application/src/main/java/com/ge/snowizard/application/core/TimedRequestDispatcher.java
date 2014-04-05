@@ -11,13 +11,14 @@ public class TimedRequestDispatcher implements RequestDispatcher {
 
     /**
      * Constructor
-     *
+     * 
      * @param dispatcher
      *            {@link RequestDispatcher}
      * @param transactionName
      *            Name of transaction
      */
-    public TimedRequestDispatcher(final RequestDispatcher dispatcher, final String transactionName) {
+    public TimedRequestDispatcher(final RequestDispatcher dispatcher,
+            final String transactionName) {
         this.dispatcher = dispatcher;
         this.transactionName = transactionName;
     }

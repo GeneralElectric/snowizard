@@ -24,7 +24,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.ge.snowizard.exceptions.InvalidSystemClock;
 import com.ge.snowizard.exceptions.InvalidUserAgentError;
 import com.yammer.metrics.Metrics;
@@ -67,7 +66,7 @@ public class IdWorker {
 
     /**
      * Constructor
-     *
+     * 
      * @param workerId
      *            Worker ID
      * @param datacenterId
@@ -79,7 +78,7 @@ public class IdWorker {
 
     /**
      * Constructor
-     *
+     * 
      * @param workerId
      *            Worker ID
      * @param datacenterId
@@ -94,7 +93,7 @@ public class IdWorker {
 
     /**
      * Constructor
-     *
+     * 
      * @param workerId
      *            Worker ID
      * @param datacenterId
@@ -109,7 +108,7 @@ public class IdWorker {
 
     /**
      * Constructor
-     *
+     * 
      * @param workerId
      *            Worker ID
      * @param datacenterId
@@ -154,7 +153,7 @@ public class IdWorker {
 
     /**
      * Get the next ID for a given user-agent
-     *
+     * 
      * @param agent
      *            User Agent
      * @return Generated ID
@@ -178,7 +177,7 @@ public class IdWorker {
 
     /**
      * Return the worker ID
-     *
+     * 
      * @return Worker ID
      */
     public int getWorkerId() {
@@ -187,7 +186,7 @@ public class IdWorker {
 
     /**
      * Return the data center ID
-     *
+     * 
      * @return Datacenter ID
      */
     public int getDatacenterId() {
@@ -196,7 +195,7 @@ public class IdWorker {
 
     /**
      * Return the current system time in milliseconds.
-     *
+     * 
      * @return Current system time in milliseconds
      */
     public long getTimestamp() {
@@ -205,7 +204,7 @@ public class IdWorker {
 
     /**
      * Return the current sequence position
-     *
+     * 
      * @return Current sequence position
      */
     public long getSequence() {
@@ -214,7 +213,7 @@ public class IdWorker {
 
     /**
      * Set the sequence to a given value
-     *
+     * 
      * @param value
      *            New sequence value
      */
@@ -224,7 +223,7 @@ public class IdWorker {
 
     /**
      * Get the next ID
-     *
+     * 
      * @return Next ID
      * @throws InvalidSystemClock
      *             When the clock is moving backward
@@ -270,7 +269,7 @@ public class IdWorker {
 
     /**
      * Return the next time in milliseconds
-     *
+     * 
      * @param lastTimestamp
      *            Last timestamp
      * @return Next timestamp in milliseconds
@@ -285,7 +284,7 @@ public class IdWorker {
 
     /**
      * Generate a new timestamp (currently in milliseconds)
-     *
+     * 
      * @return current timestamp in milliseconds
      */
     protected long timeGen() {
@@ -294,7 +293,7 @@ public class IdWorker {
 
     /**
      * Check whether the user agent is valid
-     *
+     * 
      * @param agent
      *            User-Agent
      * @return True if the user agent is valid
@@ -309,7 +308,7 @@ public class IdWorker {
 
     /**
      * Update the counters for a given user agent
-     *
+     * 
      * @param agent
      *            User-Agent
      */

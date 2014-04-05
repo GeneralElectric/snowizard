@@ -16,7 +16,7 @@ public final class SnowizardError {
 
     /**
      * Constructor
-     *
+     * 
      * @param code
      *            machine-readable error code
      * @param message
@@ -41,7 +41,7 @@ public final class SnowizardError {
     /**
      * Create a new {@link Response} object representing our standardized
      * JSON-formatted error messages.
-     *
+     * 
      * @param status
      *            {@link Response.Status}
      * @param message
