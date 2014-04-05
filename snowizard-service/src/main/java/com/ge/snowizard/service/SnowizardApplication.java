@@ -1,5 +1,10 @@
 package com.ge.snowizard.service;
 
+import java.util.EnumSet;
+import javax.servlet.DispatcherType;
+import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.setup.Environment;
 import com.ge.snowizard.core.IdWorker;
 import com.ge.snowizard.service.core.CorsHeadersFilter;
 import com.ge.snowizard.service.core.JacksonProtobufProvider;
@@ -7,21 +12,22 @@ import com.ge.snowizard.service.core.TimedResourceMethodDispatchAdapter;
 import com.ge.snowizard.service.resources.IdResource;
 import com.ge.snowizard.service.resources.PingResource;
 import com.ge.snowizard.service.resources.VersionResource;
-import com.yammer.dropwizard.Service;
-import com.yammer.dropwizard.assets.AssetsBundle;
-import com.yammer.dropwizard.config.Bootstrap;
-import com.yammer.dropwizard.config.Environment;
 import com.yammer.metrics.Metrics;
 import com.yammer.metrics.core.Gauge;
 
-public class SnowizardService extends Service<SnowizardConfiguration> {
+public class SnowizardApplication extends Application<SnowizardConfiguration> {
     public static void main(final String[] args) throws Exception {
-        new SnowizardService().run(args);
+        new SnowizardApplication().run(args);
     }
 
     @Override
-    public void initialize(final Bootstrap<SnowizardConfiguration> bootstrap) {
-        bootstrap.setName("snowizard");
+    public String getName() {
+        return "snowizard";
+    }
+
+    @Override
+    public void initialize(
+            final io.dropwizard.setup.Bootstrap<SnowizardConfiguration> bootstrap) {
         bootstrap.addBundle(new AssetsBundle("/apidocs", "/apidocs",
                 "index.html"));
     }
@@ -30,16 +36,18 @@ public class SnowizardService extends Service<SnowizardConfiguration> {
     public void run(final SnowizardConfiguration config,
             final Environment environment) throws Exception {
 
-        environment.addProvider(new JacksonProtobufProvider());
-        environment.addProvider(new TimedResourceMethodDispatchAdapter());
+        environment.jersey().register(new JacksonProtobufProvider());
+        environment.jersey().register(new TimedResourceMethodDispatchAdapter());
         if (config.isCORSEnabled()) {
-            environment.addFilter(new CorsHeadersFilter(), "/*");
+            environment.getApplicationContext().addFilter(
+                    CorsHeadersFilter.class, "/*",
+                    EnumSet.of(DispatcherType.REQUEST));
         }
 
         final IdWorker worker = new IdWorker(config.getWorkerId(),
                 config.getDatacenterId(), config.validateUserAgent());
 
-        Metrics.newGauge(SnowizardService.class, "worker_id",
+        Metrics.newGauge(SnowizardApplication.class, "worker_id",
                 new Gauge<Integer>() {
                     @Override
                     public Integer value() {
@@ -47,7 +55,7 @@ public class SnowizardService extends Service<SnowizardConfiguration> {
                     }
                 });
 
-        Metrics.newGauge(SnowizardService.class, "datacenter_id",
+        Metrics.newGauge(SnowizardApplication.class, "datacenter_id",
                 new Gauge<Integer>() {
                     @Override
                     public Integer value() {
@@ -55,8 +63,8 @@ public class SnowizardService extends Service<SnowizardConfiguration> {
                     }
                 });
 
-        environment.addResource(new IdResource(worker));
-        environment.addResource(new PingResource());
-        environment.addResource(new VersionResource());
+        environment.jersey().register(new IdResource(worker));
+        environment.jersey().register(new PingResource());
+        environment.jersey().register(new VersionResource());
     }
 }

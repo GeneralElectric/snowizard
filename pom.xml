@@ -17,7 +17,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <dropwizard.version>0.6.2</dropwizard.version>
+        <dropwizard.version>0.7.0</dropwizard.version>
         <protobuf.version>2.5.0</protobuf.version>
     </properties>
 
@@ -47,13 +47,13 @@
     <scm>
         <connection>scm:git:git://github.com/GeneralElectric/snowizard.git</connection>
         <developerConnection>scm:git:git@github.com:GeneralElectric/snowizard.git</developerConnection>
-        <url>http://github.com/GeneralElectric/snowizard</url>
+        <url>https://github.com/GeneralElectric/snowizard</url>
         <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
         <system>github</system>
-        <url>http://github.com/GeneralElectric/snowizard/issues#issue/</url>
+        <url>https://github.com/GeneralElectric/snowizard/issues#issue/</url>
     </issueManagement>
 
     <repositories>
@@ -126,7 +126,7 @@
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
+            <artifactId>mockito-core</artifactId>
             <version>1.9.5</version>
             <scope>test</scope>
         </dependency>

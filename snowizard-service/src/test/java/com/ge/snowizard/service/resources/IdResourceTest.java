@@ -2,10 +2,11 @@ package com.ge.snowizard.service.resources;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import io.dropwizard.testing.junit.ResourceTestRule;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ge.snowizard.api.Id;
@@ -18,22 +19,25 @@ import com.ge.snowizard.service.core.JacksonProtobufProvider;
 import com.ge.snowizard.service.core.MediaTypeAdditional;
 import com.ge.snowizard.service.resources.IdResource;
 import com.sun.jersey.api.client.ClientResponse;
-import com.yammer.dropwizard.testing.ResourceTest;
 
-public class IdResourceTest extends ResourceTest {
+public class IdResourceTest {
     static {
-        Logger.getLogger("com.sun.jersey").setLevel(Level.OFF);
+        // Logger.getLogger("com.sun.jersey").setLevel(Level.OFF);
     }
 
-    private final String AGENT = "Test Agent";
-    private final SnowizardError AGENT_ERROR = new SnowizardError(400,
+    private static final String AGENT = "test-agent";
+    private static final SnowizardError AGENT_ERROR = new SnowizardError(400,
             "Invalid User-Agent header");
-    private final IdWorker worker = mock(IdWorker.class);
+    private static final IdWorker worker = mock(IdWorker.class);
 
-    @Override
-    protected void setUpResources() throws Exception {
-        addProvider(new JacksonProtobufProvider());
-        addResource(new IdResource(worker));
+    @ClassRule
+    public static final ResourceTestRule resources = ResourceTestRule.builder()
+            .addProvider(new JacksonProtobufProvider())
+            .addResource(new IdResource(worker)).build();
+
+    @Before
+    public void setUp() {
+        reset(worker);
     }
 
     @Test
@@ -41,7 +45,7 @@ public class IdResourceTest extends ResourceTest {
         final long expected = 100L;
         when(worker.getId(AGENT)).thenReturn(expected);
 
-        final ClientResponse response = client().resource("/")
+        final ClientResponse response = resources.client().resource("/")
                 .accept(MediaType.TEXT_PLAIN)
                 .header(HttpHeaders.USER_AGENT, AGENT)
                 .get(ClientResponse.class);
@@ -57,12 +61,12 @@ public class IdResourceTest extends ResourceTest {
     public void testGetIdAsStringInvalidAgent() throws Exception {
         when(worker.getId(AGENT)).thenThrow(new InvalidUserAgentError());
 
-        final ClientResponse response = client().resource("/")
+        final ClientResponse response = resources.client().resource("/")
                 .accept(MediaType.TEXT_PLAIN)
                 .header(HttpHeaders.USER_AGENT, AGENT)
                 .get(ClientResponse.class);
 
-        final ObjectMapper mapper = getObjectMapperFactory().build();
+        final ObjectMapper mapper = resources.getObjectMapper();
         final String expected = mapper.writeValueAsString(AGENT_ERROR);
 
         assertThat(response.getStatus()).isEqualTo(400);
@@ -74,7 +78,7 @@ public class IdResourceTest extends ResourceTest {
     public void testGetIdAsStringInvalidClock() throws Exception {
         when(worker.getId(AGENT)).thenThrow(new InvalidSystemClock());
 
-        final ClientResponse response = client().resource("/")
+        final ClientResponse response = resources.client().resource("/")
                 .accept(MediaType.TEXT_PLAIN)
                 .header(HttpHeaders.USER_AGENT, AGENT)
                 .get(ClientResponse.class);
@@ -88,7 +92,7 @@ public class IdResourceTest extends ResourceTest {
         final long id = 100L;
         when(worker.getId(AGENT)).thenReturn(id);
 
-        final Id actual = client().resource("/")
+        final Id actual = resources.client().resource("/")
                 .accept(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.USER_AGENT, AGENT).get(Id.class);
 
@@ -102,12 +106,12 @@ public class IdResourceTest extends ResourceTest {
     public void testGetIdAsJSONInvalidAgent() throws Exception {
         when(worker.getId(AGENT)).thenThrow(new InvalidUserAgentError());
 
-        final ClientResponse response = client().resource("/")
+        final ClientResponse response = resources.client().resource("/")
                 .accept(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.USER_AGENT, AGENT)
                 .get(ClientResponse.class);
 
-        final ObjectMapper mapper = getObjectMapperFactory().build();
+        final ObjectMapper mapper = resources.getObjectMapper();
         final String expected = mapper.writeValueAsString(AGENT_ERROR);
 
         assertThat(response.getStatus()).isEqualTo(400);
@@ -119,7 +123,7 @@ public class IdResourceTest extends ResourceTest {
     public void testGetIdAsJSONInvalidClock() throws Exception {
         when(worker.getId(AGENT)).thenThrow(new InvalidSystemClock());
 
-        final ClientResponse response = client().resource("/")
+        final ClientResponse response = resources.client().resource("/")
                 .accept(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.USER_AGENT, AGENT)
                 .get(ClientResponse.class);
@@ -133,13 +137,13 @@ public class IdResourceTest extends ResourceTest {
         final long id = 100L;
         when(worker.getId(AGENT)).thenReturn(id);
 
-        final String actual = client().resource("/?callback=testing")
+        final String actual = resources.client().resource("/?callback=testing")
                 .accept(MediaTypeAdditional.APPLICATION_JAVASCRIPT)
                 .header(HttpHeaders.USER_AGENT, AGENT).get(String.class);
 
         final Id expectedId = new Id(id);
 
-        final ObjectMapper mapper = getObjectMapperFactory().build();
+        final ObjectMapper mapper = resources.getObjectMapper();
         final StringBuilder expected = new StringBuilder("testing(");
         expected.append(mapper.writeValueAsString(expectedId));
         expected.append(")");
@@ -152,12 +156,13 @@ public class IdResourceTest extends ResourceTest {
     public void testGetIdAsJSONPInvalidAgent() throws Exception {
         when(worker.getId(AGENT)).thenThrow(new InvalidUserAgentError());
 
-        final ClientResponse response = client().resource("/?callback=testing")
+        final ClientResponse response = resources.client()
+                .resource("/?callback=testing")
                 .accept(MediaTypeAdditional.APPLICATION_JAVASCRIPT)
                 .header(HttpHeaders.USER_AGENT, AGENT)
                 .get(ClientResponse.class);
 
-        final ObjectMapper mapper = getObjectMapperFactory().build();
+        final ObjectMapper mapper = resources.getObjectMapper();
         final String expected = mapper.writeValueAsString(AGENT_ERROR);
 
         assertThat(response.getStatus()).isEqualTo(400);
@@ -169,7 +174,8 @@ public class IdResourceTest extends ResourceTest {
     public void testGetIdAsJSONPInvalidClock() throws Exception {
         when(worker.getId(AGENT)).thenThrow(new InvalidSystemClock());
 
-        final ClientResponse response = client().resource("/?callback=testing")
+        final ClientResponse response = resources.client()
+                .resource("/?callback=testing")
                 .accept(MediaTypeAdditional.APPLICATION_JAVASCRIPT)
                 .header(HttpHeaders.USER_AGENT, AGENT)
                 .get(ClientResponse.class);
@@ -183,7 +189,7 @@ public class IdResourceTest extends ResourceTest {
         final long id = 100L;
         when(worker.getId(AGENT)).thenReturn(id);
 
-        final ClientResponse response = client().resource("/")
+        final ClientResponse response = resources.client().resource("/")
                 .accept(MediaTypeAdditional.APPLICATION_PROTOBUF)
                 .header(HttpHeaders.USER_AGENT, AGENT)
                 .get(ClientResponse.class);
@@ -203,12 +209,12 @@ public class IdResourceTest extends ResourceTest {
     public void testGetIdAsProtobufInvalidAgent() throws Exception {
         when(worker.getId(AGENT)).thenThrow(new InvalidUserAgentError());
 
-        final ClientResponse response = client().resource("/")
+        final ClientResponse response = resources.client().resource("/")
                 .accept(MediaTypeAdditional.APPLICATION_PROTOBUF)
                 .header(HttpHeaders.USER_AGENT, AGENT)
                 .get(ClientResponse.class);
 
-        final ObjectMapper mapper = getObjectMapperFactory().build();
+        final ObjectMapper mapper = resources.getObjectMapper();
         final String expected = mapper.writeValueAsString(AGENT_ERROR);
 
         assertThat(response.getStatus()).isEqualTo(400);
@@ -220,7 +226,7 @@ public class IdResourceTest extends ResourceTest {
     public void testGetIdAsProtobufInvalidClock() throws Exception {
         when(worker.getId(AGENT)).thenThrow(new InvalidSystemClock());
 
-        final ClientResponse response = client().resource("/")
+        final ClientResponse response = resources.client().resource("/")
                 .accept(MediaTypeAdditional.APPLICATION_PROTOBUF)
                 .header(HttpHeaders.USER_AGENT, AGENT)
                 .get(ClientResponse.class);

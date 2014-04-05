@@ -1,8 +1,8 @@
 package com.ge.snowizard.service;
 
+import io.dropwizard.Configuration;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import com.yammer.dropwizard.config.Configuration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SnowizardConfiguration extends Configuration {

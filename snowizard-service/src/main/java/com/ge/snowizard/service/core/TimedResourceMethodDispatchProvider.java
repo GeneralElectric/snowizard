@@ -1,9 +1,9 @@
 package com.ge.snowizard.service.core;
 
+import com.codahale.metrics.annotation.Timed;
 import com.sun.jersey.api.model.AbstractResourceMethod;
 import com.sun.jersey.spi.container.ResourceMethodDispatchProvider;
 import com.sun.jersey.spi.dispatch.RequestDispatcher;
-import com.yammer.metrics.annotation.Timed;
 
 public class TimedResourceMethodDispatchProvider implements
         ResourceMethodDispatchProvider {
@@ -12,7 +12,7 @@ public class TimedResourceMethodDispatchProvider implements
 
     /**
      * Constructor
-     *
+     * 
      * @param provider
      *            {@link ResourceMethodDispatchProvider}
      */

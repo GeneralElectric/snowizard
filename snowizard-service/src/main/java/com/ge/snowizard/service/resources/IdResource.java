@@ -1,6 +1,8 @@
 package com.ge.snowizard.service.resources;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import io.dropwizard.jersey.caching.CacheControl;
+import io.dropwizard.jersey.params.IntParam;
 import java.util.List;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -13,6 +15,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.ge.snowizard.api.Id;
 import com.ge.snowizard.api.protos.SnowizardProtos.SnowizardResponse;
 import com.ge.snowizard.core.IdWorker;
@@ -22,10 +26,6 @@ import com.ge.snowizard.service.api.SnowizardError;
 import com.ge.snowizard.service.core.MediaTypeAdditional;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-import com.sun.jersey.api.json.JSONWithPadding;
-import com.yammer.dropwizard.jersey.caching.CacheControl;
-import com.yammer.dropwizard.jersey.params.IntParam;
-import com.yammer.metrics.annotation.Timed;
 
 @Path("/")
 public class IdResource {
@@ -36,7 +36,7 @@ public class IdResource {
 
     /**
      * Constructor
-     *
+     * 
      * @param worker
      */
     public IdResource(final IdWorker worker) {
@@ -45,7 +45,7 @@ public class IdResource {
 
     /**
      * Get a new ID and handle any thrown exceptions
-     *
+     * 
      * @param agent
      *            User Agent
      * @return generated ID
@@ -54,11 +54,11 @@ public class IdResource {
     public long getId(final String agent) {
         try {
             return worker.getId(agent);
-        } catch (InvalidUserAgentError e) {
+        } catch (final InvalidUserAgentError e) {
             LOGGER.error("Invalid user agent ({})", agent);
             throw new WebApplicationException(SnowizardError.newResponse(
                     Status.BAD_REQUEST, "Invalid User-Agent header"));
-        } catch (InvalidSystemClock e) {
+        } catch (final InvalidSystemClock e) {
             LOGGER.error("Invalid system clock", e);
             throw new WebApplicationException(SnowizardError.newResponse(
                     Status.INTERNAL_SERVER_ERROR, e.getMessage()));
@@ -67,7 +67,7 @@ public class IdResource {
 
     /**
      * Get a new ID as plain text
-     *
+     * 
      * @param agent
      *            User Agent
      * @responseMessage 400 Invalid User-Agent header
@@ -84,7 +84,7 @@ public class IdResource {
 
     /**
      * Get a new ID as JSON
-     *
+     * 
      * @param agent
      *            User Agent
      * @responseMessage 400 Invalid User-Agent header
@@ -101,7 +101,7 @@ public class IdResource {
 
     /**
      * Get a new ID as JSONP
-     *
+     * 
      * @param agent
      *            User Agent
      * @responseMessage 400 Invalid User-Agent header
@@ -112,15 +112,15 @@ public class IdResource {
     @Timed
     @Produces(MediaTypeAdditional.APPLICATION_JAVASCRIPT)
     @CacheControl(mustRevalidate = true, noCache = true, noStore = true)
-    public JSONWithPadding getIdAsJSONP(
+    public JSONPObject getIdAsJSONP(
             @HeaderParam("User-Agent") final String agent,
             @QueryParam("callback") @DefaultValue("callback") final String callback) {
-        return new JSONWithPadding(getIdAsJSON(agent), callback);
+        return new JSONPObject(callback, getIdAsJSON(agent));
     }
 
     /**
      * Get one or more IDs as a Google Protocol Buffer response
-     *
+     * 
      * @param agent
      *            User Agent
      * @param count

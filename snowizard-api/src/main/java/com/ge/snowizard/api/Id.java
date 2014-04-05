@@ -1,10 +1,10 @@
 package com.ge.snowizard.api;
 
+import io.dropwizard.jackson.JsonSnakeCase;
 import javax.annotation.concurrent.Immutable;
 import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
-import com.yammer.dropwizard.json.JsonSnakeCase;
 
 @Immutable
 @JsonSnakeCase
@@ -17,7 +17,7 @@ public final class Id {
 
     /**
      * Constructor
-     *
+     * 
      * @param id
      *            Generated ID
      * @param idStr
@@ -31,7 +31,7 @@ public final class Id {
 
     /**
      * Constructor
-     *
+     * 
      * @param id
      *            Generated ID
      */
@@ -42,7 +42,7 @@ public final class Id {
 
     /**
      * Return the ID as a long value
-     *
+     * 
      * @return the ID as a long value
      */
     @JsonProperty
@@ -52,7 +52,7 @@ public final class Id {
 
     /**
      * Return the ID as a string value
-     *
+     * 
      * @return the ID as a string value
      */
     @JsonProperty("id_str")
