@@ -1,13 +1,11 @@
-FROM ubuntu
+FROM debian:jessie
 MAINTAINER Justin Plock <justin@plock.net>
 
-RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list
-RUN apt-get update
-RUN apt-get upgrade -y
+ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get install -y -q wget openjdk-7-jre-headless
+RUN apt-get update && apt-get install -y -q wget openjdk-7-jre-headless
 RUN mkdir -p /opt/snowizard /var/log/snowizard
-RUN wget -q -O /opt/snowizard/snowizard.jar http://repo.maven.apache.org/maven2/com/ge/snowizard/snowizard-service/1.3.0/snowizard-service-1.3.0.jar
+RUN wget -q -O /opt/snowizard/snowizard.jar http://repo.maven.apache.org/maven2/com/ge/snowizard/snowizard-application/1.4.0/snowizard-application-1.4.0.jar
 
 ADD ./snowizard-service/snowizard.upstart /etc/init/snowizard.conf
 ADD ./snowizard-service/snowizard.yml /etc/snowizard.yml
