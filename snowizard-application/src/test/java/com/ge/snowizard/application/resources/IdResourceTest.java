@@ -21,10 +21,6 @@ import com.ge.snowizard.exceptions.InvalidUserAgentError;
 import com.sun.jersey.api.client.ClientResponse;
 
 public class IdResourceTest {
-    static {
-        // Logger.getLogger("com.sun.jersey").setLevel(Level.OFF);
-    }
-
     private static final String AGENT = "test-agent";
     private static final SnowizardError AGENT_ERROR = new SnowizardError(400,
             "Invalid User-Agent header");
