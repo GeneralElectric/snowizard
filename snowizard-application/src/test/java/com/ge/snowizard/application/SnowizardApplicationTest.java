@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
+import com.codahale.metrics.MetricRegistry;
 import com.ge.snowizard.application.SnowizardApplication;
 import com.ge.snowizard.application.SnowizardConfiguration;
 import com.ge.snowizard.application.resources.IdResource;
@@ -22,6 +23,7 @@ public class SnowizardApplicationTest {
     private final String AGENT = "snowizard-client";
     private final Environment environment = mock(Environment.class);
     private final JerseyEnvironment jersey = mock(JerseyEnvironment.class);
+    private final MetricRegistry metrics = mock(MetricRegistry.class);
     private final SnowizardApplication application = new SnowizardApplication();
     private final SnowizardConfiguration config = new SnowizardConfiguration();
 
@@ -32,6 +34,7 @@ public class SnowizardApplicationTest {
     @Before
     public void setUp() {
         when(environment.jersey()).thenReturn(jersey);
+        when(environment.metrics()).thenReturn(metrics);
     }
 
     @Test

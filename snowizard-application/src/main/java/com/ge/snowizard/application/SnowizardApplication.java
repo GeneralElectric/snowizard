@@ -5,6 +5,8 @@ import javax.servlet.DispatcherType;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Environment;
+import com.codahale.metrics.Gauge;
+import com.codahale.metrics.MetricRegistry;
 import com.ge.snowizard.application.core.CorsHeadersFilter;
 import com.ge.snowizard.application.core.JacksonProtobufProvider;
 import com.ge.snowizard.application.core.TimedResourceMethodDispatchAdapter;
@@ -12,8 +14,6 @@ import com.ge.snowizard.application.resources.IdResource;
 import com.ge.snowizard.application.resources.PingResource;
 import com.ge.snowizard.application.resources.VersionResource;
 import com.ge.snowizard.core.IdWorker;
-import com.yammer.metrics.Metrics;
-import com.yammer.metrics.core.Gauge;
 
 public class SnowizardApplication extends Application<SnowizardConfiguration> {
     public static void main(final String[] args) throws Exception {
@@ -45,23 +45,27 @@ public class SnowizardApplication extends Application<SnowizardConfiguration> {
         }
 
         final IdWorker worker = new IdWorker(config.getWorkerId(),
-                config.getDatacenterId(), config.validateUserAgent());
+                config.getDatacenterId(), 0L, config.validateUserAgent(),
+                environment.metrics());
 
-        Metrics.newGauge(SnowizardApplication.class, "worker_id",
+        environment.metrics().register(
+                MetricRegistry.name(SnowizardApplication.class, "worker_id"),
                 new Gauge<Integer>() {
                     @Override
-                    public Integer value() {
+                    public Integer getValue() {
                         return config.getWorkerId();
                     }
                 });
 
-        Metrics.newGauge(SnowizardApplication.class, "datacenter_id",
-                new Gauge<Integer>() {
-                    @Override
-                    public Integer value() {
-                        return config.getDatacenterId();
-                    }
-                });
+        environment.metrics()
+                .register(
+                        MetricRegistry.name(SnowizardApplication.class,
+                                "datacenter_id"), new Gauge<Integer>() {
+                            @Override
+                            public Integer getValue() {
+                                return config.getDatacenterId();
+                            }
+                        });
 
         environment.jersey().register(new IdResource(worker));
         environment.jersey().register(new PingResource());

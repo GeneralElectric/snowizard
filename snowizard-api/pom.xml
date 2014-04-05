@@ -14,19 +14,18 @@
     <dependencies>
         <dependency>
             <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-core</artifactId>
+            <artifactId>dropwizard-jackson</artifactId>
+            <version>${dropwizard.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-validation</artifactId>
             <version>${dropwizard.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
             <version>${protobuf.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-testing</artifactId>
-            <version>${dropwizard.version}</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
