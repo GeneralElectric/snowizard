@@ -1,0 +1,51 @@
+# Data Center ID
+datacenter_id: 1
+
+# Unique Worker ID
+worker_id: 1
+
+# Validate the User-Agent header?
+validate_user_agent: true
+
+# Enable CORS support?
+enable_cors: false
+
+# HTTP-specific options.
+server:
+
+  applicationConnectors:
+    - type: http
+      port: 8080
+  
+  adminConnectors:
+    - type: http
+      port: 8180
+
+  requestLog:
+    appenders:
+      - type: console
+        timeZone: UTC
+        target: stdout
+#     - type: file
+#       currentLogFilename: /var/log/snowizard/requests.log
+#       threshold: ALL
+#       archive: true
+#       archivedLogFilenamePattern: /var/log/snowizard/requests-%d.log
+#       archivedFileCount: 5
+#       timeZone: UTC
+
+logging:
+  level: INFO
+  loggers:
+    com.ge.snowizard: DEBUG
+  appenders:
+    - type: console
+      timeZone: UTC
+      target: stdout
+#    - type: file
+#      currentLogFilename: /var/log/snowizard/app.log
+#      threshold: ALL
+#      archive: true
+#      archivedLogFilenamePattern: /var/log/snowizard/app-%d.log
+#      archivedFileCount: 5
+#      timeZone: UTC

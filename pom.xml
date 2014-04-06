@@ -17,14 +17,14 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <dropwizard.version>0.6.2</dropwizard.version>
+        <dropwizard.version>0.7.0</dropwizard.version>
         <protobuf.version>2.5.0</protobuf.version>
     </properties>
 
     <modules>
         <module>snowizard-client</module>
         <module>snowizard-api</module>
-        <module>snowizard-service</module>
+        <module>snowizard-application</module>
         <module>snowizard-core</module>
     </modules>
 
@@ -47,13 +47,13 @@
     <scm>
         <connection>scm:git:git://github.com/GeneralElectric/snowizard.git</connection>
         <developerConnection>scm:git:git@github.com:GeneralElectric/snowizard.git</developerConnection>
-        <url>http://github.com/GeneralElectric/snowizard</url>
+        <url>https://github.com/GeneralElectric/snowizard</url>
         <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
         <system>github</system>
-        <url>http://github.com/GeneralElectric/snowizard/issues#issue/</url>
+        <url>https://github.com/GeneralElectric/snowizard/issues#issue/</url>
     </issueManagement>
 
     <repositories>
@@ -119,21 +119,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>1.9.5</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.easytesting</groupId>
-            <artifactId>fest-assert-core</artifactId>
-            <version>2.0M10</version>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-testing</artifactId>
+            <version>${dropwizard.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -152,7 +140,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.16</version>
+                <version>2.17</version>
                 <configuration>
                     <excludes>
                         <exclude>**/*IT.java</exclude>
@@ -162,7 +150,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.16</version>
+                <version>2.17</version>
                 <configuration>
                     <excludes>
                         <exclude>**/*Test.java</exclude>
@@ -227,7 +215,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.4.1</version>
+                <version>2.5</version>
                 <configuration>
                     <arguments>-Dgpg.passphrase=${gpg.passphrase}</arguments>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
@@ -239,7 +227,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>2.10</version>
+                <version>2.12</version>
                 <configuration>
                     <excludes>com/ge/snowizard/api/protos/*</excludes>
                 </configuration>
@@ -247,7 +235,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
-                <version>2.5.2</version>
+                <version>2.5.3</version>
                 <configuration>
                     <effort>Max</effort>
                     <threshold>Default</threshold>
@@ -259,7 +247,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.1</version>
                 <configuration>
                     <linkXref>true</linkXref>
                     <targetJdk>1.7</targetJdk>

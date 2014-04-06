@@ -1,9 +1,0 @@
-# Data Center ID
-datacenter_id: 1
-
-# Unique Worker ID
-worker_id: 1
-
-http:
-  port: 0
-  adminPort: 0

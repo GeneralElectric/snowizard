@@ -24,11 +24,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import com.codahale.metrics.Counter;
+import com.codahale.metrics.MetricRegistry;
 import com.ge.snowizard.exceptions.InvalidSystemClock;
 import com.ge.snowizard.exceptions.InvalidUserAgentError;
-import com.yammer.metrics.Metrics;
-import com.yammer.metrics.core.Counter;
 
 public class IdWorker {
 
@@ -53,11 +52,10 @@ public class IdWorker {
             + WORKER_ID_BITS + DATACENTER_ID_BITS;
     private static final long SEQUENCE_MASK = -1L ^ (-1L << SEQUENCE_BITS);
 
-    private final Counter idsCounter = Metrics.newCounter(IdWorker.class,
-            "ids_generated");
+    private final MetricRegistry registry;
+    private final Counter idsCounter;
+    private final Counter exceptionsCounter;
     private final Map<String, Counter> agentCounters = new ConcurrentHashMap<String, Counter>();
-    private final Counter exceptionsCounter = Metrics.newCounter(
-            IdWorker.class, "exceptions");
     private final int workerId;
     private final int datacenterId;
     private final boolean validateUserAgent;
@@ -67,19 +65,19 @@ public class IdWorker {
 
     /**
      * Constructor
-     *
+     * 
      * @param workerId
      *            Worker ID
      * @param datacenterId
      *            Datacenter ID
      */
     public IdWorker(final int workerId, final int datacenterId) {
-        this(workerId, datacenterId, 0L, true);
+        this(workerId, datacenterId, 0L, true, new MetricRegistry());
     }
 
     /**
      * Constructor
-     *
+     * 
      * @param workerId
      *            Worker ID
      * @param datacenterId
@@ -89,12 +87,12 @@ public class IdWorker {
      */
     public IdWorker(final int workerId, final int datacenterId,
             final long startSequence) {
-        this(workerId, datacenterId, startSequence, true);
+        this(workerId, datacenterId, startSequence, true, new MetricRegistry());
     }
 
     /**
      * Constructor
-     *
+     * 
      * @param workerId
      *            Worker ID
      * @param datacenterId
@@ -104,12 +102,13 @@ public class IdWorker {
      */
     public IdWorker(final int workerId, final int datacenterId,
             final boolean validateUserAgent) {
-        this(workerId, datacenterId, 0L, validateUserAgent);
+        this(workerId, datacenterId, 0L, validateUserAgent,
+                new MetricRegistry());
     }
 
     /**
      * Constructor
-     *
+     * 
      * @param workerId
      *            Worker ID
      * @param datacenterId
@@ -121,6 +120,27 @@ public class IdWorker {
      */
     public IdWorker(final int workerId, final int datacenterId,
             final long startSequence, final boolean validateUserAgent) {
+        this(workerId, datacenterId, startSequence, validateUserAgent,
+                new MetricRegistry());
+    }
+
+    /**
+     * Constructor
+     * 
+     * @param workerId
+     *            Worker ID
+     * @param datacenterId
+     *            Datacenter ID
+     * @param startSequence
+     *            Starting sequence number
+     * @param validateUserAgent
+     *            Whether to validate the User-Agent headers or not
+     * @param registry
+     *            Metric Registry
+     */
+    public IdWorker(final int workerId, final int datacenterId,
+            final long startSequence, final boolean validateUserAgent,
+            final MetricRegistry registry) {
 
         checkNotNull(workerId);
         checkArgument(workerId >= 0, String.format(
@@ -143,6 +163,7 @@ public class IdWorker {
         this.workerId = workerId;
         this.datacenterId = datacenterId;
         this.validateUserAgent = validateUserAgent;
+        this.registry = registry;
 
         LOGGER.info(
                 "worker starting. timestamp left shift {}, datacenter id bits {}, worker id bits {}, sequence bits {}, workerid {}",
@@ -150,11 +171,16 @@ public class IdWorker {
                 SEQUENCE_BITS, workerId);
 
         sequence = new AtomicLong(startSequence);
+
+        exceptionsCounter = registry.counter(MetricRegistry.name(
+                IdWorker.class, "exceptions"));
+        idsCounter = registry.counter(MetricRegistry.name(IdWorker.class,
+                "ids_generated"));
     }
 
     /**
      * Get the next ID for a given user-agent
-     *
+     * 
      * @param agent
      *            User Agent
      * @return Generated ID
@@ -178,7 +204,7 @@ public class IdWorker {
 
     /**
      * Return the worker ID
-     *
+     * 
      * @return Worker ID
      */
     public int getWorkerId() {
@@ -187,7 +213,7 @@ public class IdWorker {
 
     /**
      * Return the data center ID
-     *
+     * 
      * @return Datacenter ID
      */
     public int getDatacenterId() {
@@ -196,7 +222,7 @@ public class IdWorker {
 
     /**
      * Return the current system time in milliseconds.
-     *
+     * 
      * @return Current system time in milliseconds
      */
     public long getTimestamp() {
@@ -205,7 +231,7 @@ public class IdWorker {
 
     /**
      * Return the current sequence position
-     *
+     * 
      * @return Current sequence position
      */
     public long getSequence() {
@@ -214,7 +240,7 @@ public class IdWorker {
 
     /**
      * Set the sequence to a given value
-     *
+     * 
      * @param value
      *            New sequence value
      */
@@ -224,7 +250,7 @@ public class IdWorker {
 
     /**
      * Get the next ID
-     *
+     * 
      * @return Next ID
      * @throws InvalidSystemClock
      *             When the clock is moving backward
@@ -270,7 +296,7 @@ public class IdWorker {
 
     /**
      * Return the next time in milliseconds
-     *
+     * 
      * @param lastTimestamp
      *            Last timestamp
      * @return Next timestamp in milliseconds
@@ -285,7 +311,7 @@ public class IdWorker {
 
     /**
      * Generate a new timestamp (currently in milliseconds)
-     *
+     * 
      * @return current timestamp in milliseconds
      */
     protected long timeGen() {
@@ -294,7 +320,7 @@ public class IdWorker {
 
     /**
      * Check whether the user agent is valid
-     *
+     * 
      * @param agent
      *            User-Agent
      * @return True if the user agent is valid
@@ -309,15 +335,15 @@ public class IdWorker {
 
     /**
      * Update the counters for a given user agent
-     *
+     * 
      * @param agent
      *            User-Agent
      */
     protected void genCounter(final String agent) {
         idsCounter.inc();
         if (!agentCounters.containsKey(agent)) {
-            agentCounters.put(agent, Metrics.newCounter(IdWorker.class,
-                    "ids_generated_" + agent));
+            agentCounters.put(agent, registry.counter(MetricRegistry.name(
+                    IdWorker.class, "ids_generated_" + agent)));
         }
         agentCounters.get(agent).inc();
     }

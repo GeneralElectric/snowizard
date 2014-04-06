@@ -1,21 +1,25 @@
 package com.ge.snowizard.api;
 
-import static com.yammer.dropwizard.testing.JsonHelpers.*;
+import static io.dropwizard.testing.FixtureHelpers.*;
 import static org.fest.assertions.api.Assertions.assertThat;
+import io.dropwizard.jackson.Jackson;
 import org.junit.Test;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class IdTest {
 
+    private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
     private final Id id = new Id(1234L);
 
     @Test
     public void serializesToJSON() throws Exception {
-        assertThat(asJson(id)).isEqualTo(jsonFixture("fixtures/id.json"));
+        assertThat(MAPPER.writeValueAsString(id)).isEqualTo(
+                fixture("fixtures/id.json"));
     }
 
     @Test
     public void deserializesFromJSON() throws Exception {
-        assertThat(fromJson(jsonFixture("fixtures/id.json"), Id.class))
+        assertThat(MAPPER.readValue(fixture("fixtures/id.json"), Id.class))
                 .isEqualTo(id);
     }
 

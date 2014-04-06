@@ -10,18 +10,17 @@ import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.CookieSpecs;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.params.AllClientPNames;
-import org.apache.http.client.params.CookiePolicy;
+import org.apache.http.config.SocketConfig;
 import org.apache.http.impl.DefaultConnectionReuseStrategy;
-import org.apache.http.impl.client.AutoRetryHttpClient;
-import org.apache.http.impl.client.DecompressingHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultBackoffStrategy;
 import org.apache.http.impl.client.DefaultConnectionKeepAliveStrategy;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
-import org.apache.http.impl.client.DefaultServiceUnavailableRetryStrategy;
-import org.apache.http.impl.conn.PoolingClientConnectionManager;
-import org.apache.http.params.BasicHttpParams;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
@@ -37,13 +36,12 @@ public class SnowizardClient implements Closeable {
     private static final int SOCKET_TIMEOUT_MS = 500;
     private static final int CONNECTION_TIMEOUT_MS = 500;
     private static final int MAX_RETRIES = 3;
-    private static final int RETRY_INTERVAL = 10;
     private final Iterable<String> hosts;
-    private final HttpClient client;
+    private final CloseableHttpClient client;
 
     /**
      * Constructor
-     *
+     * 
      * @param hosts
      *            List of host:port pairs to connect to
      */
@@ -53,13 +51,14 @@ public class SnowizardClient implements Closeable {
 
     /**
      * Constructor
-     *
+     * 
      * @param client
      *            {@link HttpClient} to use
      * @param hosts
      *            List of host:port pairs to connect to
      */
-    public SnowizardClient(final HttpClient client, final Iterable<String> hosts) {
+    public SnowizardClient(final CloseableHttpClient client,
+            final Iterable<String> hosts) {
         checkNotNull(client);
         checkNotNull(hosts);
 
@@ -68,48 +67,53 @@ public class SnowizardClient implements Closeable {
     }
 
     /**
-     * Get a new HttpClient
-     *
-     * @return AutoRetryHttpClient
+     * Get a new CloseableHttpClient
+     * 
+     * @return CloseableHttpClient
      */
-    public static HttpClient newHttpClient() {
-        final PoolingClientConnectionManager manager = new PoolingClientConnectionManager();
+    public static CloseableHttpClient newHttpClient() {
+        final SocketConfig socketConfig = SocketConfig.custom()
+                .setSoKeepAlive(Boolean.TRUE).setTcpNoDelay(Boolean.TRUE)
+                .setSoTimeout(SOCKET_TIMEOUT_MS).build();
+
+        final PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager();
         manager.setDefaultMaxPerRoute(MAX_HOSTS);
         manager.setMaxTotal(MAX_HOSTS);
+        manager.setDefaultSocketConfig(socketConfig);
 
-        final BasicHttpParams params = new BasicHttpParams();
-        params.setParameter(AllClientPNames.COOKIE_POLICY,
-                CookiePolicy.IGNORE_COOKIES);
-        params.setParameter(AllClientPNames.SO_TIMEOUT, SOCKET_TIMEOUT_MS);
-        params.setParameter(AllClientPNames.CONNECTION_TIMEOUT,
-                CONNECTION_TIMEOUT_MS);
+        final RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(CONNECTION_TIMEOUT_MS)
+                .setCookieSpec(CookieSpecs.IGNORE_COOKIES)
+                .setStaleConnectionCheckEnabled(Boolean.FALSE)
+                .setSocketTimeout(SOCKET_TIMEOUT_MS).build();
 
-        params.setParameter(AllClientPNames.TCP_NODELAY, Boolean.TRUE);
-        params.setParameter(AllClientPNames.STALE_CONNECTION_CHECK,
-                Boolean.FALSE);
-
-        final DefaultHttpClient client = new DefaultHttpClient(manager, params);
-        client.setReuseStrategy(new DefaultConnectionReuseStrategy());
-        client.setKeepAliveStrategy(new DefaultConnectionKeepAliveStrategy());
-        client.setHttpRequestRetryHandler(new DefaultHttpRequestRetryHandler(
-                MAX_RETRIES, false));
-        return new AutoRetryHttpClient(new DecompressingHttpClient(client),
-                new DefaultServiceUnavailableRetryStrategy(MAX_RETRIES,
-                        RETRY_INTERVAL));
+        final CloseableHttpClient client = HttpClients
+                .custom()
+                .disableRedirectHandling()
+                .setConnectionManager(manager)
+                .setDefaultRequestConfig(requestConfig)
+                .setConnectionReuseStrategy(
+                        new DefaultConnectionReuseStrategy())
+                .setConnectionBackoffStrategy(new DefaultBackoffStrategy())
+                .setRetryHandler(
+                        new DefaultHttpRequestRetryHandler(MAX_RETRIES, false))
+                .setKeepAliveStrategy(new DefaultConnectionKeepAliveStrategy())
+                .build();
+        return client;
     }
 
     /**
-     * Return the internal {@link HttpClient}
-     *
-     * @return HttpClient
+     * Return the internal {@link CloseableHttpClient}
+     * 
+     * @return CloseableHttpClient
      */
-    public HttpClient getHttpClient() {
+    public CloseableHttpClient getHttpClient() {
         return client;
     }
 
     /**
      * Execute a request to the Snowizard service URL and return a single ID.
-     *
+     * 
      * @param host
      *            Host:Port pair to connect to
      * @return SnowizardResponse
@@ -124,7 +128,7 @@ public class SnowizardClient implements Closeable {
 
     /**
      * Execute a request to the Snowizard service URL
-     *
+     * 
      * @param host
      *            Host:Port pair to connect to
      * @param count
@@ -162,19 +166,19 @@ public class SnowizardClient implements Closeable {
 
     /**
      * Get a new ID from Snowizard
-     *
+     * 
      * @return generated ID
      * @throws SnowizardClientException
      *             when unable to get an ID from any host
      */
     public long getId() throws SnowizardClientException {
-        for (String host : hosts) {
+        for (final String host : hosts) {
             try {
                 final SnowizardResponse snowizard = executeRequest(host);
                 if (snowizard != null) {
                     return snowizard.getId(0);
                 }
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 LOGGER.warn("Unable to get ID from host ({})", host);
             }
         }
@@ -184,7 +188,7 @@ public class SnowizardClient implements Closeable {
 
     /**
      * Get multiple IDs from Snowizard
-     *
+     * 
      * @param count
      *            Number of IDs to return
      * @return generated IDs
@@ -192,13 +196,13 @@ public class SnowizardClient implements Closeable {
      *             when unable to get an ID from any host
      */
     public List<Long> getIds(final int count) throws SnowizardClientException {
-        for (String host : hosts) {
+        for (final String host : hosts) {
             try {
                 final SnowizardResponse snowizard = executeRequest(host, count);
                 if (snowizard != null) {
                     return snowizard.getIdList();
                 }
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 LOGGER.warn("Unable to get ID from host ({})", host);
             }
         }
@@ -208,7 +212,7 @@ public class SnowizardClient implements Closeable {
 
     /**
      * Get the user-agent for the client
-     *
+     * 
      * @return user-agent for the client
      */
     public static String getUserAgent() {
@@ -217,12 +221,16 @@ public class SnowizardClient implements Closeable {
 
     /**
      * Closes the underlying connection pool used by the internal
-     * {@link HttpClient}.
+     * {@link CloseableHttpClient}.
      */
     @Override
     public void close() {
         if (client != null) {
-            client.getConnectionManager().shutdown();
+            try {
+                client.close();
+            } catch (final IOException e) {
+                LOGGER.error("Unable to close HTTP client", e);
+            }
         }
     }
 }

@@ -8,8 +8,8 @@
         <version>1.4.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>snowizard-client</artifactId>
-    <name>Snowizard Client</name>
+    <artifactId>snowizard-application</artifactId>
+    <name>Snowizard Application</name>
 
     <dependencies>
         <dependency>
@@ -18,14 +18,54 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.3.3</version>
+            <groupId>com.ge.snowizard</groupId>
+            <artifactId>snowizard-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-core</artifactId>
+            <version>${dropwizard.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-assets</artifactId>
+            <version>${dropwizard.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.newrelic.agent.java</groupId>
+            <artifactId>newrelic-api</artifactId>
+            <version>3.5.0</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <id>generate-service-docs</id>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <doclet>com.hypnoticocelot.jaxrs.doclet.ServiceDoclet</doclet>
+                            <docletArtifact>
+                                <groupId>com.hypnoticocelot</groupId>
+                                <artifactId>jaxrs-doclet</artifactId>
+                                <version>0.0.2</version>
+                            </docletArtifact>
+                            <reportOutputDirectory>${project.build.outputDirectory}</reportOutputDirectory>
+                            <useStandardDocletOptions>false</useStandardDocletOptions>
+                            <additionalparam>-apiVersion 1 -docBasePath /apidocs/ -apiBasePath / -disableModels</additionalparam>
+                        </configuration>
+                        <goals>
+                            <goal>javadoc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -53,7 +93,7 @@
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.ge.snowizard.client.SnowizardClient</mainClass>
+                                    <mainClass>com.ge.snowizard.application.SnowizardApplication</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

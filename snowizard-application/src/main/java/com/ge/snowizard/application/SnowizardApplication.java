@@ -1,0 +1,74 @@
+package com.ge.snowizard.application;
+
+import java.util.EnumSet;
+import javax.servlet.DispatcherType;
+import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.setup.Environment;
+import com.codahale.metrics.Gauge;
+import com.codahale.metrics.MetricRegistry;
+import com.ge.snowizard.application.core.CorsHeadersFilter;
+import com.ge.snowizard.application.core.JacksonProtobufProvider;
+import com.ge.snowizard.application.core.TimedResourceMethodDispatchAdapter;
+import com.ge.snowizard.application.resources.IdResource;
+import com.ge.snowizard.application.resources.PingResource;
+import com.ge.snowizard.application.resources.VersionResource;
+import com.ge.snowizard.core.IdWorker;
+
+public class SnowizardApplication extends Application<SnowizardConfiguration> {
+    public static void main(final String[] args) throws Exception {
+        new SnowizardApplication().run(args);
+    }
+
+    @Override
+    public String getName() {
+        return "snowizard";
+    }
+
+    @Override
+    public void initialize(
+            final io.dropwizard.setup.Bootstrap<SnowizardConfiguration> bootstrap) {
+        bootstrap.addBundle(new AssetsBundle("/apidocs", "/apidocs",
+                "index.html"));
+    }
+
+    @Override
+    public void run(final SnowizardConfiguration config,
+            final Environment environment) throws Exception {
+
+        environment.jersey().register(new JacksonProtobufProvider());
+        environment.jersey().register(new TimedResourceMethodDispatchAdapter());
+        if (config.isCORSEnabled()) {
+            environment.getApplicationContext().addFilter(
+                    CorsHeadersFilter.class, "/*",
+                    EnumSet.of(DispatcherType.REQUEST));
+        }
+
+        final IdWorker worker = new IdWorker(config.getWorkerId(),
+                config.getDatacenterId(), 0L, config.validateUserAgent(),
+                environment.metrics());
+
+        environment.metrics().register(
+                MetricRegistry.name(SnowizardApplication.class, "worker_id"),
+                new Gauge<Integer>() {
+                    @Override
+                    public Integer getValue() {
+                        return config.getWorkerId();
+                    }
+                });
+
+        environment.metrics()
+                .register(
+                        MetricRegistry.name(SnowizardApplication.class,
+                                "datacenter_id"), new Gauge<Integer>() {
+                            @Override
+                            public Integer getValue() {
+                                return config.getDatacenterId();
+                            }
+                        });
+
+        environment.jersey().register(new IdResource(worker));
+        environment.jersey().register(new PingResource());
+        environment.jersey().register(new VersionResource());
+    }
+}
