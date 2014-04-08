@@ -7,9 +7,9 @@ RUN apt-get update && apt-get install -y -q wget openjdk-7-jre-headless
 RUN mkdir -p /opt/snowizard /var/log/snowizard
 RUN wget -q -O /opt/snowizard/snowizard.jar http://repo.maven.apache.org/maven2/com/ge/snowizard/snowizard-application/1.4.0/snowizard-application-1.4.0.jar
 
-ADD ./snowizard-service/snowizard.upstart /etc/init/snowizard.conf
-ADD ./snowizard-service/snowizard.yml /etc/snowizard.yml
-ADD ./snowizard-service/snowizard.jvm.conf /etc/snowizard.jvm.conf
+ADD ./snowizard-application/snowizard.upstart /etc/init/snowizard.conf
+ADD ./snowizard-application/snowizard.yml /etc/snowizard.yml
+ADD ./snowizard-application/snowizard.jvm.conf /etc/snowizard.jvm.conf
 
 ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
 
