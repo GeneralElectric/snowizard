@@ -7,7 +7,7 @@
 
     <groupId>com.ge.snowizard</groupId>
     <artifactId>snowizard-parent</artifactId>
-    <version>1.4.0</version>
+    <version>1.4.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Snowizard Project</name>
@@ -48,7 +48,7 @@
         <connection>scm:git:git://github.com/GeneralElectric/snowizard.git</connection>
         <developerConnection>scm:git:git@github.com:GeneralElectric/snowizard.git</developerConnection>
         <url>https://github.com/GeneralElectric/snowizard</url>
-        <tag>v1.4.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
