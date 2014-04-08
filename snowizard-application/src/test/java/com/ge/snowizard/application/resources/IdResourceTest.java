@@ -5,8 +5,7 @@ import static org.mockito.Mockito.*;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import org.junit.Before;
-import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ge.snowizard.api.Id;
@@ -21,20 +20,15 @@ import com.ge.snowizard.exceptions.InvalidUserAgentError;
 import com.sun.jersey.api.client.ClientResponse;
 
 public class IdResourceTest {
-    private static final String AGENT = "test-agent";
-    private static final SnowizardError AGENT_ERROR = new SnowizardError(400,
+    private final String AGENT = "test-agent";
+    private final SnowizardError AGENT_ERROR = new SnowizardError(400,
             "Invalid User-Agent header");
-    private static final IdWorker worker = mock(IdWorker.class);
+    private final IdWorker worker = mock(IdWorker.class);
 
-    @ClassRule
-    public static final ResourceTestRule resources = ResourceTestRule.builder()
+    @Rule
+    public final ResourceTestRule resources = ResourceTestRule.builder()
             .addProvider(new JacksonProtobufProvider())
             .addResource(new IdResource(worker)).build();
-
-    @Before
-    public void setUp() {
-        reset(worker);
-    }
 
     @Test
     public void testGetIdAsString() throws Exception {
