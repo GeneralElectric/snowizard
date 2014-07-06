@@ -2,12 +2,13 @@ package com.ge.snowizard.application;
 
 import java.util.EnumSet;
 import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
+import org.eclipse.jetty.servlets.CrossOriginFilter;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Environment;
 import com.codahale.metrics.Gauge;
 import com.codahale.metrics.MetricRegistry;
-import com.ge.snowizard.application.core.CorsHeadersFilter;
 import com.ge.snowizard.application.core.JacksonProtobufProvider;
 import com.ge.snowizard.application.core.TimedResourceMethodDispatchAdapter;
 import com.ge.snowizard.application.resources.IdResource;
@@ -38,10 +39,13 @@ public class SnowizardApplication extends Application<SnowizardConfiguration> {
 
         environment.jersey().register(new JacksonProtobufProvider());
         environment.jersey().register(new TimedResourceMethodDispatchAdapter());
+
         if (config.isCORSEnabled()) {
-            environment.getApplicationContext().addFilter(
-                    CorsHeadersFilter.class, "/*",
-                    EnumSet.of(DispatcherType.REQUEST));
+            final FilterRegistration.Dynamic cors = environment.servlets()
+                    .addFilter("CrossOriginFilter", CrossOriginFilter.class);
+            cors.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST),
+                    true, "/*");
+            cors.setInitParameter("allowedMethods", "GET");
         }
 
         final IdWorker worker = new IdWorker(config.getWorkerId(),
