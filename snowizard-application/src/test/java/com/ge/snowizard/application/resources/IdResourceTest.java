@@ -2,6 +2,8 @@ package com.ge.snowizard.application.resources;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
+import io.dropwizard.jersey.protobuf.ProtocolBufferMediaType;
+import io.dropwizard.jersey.protobuf.ProtocolBufferMessageBodyProvider;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -11,7 +13,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ge.snowizard.api.Id;
 import com.ge.snowizard.api.protos.SnowizardProtos.SnowizardResponse;
 import com.ge.snowizard.application.api.SnowizardError;
-import com.ge.snowizard.application.core.JacksonProtobufProvider;
 import com.ge.snowizard.application.core.MediaTypeAdditional;
 import com.ge.snowizard.application.resources.IdResource;
 import com.ge.snowizard.core.IdWorker;
@@ -27,7 +28,7 @@ public class IdResourceTest {
 
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
-            .addProvider(new JacksonProtobufProvider())
+            .addProvider(new ProtocolBufferMessageBodyProvider())
             .addResource(new IdResource(worker)).build();
 
     @Test
@@ -180,7 +181,7 @@ public class IdResourceTest {
         when(worker.getId(AGENT)).thenReturn(id);
 
         final ClientResponse response = resources.client().resource("/")
-                .accept(MediaTypeAdditional.APPLICATION_PROTOBUF)
+                .accept(ProtocolBufferMediaType.APPLICATION_PROTOBUF)
                 .header(HttpHeaders.USER_AGENT, AGENT)
                 .get(ClientResponse.class);
 
@@ -200,7 +201,7 @@ public class IdResourceTest {
         when(worker.getId(AGENT)).thenThrow(new InvalidUserAgentError());
 
         final ClientResponse response = resources.client().resource("/")
-                .accept(MediaTypeAdditional.APPLICATION_PROTOBUF)
+                .accept(ProtocolBufferMediaType.APPLICATION_PROTOBUF)
                 .header(HttpHeaders.USER_AGENT, AGENT)
                 .get(ClientResponse.class);
 
@@ -217,7 +218,7 @@ public class IdResourceTest {
         when(worker.getId(AGENT)).thenThrow(new InvalidSystemClock());
 
         final ClientResponse response = resources.client().resource("/")
-                .accept(MediaTypeAdditional.APPLICATION_PROTOBUF)
+                .accept(ProtocolBufferMediaType.APPLICATION_PROTOBUF)
                 .header(HttpHeaders.USER_AGENT, AGENT)
                 .get(ClientResponse.class);
 

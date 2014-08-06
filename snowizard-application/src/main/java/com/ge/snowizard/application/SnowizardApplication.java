@@ -5,11 +5,11 @@ import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import io.dropwizard.Application;
-import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.jersey.protobuf.ProtocolBufferMessageBodyProvider;
+import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import com.codahale.metrics.Gauge;
 import com.codahale.metrics.MetricRegistry;
-import com.ge.snowizard.application.core.JacksonProtobufProvider;
 import com.ge.snowizard.application.core.TimedResourceMethodDispatchAdapter;
 import com.ge.snowizard.application.resources.IdResource;
 import com.ge.snowizard.application.resources.PingResource;
@@ -27,17 +27,15 @@ public class SnowizardApplication extends Application<SnowizardConfiguration> {
     }
 
     @Override
-    public void initialize(
-            final io.dropwizard.setup.Bootstrap<SnowizardConfiguration> bootstrap) {
-        bootstrap.addBundle(new AssetsBundle("/apidocs", "/apidocs",
-                "index.html"));
+    public void initialize(final Bootstrap<SnowizardConfiguration> bootstrap) {
+        // nothing to initialize
     }
 
     @Override
     public void run(final SnowizardConfiguration config,
             final Environment environment) throws Exception {
 
-        environment.jersey().register(new JacksonProtobufProvider());
+        environment.jersey().register(new ProtocolBufferMessageBodyProvider());
         environment.jersey().register(new TimedResourceMethodDispatchAdapter());
 
         if (config.isCORSEnabled()) {
