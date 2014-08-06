@@ -1,4 +1,8 @@
-# Snowizard
+Snowizard
+=========
+[![Build Status](https://travis-ci.org/generalelectric/snowizard.svg?branch=master)](https://travis-ci.org/generalelectric/snowizard)
+[![Coverage Status](https://img.shields.io/coveralls/generalelectric/snowizard.svg)](https://coveralls.io/r/generalelectric/snowizard)
+
 
 Snowizard is an HTTP-based service for generating unique ID numbers at high scale with some simple guarantees.
 
@@ -60,5 +64,3 @@ To contribute:
 ## Building
 
 To build and test, run `mvn test`.
-
-[![Build Status](https://travis-ci.org/GeneralElectric/snowizard.png)](https://travis-ci.org/GeneralElectric/snowizard)
