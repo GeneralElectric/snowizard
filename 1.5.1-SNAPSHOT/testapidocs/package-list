@@ -1,0 +1,7 @@
+com.ge.snowizard.api
+com.ge.snowizard.api.protos
+com.ge.snowizard.application
+com.ge.snowizard.application.core
+com.ge.snowizard.application.resources
+com.ge.snowizard.client.integration
+com.ge.snowizard.core
