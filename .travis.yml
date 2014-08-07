@@ -1,8 +1,8 @@
 language: java
-
+install: mvn install -Dgpg.skip=true
+after_success:
+  - mvn jacoco:report coveralls:jacoco
 jdk:
-  - oraclejdk7
   - openjdk7
-
-notifications:
-  email: false
+  - oraclejdk7
+  - oraclejdk8
