@@ -11,17 +11,17 @@ public final class SnowizardProtos {
   public interface SnowizardResponseOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // repeated int64 id = 1;
+    // repeated int64 id = 1 [packed = true];
     /**
-     * <code>repeated int64 id = 1;</code>
+     * <code>repeated int64 id = 1 [packed = true];</code>
      */
     java.util.List<java.lang.Long> getIdList();
     /**
-     * <code>repeated int64 id = 1;</code>
+     * <code>repeated int64 id = 1 [packed = true];</code>
      */
     int getIdCount();
     /**
-     * <code>repeated int64 id = 1;</code>
+     * <code>repeated int64 id = 1 [packed = true];</code>
      */
     long getId(int index);
   }
@@ -139,28 +139,29 @@ public final class SnowizardProtos {
       return PARSER;
     }
 
-    // repeated int64 id = 1;
+    // repeated int64 id = 1 [packed = true];
     public static final int ID_FIELD_NUMBER = 1;
     private java.util.List<java.lang.Long> id_;
     /**
-     * <code>repeated int64 id = 1;</code>
+     * <code>repeated int64 id = 1 [packed = true];</code>
      */
     public java.util.List<java.lang.Long>
         getIdList() {
       return id_;
     }
     /**
-     * <code>repeated int64 id = 1;</code>
+     * <code>repeated int64 id = 1 [packed = true];</code>
      */
     public int getIdCount() {
       return id_.size();
     }
     /**
-     * <code>repeated int64 id = 1;</code>
+     * <code>repeated int64 id = 1 [packed = true];</code>
      */
     public long getId(int index) {
       return id_.get(index);
     }
+    private int idMemoizedSerializedSize = -1;
 
     private void initFields() {
       id_ = java.util.Collections.emptyList();
@@ -177,8 +178,12 @@ public final class SnowizardProtos {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
+      if (getIdList().size() > 0) {
+        output.writeRawVarint32(10);
+        output.writeRawVarint32(idMemoizedSerializedSize);
+      }
       for (int i = 0; i < id_.size(); i++) {
-        output.writeInt64(1, id_.get(i));
+        output.writeInt64NoTag(id_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -196,7 +201,12 @@ public final class SnowizardProtos {
             .computeInt64SizeNoTag(id_.get(i));
         }
         size += dataSize;
-        size += 1 * getIdList().size();
+        if (!getIdList().isEmpty()) {
+          size += 1;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        idMemoizedSerializedSize = dataSize;
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -400,7 +410,7 @@ public final class SnowizardProtos {
       }
       private int bitField0_;
 
-      // repeated int64 id = 1;
+      // repeated int64 id = 1 [packed = true];
       private java.util.List<java.lang.Long> id_ = java.util.Collections.emptyList();
       private void ensureIdIsMutable() {
         if (!((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -409,26 +419,26 @@ public final class SnowizardProtos {
          }
       }
       /**
-       * <code>repeated int64 id = 1;</code>
+       * <code>repeated int64 id = 1 [packed = true];</code>
        */
       public java.util.List<java.lang.Long>
           getIdList() {
         return java.util.Collections.unmodifiableList(id_);
       }
       /**
-       * <code>repeated int64 id = 1;</code>
+       * <code>repeated int64 id = 1 [packed = true];</code>
        */
       public int getIdCount() {
         return id_.size();
       }
       /**
-       * <code>repeated int64 id = 1;</code>
+       * <code>repeated int64 id = 1 [packed = true];</code>
        */
       public long getId(int index) {
         return id_.get(index);
       }
       /**
-       * <code>repeated int64 id = 1;</code>
+       * <code>repeated int64 id = 1 [packed = true];</code>
        */
       public Builder setId(
           int index, long value) {
@@ -438,7 +448,7 @@ public final class SnowizardProtos {
         return this;
       }
       /**
-       * <code>repeated int64 id = 1;</code>
+       * <code>repeated int64 id = 1 [packed = true];</code>
        */
       public Builder addId(long value) {
         ensureIdIsMutable();
@@ -447,7 +457,7 @@ public final class SnowizardProtos {
         return this;
       }
       /**
-       * <code>repeated int64 id = 1;</code>
+       * <code>repeated int64 id = 1 [packed = true];</code>
        */
       public Builder addAllId(
           java.lang.Iterable<? extends java.lang.Long> values) {
@@ -457,7 +467,7 @@ public final class SnowizardProtos {
         return this;
       }
       /**
-       * <code>repeated int64 id = 1;</code>
+       * <code>repeated int64 id = 1 [packed = true];</code>
        */
       public Builder clearId() {
         id_ = java.util.Collections.emptyList();
@@ -491,9 +501,9 @@ public final class SnowizardProtos {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\017Snowizard.proto\022\tsnowizard\"\037\n\021Snowizar" +
-      "dResponse\022\n\n\002id\030\001 \003(\003B0\n\033com.ge.snowizar" +
-      "d.api.protosB\017SnowizardProtosH\001"
+      "\n\017Snowizard.proto\022\tsnowizard\"#\n\021Snowizar" +
+      "dResponse\022\016\n\002id\030\001 \003(\003B\002\020\001B0\n\033com.ge.snow" +
+      "izard.api.protosB\017SnowizardProtosH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
