@@ -3,6 +3,7 @@ package com.ge.snowizard.application.resources;
 import static com.google.common.base.Preconditions.checkNotNull;
 import io.dropwizard.jersey.caching.CacheControl;
 import io.dropwizard.jersey.params.IntParam;
+import io.dropwizard.jersey.protobuf.ProtocolBufferMediaType;
 import java.util.List;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -11,6 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 import org.slf4j.Logger;
@@ -36,7 +38,7 @@ public class IdResource {
 
     /**
      * Constructor
-     * 
+     *
      * @param worker
      */
     public IdResource(final IdWorker worker) {
@@ -45,7 +47,7 @@ public class IdResource {
 
     /**
      * Get a new ID and handle any thrown exceptions
-     * 
+     *
      * @param agent
      *            User Agent
      * @return generated ID
@@ -67,7 +69,7 @@ public class IdResource {
 
     /**
      * Get a new ID as plain text
-     * 
+     *
      * @param agent
      *            User Agent
      * @responseMessage 400 Invalid User-Agent header
@@ -78,13 +80,14 @@ public class IdResource {
     @Timed
     @Produces(MediaType.TEXT_PLAIN)
     @CacheControl(mustRevalidate = true, noCache = true, noStore = true)
-    public String getIdAsString(@HeaderParam("User-Agent") final String agent) {
+    public String getIdAsString(
+            @HeaderParam(HttpHeaders.USER_AGENT) final String agent) {
         return String.valueOf(getId(agent));
     }
 
     /**
      * Get a new ID as JSON
-     * 
+     *
      * @param agent
      *            User Agent
      * @responseMessage 400 Invalid User-Agent header
@@ -95,13 +98,14 @@ public class IdResource {
     @Timed
     @Produces(MediaType.APPLICATION_JSON)
     @CacheControl(mustRevalidate = true, noCache = true, noStore = true)
-    public Id getIdAsJSON(@HeaderParam("User-Agent") final String agent) {
+    public Id getIdAsJSON(
+            @HeaderParam(HttpHeaders.USER_AGENT) final String agent) {
         return new Id(getId(agent));
     }
 
     /**
      * Get a new ID as JSONP
-     * 
+     *
      * @param agent
      *            User Agent
      * @responseMessage 400 Invalid User-Agent header
@@ -113,14 +117,14 @@ public class IdResource {
     @Produces(MediaTypeAdditional.APPLICATION_JAVASCRIPT)
     @CacheControl(mustRevalidate = true, noCache = true, noStore = true)
     public JSONPObject getIdAsJSONP(
-            @HeaderParam("User-Agent") final String agent,
+            @HeaderParam(HttpHeaders.USER_AGENT) final String agent,
             @QueryParam("callback") @DefaultValue("callback") final String callback) {
         return new JSONPObject(callback, getIdAsJSON(agent));
     }
 
     /**
      * Get one or more IDs as a Google Protocol Buffer response
-     * 
+     *
      * @param agent
      *            User Agent
      * @param count
@@ -131,10 +135,10 @@ public class IdResource {
      */
     @GET
     @Timed
-    @Produces(MediaTypeAdditional.APPLICATION_PROTOBUF)
+    @Produces(ProtocolBufferMediaType.APPLICATION_PROTOBUF)
     @CacheControl(mustRevalidate = true, noCache = true, noStore = true)
     public SnowizardResponse getIdAsProtobuf(
-            @HeaderParam("User-Agent") final String agent,
+            @HeaderParam(HttpHeaders.USER_AGENT) final String agent,
             @QueryParam("count") final Optional<IntParam> count) {
 
         final List<Long> ids = Lists.newArrayList();
