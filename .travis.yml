@@ -1,9 +1,13 @@
 language: java
-install: echo "I trust Maven."
-script: mvn test
+script: 
+  - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && mvn verify deploy --settings maven_deploy_settings.xml || mvn test verify --settings maven_deploy_settings.xml'
 after_success:
   - mvn jacoco:report coveralls:jacoco
 jdk:
   - openjdk7
   - oraclejdk7
   - oraclejdk8
+env:
+  global:
+    - secure: "KECS2w8m62ftcBNoZalNOKsagoKu/mqnz+y41L/yTyn3UEypCBDzQOD73CqBsIfhMfCN4yf5Z/iRzpVXn9T+tR5eqj3QdEJkmlPXeLbyTyVpdvpwykztM5GTY4hP8IKmWu9VAGKAW8LdkfYrJh2LAt8kL8SM7JITuLNNIO+qAw4="
+    - secure: "g4f8nNpu6yESxEUx+wBHRZKkSU/Yv5B3gwsK7JQaYunWp8hw4u30mmwpGg9q/6GAqhxKpcz5Boa6kovAqAspVjkPOwgRHFIGerS7cUXPaObv7o1Q1J1faAM9KZ/0TaoYSJ8xMWe975sFOfoLh1rtBe0WhCp4oLBQdpg0MNkG2es="
