@@ -20,7 +20,13 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.3.4</version>
+            <version>4.3.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ge.snowizard</groupId>
+            <artifactId>snowizard-application</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
