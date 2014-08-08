@@ -1,5 +1,6 @@
 language: java
-install: mvn install -Dgpg.skip=true
+install: echo "I trust Maven."
+script: mvn test
 after_success:
   - mvn jacoco:report coveralls:jacoco
 jdk:
