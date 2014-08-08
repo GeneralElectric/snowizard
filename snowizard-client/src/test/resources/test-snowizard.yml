@@ -1,0 +1,14 @@
+# Data Center ID
+datacenter_id: 1
+
+# Unique Worker ID
+worker_id: 1
+
+server:
+
+  applicationConnectors:
+    - type: http
+      port: 0
+  adminConnectors:
+    - type: http
+      port: 0
