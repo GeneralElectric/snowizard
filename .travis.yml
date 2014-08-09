@@ -2,7 +2,7 @@ language: java
 script: 
   - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && mvn verify deploy --settings maven_deploy_settings.xml || mvn test verify --settings maven_deploy_settings.xml'
 after_success:
-  - mvn jacoco:report coveralls:jacoco
+  - mvn cobertura:cobertura coveralls:cobertura
 jdk:
   - openjdk7
   - oraclejdk7
