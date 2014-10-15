@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <prerequisites>
-        <maven>3.0.0</maven>
+        <maven>3.0.1</maven>
     </prerequisites>
 
     <groupId>com.ge.snowizard</groupId>
@@ -31,7 +31,7 @@
         <developer>
             <name>Justin Plock</name>
             <email>justin@plock.net</email>
-            <timezone>-5</timezone>
+            <timezone>America/New_York</timezone>
         </developer>
     </developers>
 
@@ -255,7 +255,7 @@
             <plugin>
                 <groupId>com.github.github</groupId>
                 <artifactId>site-maven-plugin</artifactId>
-                <version>0.9</version>
+                <version>0.10</version>
                 <configuration>
                     <path>${project.distributionManagement.site.url}</path>
                     <message>Creating site for ${project.name} ${project.version}</message>

@@ -1,4 +1,4 @@
-package com.ge.snowizard.application;
+package com.ge.snowizard.application.config;
 
 import io.dropwizard.Configuration;
 import javax.validation.constraints.Max;

@@ -1,6 +1,6 @@
 package com.ge.snowizard.api;
 
-import static io.dropwizard.testing.FixtureHelpers.*;
+import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.fest.assertions.api.Assertions.assertThat;
 import io.dropwizard.jackson.Jackson;
 import org.junit.Test;
@@ -13,14 +13,17 @@ public class IdTest {
 
     @Test
     public void serializesToJSON() throws Exception {
-        assertThat(MAPPER.writeValueAsString(id)).isEqualTo(
-                fixture("fixtures/id.json"));
+        final String actual = MAPPER.writeValueAsString(id);
+        final String expected = MAPPER.writeValueAsString(MAPPER.readValue(
+                fixture("fixtures/id.json"), Id.class));
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     public void deserializesFromJSON() throws Exception {
-        assertThat(MAPPER.readValue(fixture("fixtures/id.json"), Id.class))
-                .isEqualTo(id);
+        final Id actual = MAPPER.readValue(fixture("fixtures/id.json"),
+                Id.class);
+        assertThat(actual).isEqualsToByComparingFields(id);
     }
 
     @Test

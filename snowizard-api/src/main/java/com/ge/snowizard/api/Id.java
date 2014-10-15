@@ -3,6 +3,7 @@ package com.ge.snowizard.api;
 import io.dropwizard.jackson.JsonSnakeCase;
 import javax.annotation.concurrent.Immutable;
 import org.hibernate.validator.constraints.NotEmpty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
 
@@ -23,6 +24,7 @@ public final class Id {
      * @param idStr
      *            Generated ID as a string
      */
+    @JsonCreator
     public Id(@JsonProperty("id") final long id,
             @JsonProperty("id_str") final String idStr) {
         this.id = id;
