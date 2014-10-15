@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.health.HealthCheckRegistry;
 import com.ge.snowizard.application.SnowizardApplication;
 import com.ge.snowizard.application.config.SnowizardConfiguration;
 import com.ge.snowizard.application.resources.IdResource;
@@ -25,6 +26,7 @@ public class SnowizardApplicationTest {
     private final Environment environment = mock(Environment.class);
     private final JerseyEnvironment jersey = mock(JerseyEnvironment.class);
     private final MetricRegistry metrics = mock(MetricRegistry.class);
+    private final HealthCheckRegistry healthChecks = mock(HealthCheckRegistry.class);
     private final SnowizardApplication application = new SnowizardApplication();
     private final SnowizardConfiguration config = new SnowizardConfiguration();
 
@@ -36,6 +38,7 @@ public class SnowizardApplicationTest {
     public void setUp() {
         when(environment.jersey()).thenReturn(jersey);
         when(environment.metrics()).thenReturn(metrics);
+        when(environment.healthChecks()).thenReturn(healthChecks);
     }
 
     @Test
@@ -59,9 +62,9 @@ public class SnowizardApplicationTest {
     @Test
     public void testCanGetIdOverHttp() throws Exception {
         final String response = new Client()
-        .resource("http://localhost:" + RULE.getLocalPort())
-        .accept(MediaType.TEXT_PLAIN)
-                .header(HttpHeaders.USER_AGENT, AGENT).get(String.class);
+                .resource("http://localhost:" + RULE.getLocalPort())
+                .accept(MediaType.TEXT_PLAIN)
+        .header(HttpHeaders.USER_AGENT, AGENT).get(String.class);
         final long id = Long.valueOf(response);
         assertThat(id).isNotNull();
     }

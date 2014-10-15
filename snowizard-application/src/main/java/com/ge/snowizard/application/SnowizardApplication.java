@@ -13,6 +13,7 @@ import com.codahale.metrics.MetricRegistry;
 import com.ge.snowizard.application.config.SnowizardConfiguration;
 import com.ge.snowizard.application.core.TimedResourceMethodDispatchAdapter;
 import com.ge.snowizard.application.exceptions.SnowizardExceptionMapper;
+import com.ge.snowizard.application.health.EmptyHealthCheck;
 import com.ge.snowizard.application.resources.IdResource;
 import com.ge.snowizard.application.resources.PingResource;
 import com.ge.snowizard.application.resources.VersionResource;
@@ -63,14 +64,17 @@ public class SnowizardApplication extends Application<SnowizardConfiguration> {
                 });
 
         environment.metrics()
-        .register(
-                MetricRegistry.name(SnowizardApplication.class,
-                        "datacenter_id"), new Gauge<Integer>() {
-                    @Override
-                    public Integer getValue() {
-                        return config.getDatacenterId();
-                    }
-                });
+                .register(
+                        MetricRegistry.name(SnowizardApplication.class,
+                                "datacenter_id"), new Gauge<Integer>() {
+                            @Override
+                            public Integer getValue() {
+                                return config.getDatacenterId();
+                            }
+                        });
+
+        // health check
+        environment.healthChecks().register("empty", new EmptyHealthCheck());
 
         // resources
         environment.jersey().register(new IdResource(worker));
