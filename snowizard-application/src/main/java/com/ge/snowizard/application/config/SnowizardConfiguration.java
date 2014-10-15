@@ -1,8 +1,11 @@
 package com.ge.snowizard.application.config;
 
 import io.dropwizard.Configuration;
+import io.dropwizard.discovery.DiscoveryFactory;
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SnowizardConfiguration extends Configuration {
@@ -24,6 +27,10 @@ public class SnowizardConfiguration extends Configuration {
     @JsonProperty
     private boolean enable_cors = false;
 
+    @Valid
+    @NotNull
+    private DiscoveryFactory discovery = new DiscoveryFactory();
+
     public int getWorkerId() {
         return worker_id;
     }
@@ -40,5 +47,15 @@ public class SnowizardConfiguration extends Configuration {
     @JsonProperty("enable_cors")
     public boolean isCORSEnabled() {
         return enable_cors;
+    }
+
+    @JsonProperty("discovery")
+    public DiscoveryFactory getDiscoveryFactory() {
+        return discovery;
+    }
+
+    @JsonProperty("discovery")
+    public void setDiscoveryFactory(final DiscoveryFactory discoveryFactory) {
+        this.discovery = discoveryFactory;
     }
 }

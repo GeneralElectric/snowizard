@@ -5,6 +5,8 @@ import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import io.dropwizard.Application;
+import io.dropwizard.discovery.DiscoveryBundle;
+import io.dropwizard.discovery.DiscoveryFactory;
 import io.dropwizard.jersey.protobuf.ProtocolBufferMessageBodyProvider;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -20,6 +22,15 @@ import com.ge.snowizard.application.resources.VersionResource;
 import com.ge.snowizard.core.IdWorker;
 
 public class SnowizardApplication extends Application<SnowizardConfiguration> {
+
+    private final DiscoveryBundle<SnowizardConfiguration> discoveryBundle = new DiscoveryBundle<SnowizardConfiguration>() {
+        @Override
+        public DiscoveryFactory getDiscoveryFactory(
+                final SnowizardConfiguration configuration) {
+            return configuration.getDiscoveryFactory();
+        }
+    };
+
     public static void main(final String[] args) throws Exception {
         new SnowizardApplication().run(args);
     }
@@ -31,7 +42,7 @@ public class SnowizardApplication extends Application<SnowizardConfiguration> {
 
     @Override
     public void initialize(final Bootstrap<SnowizardConfiguration> bootstrap) {
-        // nothing to initialize
+        bootstrap.addBundle(discoveryBundle);
     }
 
     @Override
