@@ -1,0 +1,6 @@
+com.ge.snowizard.application
+com.ge.snowizard.application.config
+com.ge.snowizard.application.core
+com.ge.snowizard.application.exceptions
+com.ge.snowizard.application.health
+com.ge.snowizard.application.resources
