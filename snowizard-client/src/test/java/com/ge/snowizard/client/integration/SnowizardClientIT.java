@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import com.ge.snowizard.application.SnowizardApplication;
-import com.ge.snowizard.application.SnowizardConfiguration;
+import com.ge.snowizard.application.config.SnowizardConfiguration;
 import com.ge.snowizard.client.SnowizardClient;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Resources;

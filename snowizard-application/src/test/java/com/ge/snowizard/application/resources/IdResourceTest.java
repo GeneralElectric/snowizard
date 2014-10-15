@@ -11,9 +11,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ge.snowizard.api.Id;
+import com.ge.snowizard.api.SnowizardError;
 import com.ge.snowizard.api.protos.SnowizardProtos.SnowizardResponse;
-import com.ge.snowizard.application.api.SnowizardError;
 import com.ge.snowizard.application.core.MediaTypeAdditional;
+import com.ge.snowizard.application.exceptions.SnowizardExceptionMapper;
 import com.ge.snowizard.application.resources.IdResource;
 import com.ge.snowizard.core.IdWorker;
 import com.ge.snowizard.exceptions.InvalidSystemClock;
@@ -28,8 +29,9 @@ public class IdResourceTest {
 
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
-            .addProvider(new ProtocolBufferMessageBodyProvider())
-            .addResource(new IdResource(worker)).build();
+            .addProvider(new SnowizardExceptionMapper())
+    .addProvider(new ProtocolBufferMessageBodyProvider())
+    .addResource(new IdResource(worker)).build();
 
     @Test
     public void testGetIdAsString() throws Exception {

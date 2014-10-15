@@ -10,6 +10,11 @@ validate_user_agent: true
 # Enable CORS support?
 enable_cors: false
 
+# Discovery-related settings.
+discovery:
+  serviceName: snowizard
+  isDisabled: true
+
 # HTTP-specific options.
 server:
 

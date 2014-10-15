@@ -11,18 +11,17 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.ge.snowizard.api.Id;
 import com.ge.snowizard.api.protos.SnowizardProtos.SnowizardResponse;
-import com.ge.snowizard.application.api.SnowizardError;
 import com.ge.snowizard.application.core.MediaTypeAdditional;
+import com.ge.snowizard.application.exceptions.SnowizardException;
 import com.ge.snowizard.core.IdWorker;
 import com.ge.snowizard.exceptions.InvalidSystemClock;
 import com.ge.snowizard.exceptions.InvalidUserAgentError;
@@ -51,19 +50,19 @@ public class IdResource {
      * @param agent
      *            User Agent
      * @return generated ID
-     * @throws WebApplicationException
+     * @throws SnowizardException
      */
     public long getId(final String agent) {
         try {
             return worker.getId(agent);
         } catch (final InvalidUserAgentError e) {
             LOGGER.error("Invalid user agent ({})", agent);
-            throw new WebApplicationException(SnowizardError.newResponse(
-                    Status.BAD_REQUEST, "Invalid User-Agent header"));
+            throw new SnowizardException(Response.Status.BAD_REQUEST,
+                    "Invalid User-Agent header", e);
         } catch (final InvalidSystemClock e) {
             LOGGER.error("Invalid system clock", e);
-            throw new WebApplicationException(SnowizardError.newResponse(
-                    Status.INTERNAL_SERVER_ERROR, e.getMessage()));
+            throw new SnowizardException(Response.Status.INTERNAL_SERVER_ERROR,
+                    e.getMessage(), e);
         }
     }
 
@@ -72,8 +71,6 @@ public class IdResource {
      *
      * @param agent
      *            User Agent
-     * @responseMessage 400 Invalid User-Agent header
-     * @responseMessage 500 Invalid system clock
      * @return generated ID
      */
     @GET
@@ -90,8 +87,6 @@ public class IdResource {
      *
      * @param agent
      *            User Agent
-     * @responseMessage 400 Invalid User-Agent header
-     * @responseMessage 500 Invalid system clock
      * @return generated ID
      */
     @GET
@@ -108,8 +103,6 @@ public class IdResource {
      *
      * @param agent
      *            User Agent
-     * @responseMessage 400 Invalid User-Agent header
-     * @responseMessage 500 Invalid system clock
      * @return generated ID
      */
     @GET
@@ -129,8 +122,6 @@ public class IdResource {
      *            User Agent
      * @param count
      *            Number of IDs to return
-     * @responseMessage 400 Invalid User-Agent header
-     * @responseMessage 500 Invalid system clock
      * @return generated IDs
      */
     @GET

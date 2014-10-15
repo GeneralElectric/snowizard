@@ -1,11 +1,8 @@
-FROM debian:jessie
+FROM java:openjdk-7-jre
 MAINTAINER Justin Plock <justin@plock.net>
 
-ENV DEBIAN_FRONTEND noninteractive
-
-RUN apt-get update && apt-get install -y -q wget openjdk-7-jre-headless
 RUN mkdir -p /opt/snowizard /var/log/snowizard
-RUN wget -q -O /opt/snowizard/snowizard.jar http://repo.maven.apache.org/maven2/com/ge/snowizard/snowizard-application/1.6.0/snowizard-application-1.6.0.jar
+RUN wget -q -O /opt/snowizard/snowizard.jar http://repo.maven.apache.org/maven2/com/ge/snowizard/snowizard-application/1.7.0/snowizard-application-1.7.0.jar
 
 ADD ./snowizard-application/snowizard.upstart /etc/init/snowizard.conf
 ADD ./snowizard-application/snowizard.yml /etc/snowizard.yml
