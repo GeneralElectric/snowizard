@@ -1,6 +1,7 @@
 package com.ge.snowizard.client;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import io.dropwizard.jersey.protobuf.ProtocolBufferMediaType;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.List;
@@ -32,7 +33,6 @@ public class SnowizardClient implements Closeable {
 
     private static final Logger LOGGER = LoggerFactory
             .getLogger(SnowizardClient.class);
-    private static final String APPLICATION_PROTOBUF = "application/x-protobuf";
     private static final int MAX_HOSTS = 1024;
     private static final int SOCKET_TIMEOUT_MS = 500;
     private static final int CONNECTION_TIMEOUT_MS = 500;
@@ -143,7 +143,7 @@ public class SnowizardClient implements Closeable {
             throws IOException {
         final String uri = String.format("http://%s/?count=%d", host, count);
         final HttpGet request = new HttpGet(uri);
-        request.addHeader(HttpHeaders.ACCEPT, APPLICATION_PROTOBUF);
+        request.addHeader(HttpHeaders.ACCEPT, ProtocolBufferMediaType.APPLICATION_PROTOBUF);
         request.addHeader(HttpHeaders.USER_AGENT, getUserAgent());
 
         SnowizardResponse snowizard = null;

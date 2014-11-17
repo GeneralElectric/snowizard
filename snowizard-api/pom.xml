@@ -23,9 +23,9 @@
             <version>${dropwizard.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java</artifactId>
-            <version>2.5.0</version>
+            <groupId>io.dropwizard.modules</groupId>
+            <artifactId>dropwizard-protobuf</artifactId>
+            <version>${dropwizard.protobuf.version}</version>
         </dependency>
     </dependencies>
 </project>
