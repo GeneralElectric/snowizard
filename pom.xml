@@ -18,6 +18,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <dropwizard.version>0.7.1</dropwizard.version>
+        <dropwizard.protobuf.version>0.7.1-2</dropwizard.protobuf.version>
+        <dropwizard.discovery.version>0.7.1-5</dropwizard.discovery.version>
     </properties>
 
     <modules>

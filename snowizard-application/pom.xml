@@ -29,13 +29,8 @@
         </dependency>
         <dependency>
             <groupId>io.dropwizard.modules</groupId>
-            <artifactId>dropwizard-protobuf</artifactId>
-            <version>${dropwizard.version}-1</version>
-        </dependency>
-        <dependency>
-            <groupId>io.dropwizard.modules</groupId>
             <artifactId>dropwizard-discovery</artifactId>
-            <version>${dropwizard.version}-3</version>
+            <version>${dropwizard.discovery.version}</version>
         </dependency>
         <dependency>
             <groupId>com.newrelic.agent.java</groupId>
