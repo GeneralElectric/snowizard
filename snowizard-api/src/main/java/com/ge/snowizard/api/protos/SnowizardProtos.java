@@ -8,10 +8,10 @@ public final class SnowizardProtos {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface SnowizardResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface SnowizardResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:snowizard.SnowizardResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // repeated int64 id = 1 [packed = true];
     /**
      * <code>repeated int64 id = 1 [packed = true];</code>
      */
@@ -29,8 +29,9 @@ public final class SnowizardProtos {
    * Protobuf type {@code snowizard.SnowizardResponse}
    */
   public static final class SnowizardResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements SnowizardResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:snowizard.SnowizardResponse)
+      SnowizardResponseOrBuilder {
     // Use SnowizardResponse.newBuilder() to construct.
     private SnowizardResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -139,7 +140,6 @@ public final class SnowizardProtos {
       return PARSER;
     }
 
-    // repeated int64 id = 1 [packed = true];
     public static final int ID_FIELD_NUMBER = 1;
     private java.util.List<java.lang.Long> id_;
     /**
@@ -169,7 +169,8 @@ public final class SnowizardProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       memoizedIsInitialized = 1;
       return true;
@@ -290,8 +291,9 @@ public final class SnowizardProtos {
      * Protobuf type {@code snowizard.SnowizardResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.ge.snowizard.api.protos.SnowizardProtos.SnowizardResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:snowizard.SnowizardResponse)
+        com.ge.snowizard.api.protos.SnowizardProtos.SnowizardResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.ge.snowizard.api.protos.SnowizardProtos.internal_static_snowizard_SnowizardResponse_descriptor;
@@ -410,7 +412,6 @@ public final class SnowizardProtos {
       }
       private int bitField0_;
 
-      // repeated int64 id = 1 [packed = true];
       private java.util.List<java.lang.Long> id_ = java.util.Collections.emptyList();
       private void ensureIdIsMutable() {
         if (!((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -462,7 +463,8 @@ public final class SnowizardProtos {
       public Builder addAllId(
           java.lang.Iterable<? extends java.lang.Long> values) {
         ensureIdIsMutable();
-        super.addAll(values, id_);
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, id_);
         onChanged();
         return this;
       }
@@ -487,7 +489,7 @@ public final class SnowizardProtos {
     // @@protoc_insertion_point(class_scope:snowizard.SnowizardResponse)
   }
 
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_snowizard_SnowizardResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -506,23 +508,23 @@ public final class SnowizardProtos {
       "izard.api.protosB\017SnowizardProtosH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-        public com.google.protobuf.ExtensionRegistry assignDescriptors(
-            com.google.protobuf.Descriptors.FileDescriptor root) {
-          descriptor = root;
-          internal_static_snowizard_SnowizardResponse_descriptor =
-            getDescriptor().getMessageTypes().get(0);
-          internal_static_snowizard_SnowizardResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_snowizard_SnowizardResponse_descriptor,
-              new java.lang.String[] { "Id", });
-          return null;
-        }
-      };
+        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
+          public com.google.protobuf.ExtensionRegistry assignDescriptors(
+              com.google.protobuf.Descriptors.FileDescriptor root) {
+            descriptor = root;
+            return null;
+          }
+        };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
+    internal_static_snowizard_SnowizardResponse_descriptor =
+      getDescriptor().getMessageTypes().get(0);
+    internal_static_snowizard_SnowizardResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_snowizard_SnowizardResponse_descriptor,
+        new java.lang.String[] { "Id", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
