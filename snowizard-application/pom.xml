@@ -23,6 +23,12 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.ge.snowizard</groupId>
+            <artifactId>snowizard-client</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
             <version>${dropwizard.version}</version>

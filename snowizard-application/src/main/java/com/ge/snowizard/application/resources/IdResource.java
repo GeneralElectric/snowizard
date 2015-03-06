@@ -92,7 +92,7 @@ public class IdResource {
     @Timed
     @JSONP(callback = "callback", queryParam = "callback")
     @Produces({ MediaType.APPLICATION_JSON,
-            MediaTypeAdditional.APPLICATION_JAVASCRIPT })
+        MediaTypeAdditional.APPLICATION_JAVASCRIPT })
     @CacheControl(mustRevalidate = true, noCache = true, noStore = true)
     public Id getIdAsJSON(
             @HeaderParam(HttpHeaders.USER_AGENT) final String agent) {

@@ -1,4 +1,4 @@
-package com.ge.snowizard.client.integration;
+package com.ge.snowizard.integration;
 
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
