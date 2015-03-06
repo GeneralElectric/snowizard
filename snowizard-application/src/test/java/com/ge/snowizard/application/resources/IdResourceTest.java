@@ -1,12 +1,17 @@
 package com.ge.snowizard.application.resources;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.mockito.Mockito.*;
 import io.dropwizard.jersey.protobuf.ProtocolBufferMediaType;
 import io.dropwizard.jersey.protobuf.ProtocolBufferMessageBodyProvider;
 import io.dropwizard.testing.junit.ResourceTestRule;
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import org.glassfish.jersey.client.ClientResponse;
 import org.junit.Rule;
 import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,7 +24,6 @@ import com.ge.snowizard.application.resources.IdResource;
 import com.ge.snowizard.core.IdWorker;
 import com.ge.snowizard.exceptions.InvalidSystemClock;
 import com.ge.snowizard.exceptions.InvalidUserAgentError;
-import com.sun.jersey.api.client.ClientResponse;
 
 public class IdResourceTest {
     private final String AGENT = "test-agent";
@@ -38,11 +42,10 @@ public class IdResourceTest {
         final long expected = 100L;
         when(worker.getId(AGENT)).thenReturn(expected);
 
-        final ClientResponse response = resources.client().resource("/")
-                .accept(MediaType.TEXT_PLAIN)
-                .header(HttpHeaders.USER_AGENT, AGENT)
-                .get(ClientResponse.class);
-        final String entity = response.getEntity(String.class);
+        final Response response = resources.client().target("/")
+                .request(MediaType.TEXT_PLAIN)
+                .header(HttpHeaders.USER_AGENT, AGENT).get();
+        final String entity = response.readEntity(String.class);
         final long actual = Long.valueOf(entity);
 
         assertThat(response.getStatus()).isEqualTo(200);
@@ -54,16 +57,20 @@ public class IdResourceTest {
     public void testGetIdAsStringInvalidAgent() throws Exception {
         when(worker.getId(AGENT)).thenThrow(new InvalidUserAgentError());
 
-        final ClientResponse response = resources.client().resource("/")
-                .accept(MediaType.TEXT_PLAIN)
-                .header(HttpHeaders.USER_AGENT, AGENT)
-                .get(ClientResponse.class);
+        try {
+            resources.client().target("/").request(MediaType.TEXT_PLAIN)
+                    .header(HttpHeaders.USER_AGENT, AGENT)
+                    .get(ClientResponse.class);
+            failBecauseExceptionWasNotThrown(BadRequestException.class);
+        } catch (final BadRequestException e) {
+            final ObjectMapper mapper = resources.getObjectMapper();
+            final String expected = mapper.writeValueAsString(AGENT_ERROR);
 
-        final ObjectMapper mapper = resources.getObjectMapper();
-        final String expected = mapper.writeValueAsString(AGENT_ERROR);
+            final Response response = e.getResponse();
+            assertThat(response.getStatus()).isEqualTo(400);
+            assertThat(response.readEntity(String.class)).isEqualTo(expected);
+        }
 
-        assertThat(response.getStatus()).isEqualTo(400);
-        assertThat(response.getEntity(String.class)).isEqualTo(expected);
         verify(worker).getId(AGENT);
     }
 
@@ -71,12 +78,15 @@ public class IdResourceTest {
     public void testGetIdAsStringInvalidClock() throws Exception {
         when(worker.getId(AGENT)).thenThrow(new InvalidSystemClock());
 
-        final ClientResponse response = resources.client().resource("/")
-                .accept(MediaType.TEXT_PLAIN)
-                .header(HttpHeaders.USER_AGENT, AGENT)
-                .get(ClientResponse.class);
+        try {
+            resources.client().target("/").request(MediaType.TEXT_PLAIN)
+            .header(HttpHeaders.USER_AGENT, AGENT)
+            .get(ClientResponse.class);
+            failBecauseExceptionWasNotThrown(InternalServerErrorException.class);
+        } catch (final InternalServerErrorException e) {
+            assertThat(e.getResponse().getStatus()).isEqualTo(500);
+        }
 
-        assertThat(response.getStatus()).isEqualTo(500);
         verify(worker).getId(AGENT);
     }
 
@@ -85,8 +95,8 @@ public class IdResourceTest {
         final long id = 100L;
         when(worker.getId(AGENT)).thenReturn(id);
 
-        final Id actual = resources.client().resource("/")
-                .accept(MediaType.APPLICATION_JSON)
+        final Id actual = resources.client().target("/")
+                .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.USER_AGENT, AGENT).get(Id.class);
 
         final Id expected = new Id(id);
@@ -99,16 +109,20 @@ public class IdResourceTest {
     public void testGetIdAsJSONInvalidAgent() throws Exception {
         when(worker.getId(AGENT)).thenThrow(new InvalidUserAgentError());
 
-        final ClientResponse response = resources.client().resource("/")
-                .accept(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.USER_AGENT, AGENT)
-                .get(ClientResponse.class);
+        try {
+            resources.client().target("/").request(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.USER_AGENT, AGENT)
+            .get(ClientResponse.class);
+            failBecauseExceptionWasNotThrown(BadRequestException.class);
+        } catch (final BadRequestException e) {
+            final ObjectMapper mapper = resources.getObjectMapper();
+            final String expected = mapper.writeValueAsString(AGENT_ERROR);
 
-        final ObjectMapper mapper = resources.getObjectMapper();
-        final String expected = mapper.writeValueAsString(AGENT_ERROR);
+            final Response response = e.getResponse();
+            assertThat(response.getStatus()).isEqualTo(400);
+            assertThat(response.readEntity(String.class)).isEqualTo(expected);
+        }
 
-        assertThat(response.getStatus()).isEqualTo(400);
-        assertThat(response.getEntity(String.class)).isEqualTo(expected);
         verify(worker).getId(AGENT);
     }
 
@@ -116,12 +130,15 @@ public class IdResourceTest {
     public void testGetIdAsJSONInvalidClock() throws Exception {
         when(worker.getId(AGENT)).thenThrow(new InvalidSystemClock());
 
-        final ClientResponse response = resources.client().resource("/")
-                .accept(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.USER_AGENT, AGENT)
-                .get(ClientResponse.class);
+        try {
+            resources.client().target("/").request(MediaType.APPLICATION_JSON)
+                    .header(HttpHeaders.USER_AGENT, AGENT)
+                    .get(ClientResponse.class);
+            failBecauseExceptionWasNotThrown(InternalServerErrorException.class);
+        } catch (final InternalServerErrorException e) {
+            assertThat(e.getResponse().getStatus()).isEqualTo(500);
+        }
 
-        assertThat(response.getStatus()).isEqualTo(500);
         verify(worker).getId(AGENT);
     }
 
@@ -130,8 +147,8 @@ public class IdResourceTest {
         final long id = 100L;
         when(worker.getId(AGENT)).thenReturn(id);
 
-        final String actual = resources.client().resource("/?callback=testing")
-                .accept(MediaTypeAdditional.APPLICATION_JAVASCRIPT)
+        final String actual = resources.client().target("/?callback=testing")
+                .request(MediaTypeAdditional.APPLICATION_JAVASCRIPT)
                 .header(HttpHeaders.USER_AGENT, AGENT).get(String.class);
 
         final Id expectedId = new Id(id);
@@ -149,17 +166,21 @@ public class IdResourceTest {
     public void testGetIdAsJSONPInvalidAgent() throws Exception {
         when(worker.getId(AGENT)).thenThrow(new InvalidUserAgentError());
 
-        final ClientResponse response = resources.client()
-                .resource("/?callback=testing")
-                .accept(MediaTypeAdditional.APPLICATION_JAVASCRIPT)
-                .header(HttpHeaders.USER_AGENT, AGENT)
-                .get(ClientResponse.class);
+        try {
+            resources.client().target("/?callback=testing")
+            .request(MediaTypeAdditional.APPLICATION_JAVASCRIPT)
+            .header(HttpHeaders.USER_AGENT, AGENT)
+            .get(ClientResponse.class);
+            failBecauseExceptionWasNotThrown(BadRequestException.class);
+        } catch (final BadRequestException e) {
+            final ObjectMapper mapper = resources.getObjectMapper();
+            final String expected = mapper.writeValueAsString(AGENT_ERROR);
 
-        final ObjectMapper mapper = resources.getObjectMapper();
-        final String expected = mapper.writeValueAsString(AGENT_ERROR);
+            final Response response = e.getResponse();
+            assertThat(response.getStatus()).isEqualTo(400);
+            assertThat(response.readEntity(String.class)).isEqualTo(expected);
+        }
 
-        assertThat(response.getStatus()).isEqualTo(400);
-        assertThat(response.getEntity(String.class)).isEqualTo(expected);
         verify(worker).getId(AGENT);
     }
 
@@ -167,13 +188,16 @@ public class IdResourceTest {
     public void testGetIdAsJSONPInvalidClock() throws Exception {
         when(worker.getId(AGENT)).thenThrow(new InvalidSystemClock());
 
-        final ClientResponse response = resources.client()
-                .resource("/?callback=testing")
-                .accept(MediaTypeAdditional.APPLICATION_JAVASCRIPT)
-                .header(HttpHeaders.USER_AGENT, AGENT)
-                .get(ClientResponse.class);
+        try {
+            resources.client().target("/?callback=testing")
+                    .request(MediaTypeAdditional.APPLICATION_JAVASCRIPT)
+                    .header(HttpHeaders.USER_AGENT, AGENT)
+                    .get(ClientResponse.class);
+            failBecauseExceptionWasNotThrown(InternalServerErrorException.class);
+        } catch (final InternalServerErrorException e) {
+            assertThat(e.getResponse().getStatus()).isEqualTo(500);
+        }
 
-        assertThat(response.getStatus()).isEqualTo(500);
         verify(worker).getId(AGENT);
     }
 
@@ -182,13 +206,13 @@ public class IdResourceTest {
         final long id = 100L;
         when(worker.getId(AGENT)).thenReturn(id);
 
-        final ClientResponse response = resources.client().resource("/")
-                .accept(ProtocolBufferMediaType.APPLICATION_PROTOBUF)
-                .header(HttpHeaders.USER_AGENT, AGENT)
-                .get(ClientResponse.class);
+        final Response response = resources.client().target("/")
+                .register(new ProtocolBufferMessageBodyProvider())
+                .request(ProtocolBufferMediaType.APPLICATION_PROTOBUF)
+                .header(HttpHeaders.USER_AGENT, AGENT).get();
 
         final SnowizardResponse actual = response
-                .getEntity(SnowizardResponse.class);
+                .readEntity(SnowizardResponse.class);
 
         final SnowizardResponse expected = SnowizardResponse.newBuilder()
                 .addId(id).build();
@@ -202,16 +226,21 @@ public class IdResourceTest {
     public void testGetIdAsProtobufInvalidAgent() throws Exception {
         when(worker.getId(AGENT)).thenThrow(new InvalidUserAgentError());
 
-        final ClientResponse response = resources.client().resource("/")
-                .accept(ProtocolBufferMediaType.APPLICATION_PROTOBUF)
-                .header(HttpHeaders.USER_AGENT, AGENT)
-                .get(ClientResponse.class);
+        try {
+            resources.client().target("/")
+            .request(ProtocolBufferMediaType.APPLICATION_PROTOBUF)
+                    .header(HttpHeaders.USER_AGENT, AGENT)
+                    .get(ClientResponse.class);
+            failBecauseExceptionWasNotThrown(BadRequestException.class);
+        } catch (final BadRequestException e) {
+            final ObjectMapper mapper = resources.getObjectMapper();
+            final String expected = mapper.writeValueAsString(AGENT_ERROR);
 
-        final ObjectMapper mapper = resources.getObjectMapper();
-        final String expected = mapper.writeValueAsString(AGENT_ERROR);
+            final Response response = e.getResponse();
+            assertThat(response.getStatus()).isEqualTo(400);
+            assertThat(response.readEntity(String.class)).isEqualTo(expected);
+        }
 
-        assertThat(response.getStatus()).isEqualTo(400);
-        assertThat(response.getEntity(String.class)).isEqualTo(expected);
         verify(worker).getId(AGENT);
     }
 
@@ -219,12 +248,16 @@ public class IdResourceTest {
     public void testGetIdAsProtobufInvalidClock() throws Exception {
         when(worker.getId(AGENT)).thenThrow(new InvalidSystemClock());
 
-        final ClientResponse response = resources.client().resource("/")
-                .accept(ProtocolBufferMediaType.APPLICATION_PROTOBUF)
-                .header(HttpHeaders.USER_AGENT, AGENT)
-                .get(ClientResponse.class);
+        try {
+            resources.client().target("/")
+                    .request(ProtocolBufferMediaType.APPLICATION_PROTOBUF)
+                    .header(HttpHeaders.USER_AGENT, AGENT)
+                    .get(ClientResponse.class);
+            failBecauseExceptionWasNotThrown(InternalServerErrorException.class);
+        } catch (final InternalServerErrorException e) {
+            assertThat(e.getResponse().getStatus()).isEqualTo(500);
+        }
 
-        assertThat(response.getStatus()).isEqualTo(500);
         verify(worker).getId(AGENT);
     }
 }

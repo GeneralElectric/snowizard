@@ -8,7 +8,7 @@ import com.ge.snowizard.api.SnowizardError;
 import com.ge.snowizard.application.core.MediaTypeAdditional;
 
 public class SnowizardExceptionMapper implements
-ExceptionMapper<SnowizardException> {
+        ExceptionMapper<SnowizardException> {
 
     private static final Logger LOGGER = LoggerFactory
             .getLogger(SnowizardExceptionMapper.class);
@@ -22,6 +22,6 @@ ExceptionMapper<SnowizardException> {
                 .status(exception.getStatus())
                 .entity(new SnowizardError(exception.getCode(), exception
                         .getMessage()))
-                        .type(MediaTypeAdditional.APPLICATION_JSON_UTF8).build();
+                .type(MediaTypeAdditional.APPLICATION_JSON_UTF8).build();
     }
 }

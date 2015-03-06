@@ -1,11 +1,12 @@
 package com.ge.snowizard.application;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
+import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.setup.Environment;
+import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
-import java.io.File;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import org.junit.Before;
@@ -18,8 +19,6 @@ import com.ge.snowizard.application.config.SnowizardConfiguration;
 import com.ge.snowizard.application.resources.IdResource;
 import com.ge.snowizard.application.resources.PingResource;
 import com.ge.snowizard.application.resources.VersionResource;
-import com.google.common.io.Resources;
-import com.sun.jersey.api.client.Client;
 
 public class SnowizardApplicationTest {
     private final String AGENT = "snowizard-client";
@@ -32,7 +31,8 @@ public class SnowizardApplicationTest {
 
     @ClassRule
     public static final DropwizardAppRule<SnowizardConfiguration> RULE = new DropwizardAppRule<SnowizardConfiguration>(
-            SnowizardApplication.class, resourceFilePath("test-snowizard.yml"));
+            SnowizardApplication.class,
+            ResourceHelpers.resourceFilePath("test-snowizard.yml"));
 
     @Before
     public void setUp() {
@@ -61,20 +61,11 @@ public class SnowizardApplicationTest {
 
     @Test
     public void testCanGetIdOverHttp() throws Exception {
-        final String response = new Client()
-                .resource("http://localhost:" + RULE.getLocalPort())
-                .accept(MediaType.TEXT_PLAIN)
-        .header(HttpHeaders.USER_AGENT, AGENT).get(String.class);
+        final String response = new JerseyClientBuilder(RULE.getEnvironment())
+                .build("").target("http://localhost:" + RULE.getLocalPort())
+                .request(MediaType.TEXT_PLAIN)
+                .header(HttpHeaders.USER_AGENT, AGENT).get(String.class);
         final long id = Long.valueOf(response);
         assertThat(id).isNotNull();
-    }
-
-    public static String resourceFilePath(final String resourceClassPathLocation) {
-        try {
-            return new File(Resources.getResource(resourceClassPathLocation)
-                    .toURI()).getAbsolutePath();
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 }

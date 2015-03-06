@@ -4,6 +4,7 @@ import javax.annotation.concurrent.Immutable;
 import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 @Immutable
@@ -60,7 +61,7 @@ public final class SnowizardError {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this).add("code", code)
+        return MoreObjects.toStringHelper(this).add("code", code)
                 .add("message", message).toString();
     }
 }

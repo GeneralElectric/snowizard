@@ -1,7 +1,7 @@
 package com.ge.snowizard.api;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import io.dropwizard.jackson.Jackson;
 import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
