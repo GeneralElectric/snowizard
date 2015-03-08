@@ -23,7 +23,7 @@ public class SnowizardErrorTest {
     public void deserializesFromJSON() throws Exception {
         final SnowizardError actual = MAPPER.readValue(
                 fixture("fixtures/error.json"), SnowizardError.class);
-        assertThat(actual).isEqualsToByComparingFields(error);
+        assertThat(actual).isEqualTo(error);
     }
 
     @Test

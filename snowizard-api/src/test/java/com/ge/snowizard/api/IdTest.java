@@ -23,7 +23,7 @@ public class IdTest {
     public void deserializesFromJSON() throws Exception {
         final Id actual = MAPPER.readValue(fixture("fixtures/id.json"),
                 Id.class);
-        assertThat(actual).isEqualsToByComparingFields(id);
+        assertThat(actual).isEqualTo(id);
     }
 
     @Test
