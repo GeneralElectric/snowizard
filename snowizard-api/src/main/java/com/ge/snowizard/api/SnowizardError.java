@@ -1,10 +1,11 @@
 package com.ge.snowizard.api;
 
+import java.util.Objects;
 import javax.annotation.concurrent.Immutable;
 import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 
 @Immutable
 public final class SnowizardError {
@@ -49,18 +50,18 @@ public final class SnowizardError {
         }
 
         final SnowizardError other = (SnowizardError) obj;
-        return Objects.equal(code, other.code)
-                && Objects.equal(message, other.message);
+        return Objects.equals(code, other.code)
+                && Objects.equals(message, other.message);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(code, message);
+        return Objects.hash(code, message);
     }
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this).add("code", code)
+        return MoreObjects.toStringHelper(this).add("code", code)
                 .add("message", message).toString();
     }
 }

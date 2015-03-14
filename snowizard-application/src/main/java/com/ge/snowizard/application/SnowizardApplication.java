@@ -13,7 +13,6 @@ import io.dropwizard.setup.Environment;
 import com.codahale.metrics.Gauge;
 import com.codahale.metrics.MetricRegistry;
 import com.ge.snowizard.application.config.SnowizardConfiguration;
-import com.ge.snowizard.application.core.TimedResourceMethodDispatchAdapter;
 import com.ge.snowizard.application.exceptions.SnowizardExceptionMapper;
 import com.ge.snowizard.application.health.EmptyHealthCheck;
 import com.ge.snowizard.application.resources.IdResource;
@@ -51,14 +50,14 @@ public class SnowizardApplication extends Application<SnowizardConfiguration> {
 
         environment.jersey().register(new SnowizardExceptionMapper());
         environment.jersey().register(new ProtocolBufferMessageBodyProvider());
-        environment.jersey().register(new TimedResourceMethodDispatchAdapter());
 
         if (config.isCORSEnabled()) {
-            final FilterRegistration.Dynamic cors = environment.servlets()
+            final FilterRegistration.Dynamic filter = environment.servlets()
                     .addFilter("CrossOriginFilter", CrossOriginFilter.class);
-            cors.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST),
+            filter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST),
                     true, "/*");
-            cors.setInitParameter("allowedMethods", "GET");
+            filter.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM,
+                    "GET");
         }
 
         final IdWorker worker = new IdWorker(config.getWorkerId(),
@@ -75,14 +74,14 @@ public class SnowizardApplication extends Application<SnowizardConfiguration> {
                 });
 
         environment.metrics()
-                .register(
-                        MetricRegistry.name(SnowizardApplication.class,
-                                "datacenter_id"), new Gauge<Integer>() {
-                            @Override
-                            public Integer getValue() {
-                                return config.getDatacenterId();
-                            }
-                        });
+        .register(
+                MetricRegistry.name(SnowizardApplication.class,
+                        "datacenter_id"), new Gauge<Integer>() {
+                    @Override
+                    public Integer getValue() {
+                        return config.getDatacenterId();
+                    }
+                });
 
         // health check
         environment.healthChecks().register("empty", new EmptyHealthCheck());
