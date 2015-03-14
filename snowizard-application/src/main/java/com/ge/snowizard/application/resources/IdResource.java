@@ -5,7 +5,6 @@ import io.dropwizard.jersey.caching.CacheControl;
 import io.dropwizard.jersey.params.IntParam;
 import io.dropwizard.jersey.protobuf.ProtocolBufferMediaType;
 import java.util.List;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
@@ -14,10 +13,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.glassfish.jersey.server.JSONP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.codahale.metrics.annotation.Timed;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.ge.snowizard.api.Id;
 import com.ge.snowizard.api.protos.SnowizardProtos.SnowizardResponse;
 import com.ge.snowizard.application.core.MediaTypeAdditional;
@@ -91,28 +90,13 @@ public class IdResource {
      */
     @GET
     @Timed
-    @Produces(MediaType.APPLICATION_JSON)
+    @JSONP(callback = "callback", queryParam = "callback")
+    @Produces({ MediaType.APPLICATION_JSON,
+        MediaTypeAdditional.APPLICATION_JAVASCRIPT })
     @CacheControl(mustRevalidate = true, noCache = true, noStore = true)
     public Id getIdAsJSON(
             @HeaderParam(HttpHeaders.USER_AGENT) final String agent) {
         return new Id(getId(agent));
-    }
-
-    /**
-     * Get a new ID as JSONP
-     *
-     * @param agent
-     *            User Agent
-     * @return generated ID
-     */
-    @GET
-    @Timed
-    @Produces(MediaTypeAdditional.APPLICATION_JAVASCRIPT)
-    @CacheControl(mustRevalidate = true, noCache = true, noStore = true)
-    public JSONPObject getIdAsJSONP(
-            @HeaderParam(HttpHeaders.USER_AGENT) final String agent,
-            @QueryParam("callback") @DefaultValue("callback") final String callback) {
-        return new JSONPObject(callback, getIdAsJSON(agent));
     }
 
     /**
