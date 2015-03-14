@@ -1,11 +1,12 @@
 package com.ge.snowizard.api;
 
 import io.dropwizard.jackson.JsonSnakeCase;
+import java.util.Objects;
 import javax.annotation.concurrent.Immutable;
 import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 
 @Immutable
 @JsonSnakeCase
@@ -72,17 +73,18 @@ public final class Id {
         }
 
         final Id other = (Id) obj;
-        return Objects.equal(id, other.id) && Objects.equal(idStr, other.idStr);
+        return Objects.equals(id, other.id)
+                && Objects.equals(idStr, other.idStr);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, idStr);
+        return Objects.hash(id, idStr);
     }
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this).add("id", id).add("idStr", idStr)
-                .toString();
+        return MoreObjects.toStringHelper(this).add("id", id)
+                .add("idStr", idStr).toString();
     }
 }

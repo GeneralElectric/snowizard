@@ -17,9 +17,9 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <dropwizard.version>0.7.1</dropwizard.version>
-        <dropwizard.protobuf.version>0.7.1-2</dropwizard.protobuf.version>
-        <dropwizard.discovery.version>0.7.1-5</dropwizard.discovery.version>
+        <dropwizard.version>0.8.0</dropwizard.version>
+        <dropwizard.protobuf.version>0.8.0-1</dropwizard.protobuf.version>
+        <dropwizard.discovery.version>0.8.0-1</dropwizard.discovery.version>
     </properties>
 
     <modules>
@@ -136,6 +136,16 @@
         </profile>
     </profiles>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.10</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>io.dropwizard</groupId>
@@ -159,7 +169,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.18</version>
+                <version>2.18.1</version>
                 <configuration>
                     <excludes>
                         <exclude>**/*IT.java</exclude>
@@ -169,7 +179,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.18</version>
+                <version>2.18.1</version>
                 <configuration>
                     <excludes>
                         <exclude>**/*Test.java</exclude>
@@ -254,10 +264,10 @@
                     <skipDeploy>true</skipDeploy>
                 </configuration>
             </plugin>
-            <plugin>
+            <!-- <plugin>
                 <groupId>com.github.github</groupId>
                 <artifactId>site-maven-plugin</artifactId>
-                <version>0.10</version>
+                <version>0.11</version>
                 <configuration>
                     <path>${project.distributionManagement.site.url}</path>
                     <message>Creating site for ${project.name} ${project.version}</message>
@@ -272,7 +282,7 @@
                         <phase>site-deploy</phase>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin> -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
@@ -280,7 +290,6 @@
                 <configuration>
                     <formats>
                         <format>xml</format>
-                        <format>html</format>
                     </formats>
                     <aggregate>true</aggregate>
                 </configuration>

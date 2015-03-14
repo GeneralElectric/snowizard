@@ -22,11 +22,5 @@
             <artifactId>dropwizard-client</artifactId>
             <version>${dropwizard.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.ge.snowizard</groupId>
-            <artifactId>snowizard-application</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 </project>
