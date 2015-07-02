@@ -1,12 +1,13 @@
+sudo: false
 language: java
-script: 
-  - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && mvn verify deploy --settings maven_deploy_settings.xml || mvn test verify --settings maven_deploy_settings.xml'
-after_success:
-  - mvn cobertura:cobertura coveralls:cobertura
 jdk:
   - openjdk7
   - oraclejdk7
   - oraclejdk8
+after_success:
+  - mvn cobertura:cobertura coveralls:report
+  - if [[ "$TRAVIS_PULL_REQUEST" = "false" ]]; then mvn deploy --settings maven_deploy_settings.xml; else echo 'Pull request, skipping deploy.'; fi
+
 env:
   global:
     - secure: "KECS2w8m62ftcBNoZalNOKsagoKu/mqnz+y41L/yTyn3UEypCBDzQOD73CqBsIfhMfCN4yf5Z/iRzpVXn9T+tR5eqj3QdEJkmlPXeLbyTyVpdvpwykztM5GTY4hP8IKmWu9VAGKAW8LdkfYrJh2LAt8kL8SM7JITuLNNIO+qAw4="

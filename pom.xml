@@ -17,9 +17,9 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <dropwizard.version>0.8.0</dropwizard.version>
-        <dropwizard.protobuf.version>0.8.0-1</dropwizard.protobuf.version>
-        <dropwizard.discovery.version>0.8.0-1</dropwizard.discovery.version>
+        <dropwizard.version>0.8.1</dropwizard.version>
+        <dropwizard.protobuf.version>0.8.1-1</dropwizard.protobuf.version>
+        <dropwizard.discovery.version>0.8.1-1</dropwizard.discovery.version>
     </properties>
 
     <modules>
@@ -142,6 +142,17 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>1.7.10</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>18.0</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -267,7 +278,7 @@
             <!-- <plugin>
                 <groupId>com.github.github</groupId>
                 <artifactId>site-maven-plugin</artifactId>
-                <version>0.11</version>
+                <version>0.12</version>
                 <configuration>
                     <path>${project.distributionManagement.site.url}</path>
                     <message>Creating site for ${project.name} ${project.version}</message>
@@ -293,6 +304,13 @@
                     </formats>
                     <aggregate>true</aggregate>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.sourceforge.cobertura</groupId>
+                        <artifactId>cobertura</artifactId>
+                        <version>2.1.1</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>
@@ -345,12 +363,17 @@
                     <reportSet>
                         <reports>
                             <report>index</report>
+                            <report>summary</report>
                             <report>dependency-info</report>
-                            <report>dependencies</report>
-                            <report>issue-tracking</report>
-                            <report>scm</report>
                             <report>license</report>
+                            <report>scm</report>
+                            <report>issue-tracking</report>
+                            <report>mailing-list</report>
+                            <report>cim</report>
                             <report>project-team</report>
+                            <report>dependencies</report>
+                            <report>dependency-convergence</report>
+                            <report>modules</report>
                         </reports>
                     </reportSet>
                 </reportSets>
@@ -361,8 +384,16 @@
                 <version>2.10.1</version>
                 <configuration>
                     <additionalparam>${javadoc.doclint.none}</additionalparam>
-                    <show>public</show>
+                    <quiet>true</quiet>
                 </configuration>
+                <reportSets>
+                    <reportSet>
+                        <id>html</id>
+                        <reports>
+                            <report>javadoc</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
             </plugin>
         </plugins>
     </reporting>
