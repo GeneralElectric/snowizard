@@ -2,6 +2,7 @@ package com.ge.snowizard.application.resources;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import javax.ws.rs.core.HttpHeaders;
@@ -183,6 +184,42 @@ public class IdResourceTest {
         assertThat(response.getStatus()).isEqualTo(200);
         assertThat(actual).isEqualTo(expected);
         verify(worker).getId(AGENT);
+    }
+
+    @Test
+    public void testGetIdAsProtobufEmptyCount() throws Exception {
+        final long id = 100L;
+        when(worker.getId(AGENT)).thenReturn(id);
+
+        final Response response = resources.client().target("/")
+                .register(new ProtocolBufferMessageBodyProvider())
+                .queryParam("count", "")
+                .request(ProtocolBufferMediaType.APPLICATION_PROTOBUF)
+                .header(HttpHeaders.USER_AGENT, AGENT).get();
+
+        final SnowizardResponse actual = response
+                .readEntity(SnowizardResponse.class);
+
+        final SnowizardResponse expected = SnowizardResponse.newBuilder()
+                .addId(id).build();
+
+        assertThat(response.getStatus()).isEqualTo(200);
+        assertThat(actual).isEqualTo(expected);
+        verify(worker).getId(AGENT);
+    }
+
+    @Test
+    public void testGetIdAsProtobufInvalidCount() throws Exception {
+        when(worker.getId(AGENT)).thenReturn(100L);
+
+        final Response response = resources.client().target("/")
+                .register(new ProtocolBufferMessageBodyProvider())
+                .queryParam("count", "test")
+                .request(ProtocolBufferMediaType.APPLICATION_PROTOBUF)
+                .header(HttpHeaders.USER_AGENT, AGENT).get();
+
+        assertThat(response.getStatus()).isEqualTo(400);
+        verify(worker, never()).getId(AGENT);
     }
 
     @Test
