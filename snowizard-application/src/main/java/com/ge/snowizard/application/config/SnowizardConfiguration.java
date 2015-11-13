@@ -1,7 +1,7 @@
 package com.ge.snowizard.application.config;
 
 import io.dropwizard.Configuration;
-import io.dropwizard.discovery.DiscoveryFactory;
+import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -29,12 +29,15 @@ public class SnowizardConfiguration extends Configuration {
 
     @Valid
     @NotNull
-    private DiscoveryFactory discovery = new DiscoveryFactory();
+    @JsonProperty
+    public final SwaggerBundleConfiguration swagger = new SwaggerBundleConfiguration();
 
+    @JsonProperty("worker_id")
     public int getWorkerId() {
         return worker_id;
     }
 
+    @JsonProperty("datacenter_id")
     public int getDatacenterId() {
         return datacenter_id;
     }
@@ -49,13 +52,8 @@ public class SnowizardConfiguration extends Configuration {
         return enable_cors;
     }
 
-    @JsonProperty("discovery")
-    public DiscoveryFactory getDiscoveryFactory() {
-        return discovery;
-    }
-
-    @JsonProperty("discovery")
-    public void setDiscoveryFactory(final DiscoveryFactory discoveryFactory) {
-        this.discovery = discoveryFactory;
+    @JsonProperty
+    public SwaggerBundleConfiguration getSwagger() {
+        return swagger;
     }
 }

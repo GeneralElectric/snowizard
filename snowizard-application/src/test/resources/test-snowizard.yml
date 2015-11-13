@@ -4,9 +4,10 @@ datacenter_id: 1
 # Unique Worker ID
 worker_id: 1
 
-discovery:
-  serviceName: snowizard
-  isDisabled: true
+# Swagger-specific options.
+swagger:
+
+  resourcePackage: com.ge.snowizard.application.resources
 
 server:
 

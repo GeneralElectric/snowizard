@@ -1,14 +1,15 @@
 Snowizard
 =========
-[![Build Status](https://travis-ci.org/GeneralElectric/snowizard.svg?branch=master)](https://travis-ci.org/GeneralElectric/snowizard)
-[![Coverage Status](https://img.shields.io/coveralls/GeneralElectric/snowizard.svg)](https://coveralls.io/r/GeneralElectric/snowizard)
-
+[![Build Status](https://travis-ci.org/smoketurner/snowizard.svg?branch=master)](https://travis-ci.org/smoketurner/snowizard)
+[![Coverage Status](https://coveralls.io/repos/smoketurner/snowizard/badge.svg)](https://coveralls.io/r/smoketurner/snowizard)
+[![Maven Central](https://img.shields.io/maven-central/v/com.smoketurner.snowizard/snowizard-parent.svg?style=flat-square)](https://maven-badges.herokuapp.com/maven-central/com.smoketurner.snowizard/snowizard-parent/)
+[![GitHub license](https://img.shields.io/github/license/smoketurner/snowizard.svg?style=flat-square)](https://github.com/smoketurner/snowizard/tree/master)
 
 Snowizard is an HTTP-based service for generating unique ID numbers at high scale with some simple guarantees.
 
 ## Motivation
 
-Snowizard is a Java port of Twitter's [Snowflake](https://github.com/twitter/snowflake) thrift service presented as an HTTP-based [Dropwizard](http://dropwizard.io/) service. Snowizard supports returning ID numbers as:
+Snowizard is a Java port of Twitter's [Snowflake](https://github.com/twitter/snowflake/tree/snowflake-2010) thrift service presented as an HTTP-based [Dropwizard](http://dropwizard.io/) service. Snowizard supports returning ID numbers as:
 
 * JSON and JSONP
 * Google's [Protocol Buffers](https://code.google.com/p/protobuf/)
