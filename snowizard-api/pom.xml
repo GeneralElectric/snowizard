@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.ge.snowizard</groupId>
+        <groupId>com.smoketurner.snowizard</groupId>
         <artifactId>snowizard-parent</artifactId>
         <version>1.8.2-SNAPSHOT</version>
     </parent>
@@ -15,12 +15,10 @@
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-jackson</artifactId>
-            <version>${dropwizard.version}</version>
         </dependency>
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-validation</artifactId>
-            <version>${dropwizard.version}</version>
         </dependency>
         <dependency>
             <groupId>io.dropwizard.modules</groupId>

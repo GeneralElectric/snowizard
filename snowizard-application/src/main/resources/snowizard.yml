@@ -1,3 +1,6 @@
+# {{{project.name}}} - {{{project.description}}}
+# {{{project.artifactId}}} configuration
+
 # Data Center ID
 datacenter_id: ${DW_DATACENTER_ID:-1}
 
@@ -26,24 +29,24 @@ server:
 
   applicationConnectors:
     - type: http
-      port: 8080
+      port: {{{dw.httpPort}}}
   
   adminConnectors:
     - type: http
-      port: 8180
+      port: {{{dw.httpAdminPort}}}
 
   requestLog:
     appenders:
       - type: console
         timeZone: UTC
         target: stdout
-#      - type: file
-#        currentLogFilename: /var/log/snowizard/requests.log
-#        threshold: ALL
-#        archive: true
-#        archivedLogFilenamePattern: /var/log/snowizard/requests-%d.log
-#        archivedFileCount: 5
-#        timeZone: UTC
+      - type: file
+        currentLogFilename: "{{{path.logDirectory}}}/requests.log"
+        threshold: ALL
+        archive: true
+        archivedLogFilenamePattern: "{{{path.logDirectory}}}/requests-%d.log"
+        archivedFileCount: 5
+        timeZone: UTC
 
 logging:
   level: INFO
@@ -53,10 +56,10 @@ logging:
     - type: console
       timeZone: UTC
       target: stdout
-#    - type: file
-#      currentLogFilename: /var/log/snowizard/app.log
-#      threshold: ALL
-#      archive: true
-#      archivedLogFilenamePattern: /var/log/snowizard/app-%d.log
-#      archivedFileCount: 5
-#      timeZone: UTC
+    - type: file
+      currentLogFilename: "{{{path.logDirectory}}}/app.log"
+      threshold: ALL
+      archive: true
+      archivedLogFilenamePattern: "{{{path.logDirectory}}}/app-%d.log"
+      archivedFileCount: 5
+      timeZone: UTC

@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.ge.snowizard</groupId>
+        <groupId>com.smoketurner.snowizard</groupId>
         <artifactId>snowizard-parent</artifactId>
         <version>1.8.2-SNAPSHOT</version>
     </parent>
@@ -15,7 +15,6 @@
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-core</artifactId>
-            <version>3.1.1</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -28,7 +27,6 @@
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
-            <version>3.0.0</version>
         </dependency>
     </dependencies>
 </project>
